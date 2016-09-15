@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.LabyrinthConstants;
 import com.models.User;
+import com.models.api.APIErrorMessage;
 import com.models.api.APIUser;
 import com.parents.LabyrinthHttpServlet;
 
@@ -19,7 +20,6 @@ public class UserServlet extends LabyrinthHttpServlet
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		Enumeration<String>requestHeaders = request.getHeaderNames();
-		System.out.println("OIUHGFCVBGHJ");;
 		while(requestHeaders.hasMoreElements())
 		{
 			String element = requestHeaders.nextElement();
@@ -39,7 +39,7 @@ public class UserServlet extends LabyrinthHttpServlet
 		}
 		else
 		{
-			response.getWriter().write(gson.toJson(LabyrinthConstants.NO_SUCH_USER));
+			response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_SUCH_PLAYER)));
 		}
 	}
 

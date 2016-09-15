@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.parents.LabyrinthHttpServlet;
 
-public class CharacterServlet extends LabyrinthHttpServlet
+public class HeroServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = 2828781477059201765L;
 	

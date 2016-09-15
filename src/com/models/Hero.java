@@ -1,18 +1,13 @@
-package com.models.api;
+package com.models;
 
-import com.models.Character;
-import com.parents.LabyrinthAPIModel;
+import com.parents.LabyrinthModel;
 
-public class APICharacter extends LabyrinthAPIModel
+public class Hero extends LabyrinthModel
 {
+	private static final long serialVersionUID = 3345291415215532854L;
+
 	private Integer id;
 	private Integer gameId;
-	
-	public APICharacter(Character c)
-	{
-		this.id = c.getId();
-		this.gameId = c.getGameId();
-	}
 	
 	public Integer getId()
 	{
@@ -30,5 +25,4 @@ public class APICharacter extends LabyrinthAPIModel
 	{
 		this.gameId = gameId;
 	}
-
 }

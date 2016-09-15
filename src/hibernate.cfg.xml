@@ -36,6 +36,8 @@
 
         <mapping resource="hibernate/users.hbm.xml"/>
         <mapping resource="hibernate/games.hbm.xml"/>
+        <mapping resource="hibernate/heros.hbm.xml"/>
+        <mapping resource="hibernate/maps.hbm.xml"/>
 
     </session-factory>
 

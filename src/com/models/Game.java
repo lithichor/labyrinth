@@ -21,6 +21,7 @@ public class Game extends LabyrinthModel
 	public Game()
 	{
 		this.setCreatedAt(new Date());
+		this.setUpdatedAt(new Date());
 	}
 
 	public Integer getId()

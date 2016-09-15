@@ -7,10 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.models.Game;
+import com.models.Hero;
+import com.models.Map;
 import com.LabyrinthConstants;
-import com.models.Character;
 import com.models.User;
+import com.models.api.APIErrorMessage;
 import com.models.api.APIGame;
+import com.models.api.APIHero;
+import com.models.api.APIMap;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthHttpServlet;
 
@@ -25,12 +29,17 @@ public class GameServlet extends LabyrinthHttpServlet
 		// it's an integer. Maybe strip any extra junk by default
 		
 		// also need to make games before we can search for them by id
-		String id = request.getRequestURI().split("games/")[1];
+		String[] ids = request.getRequestURI().split("games/");
+		String id = "";
+		if(ids.length > 1)
+		{
+			id = ids[1];
+		}
 		if(id.length() > 0)
 		{
-			System.out.println("ID exists");
-		};
-				
+			System.out.println("ID exists: " + id);
+		}
+
 		User user = this.authenticateUser(request, response);
 		
 		if(user != null)
@@ -39,23 +48,24 @@ public class GameServlet extends LabyrinthHttpServlet
 			{
 				Game game = new Game().load(user.getId());
 				game.getId();
+				// TODO: check for games after we can create them
 			}
 			catch(LabyrinthException le)
 			{
 				if(le.getMessage().equalsIgnoreCase(LabyrinthConstants.NO_GAME))
 				{
-					response.getWriter().write(gson.toJson(LabyrinthConstants.NO_GAME));
+					response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_GAME)));
 				}
 				else
 				{
 					String message = LabyrinthConstants.UNKNOWN_ERROR + ": " + le.getMessage();
-					response.getWriter().write(gson.toJson(message));
+					response.getWriter().write(gson.toJson(new APIErrorMessage(message)));
 				}
 			}
 		}
 		else
 		{
-			response.getWriter().write(gson.toJson(LabyrinthConstants.NO_SUCH_USER));
+			response.getWriter().write(gson.toJson(LabyrinthConstants.NO_SUCH_PLAYER));
 		}
 	}
 	
@@ -70,52 +80,40 @@ public class GameServlet extends LabyrinthHttpServlet
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		// if game exists, mark deleted
-		// create new game instance
-		// return game object to user
-		
 		User user = this.authenticateUser(request, response);
 		boolean authenticated = user != null;
 		if(authenticated)
 		{
 			try
 			{
-				// 1. check for existing game
-				Game game = new Game().load(user.getId());
+				Game game = new Game();
+				game.setUserId(user.getId());
+				game.save();
+
+				Hero hero = new Hero();
+				hero.setGameId(game.getId());
+
+				Map map = new Map();
+				map.setGameId(game.getId());
+
+				hero.save();
+				map.save();
+
 				APIGame g = new APIGame(game);
-				
-				Character character = new Character();
-				character.setGameId(game.getId());
-				
+				g.setHero(new APIHero(hero));
+				g.addMap(new APIMap(map));
+
 				response.getWriter().write(gson.toJson(g));
 			}
 			catch (LabyrinthException le)
 			{
-				if(le.getMessage().equalsIgnoreCase(LabyrinthConstants.NO_GAME))
-				{
-					System.out.println("Creating new game");
-				// 2. create a new game
-				//  a. create character
-				//  b. create map
-				}
-				else
-				{
-					System.out.println(le.getMessage());
-					le.printStackTrace();
-				}
-			}
-			
-			try
-			{
-				Game game = new Game();
-				game.setUserId(user.getId());
-				game.save();
-			}
-			catch(LabyrinthException le)
-			{
 				System.out.println(le.getMessage());
 				le.printStackTrace();
 			}
+		}
+		else
+		{
+			response.getWriter().write(gson.toJson(LabyrinthConstants.NO_SUCH_PLAYER));
 		}
 	}
 }

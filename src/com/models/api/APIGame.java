@@ -9,13 +9,19 @@ public class APIGame extends LabyrinthAPIModel
 {
 	private Integer id;
 	private Integer userId;
-	private APICharacter character;
+	private APIHero hero;
 	private ArrayList<APIMap> maps;
 
 	public APIGame(Game g)
 	{
 		this.id = g.getId();
 		this.userId = g.getUserId();
+		this.maps = new ArrayList<APIMap>();
+	}
+	
+	public void addMap(APIMap map)
+	{
+		maps.add(map);
 	}
 
 	public Integer getId()
@@ -34,13 +40,13 @@ public class APIGame extends LabyrinthAPIModel
 	{
 		this.userId = userId;
 	}
-	public APICharacter getCharacter()
+	public APIHero getHero()
 	{
-		return character;
+		return hero;
 	}
-	public void setCharacter(APICharacter character)
+	public void setHero(APIHero character)
 	{
-		this.character = character;
+		this.hero = character;
 	}
 	public ArrayList<APIMap> getMaps()
 	{

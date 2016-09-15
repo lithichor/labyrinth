@@ -10,5 +10,6 @@ public class LabyrinthConstants
 {
 	public final static String NO_GAME = "There is no Game associated with this User";
 	public final static String UNKNOWN_ERROR = "Something went wrong with your request";
-	public final static String NO_SUCH_USER = "There is no user mathching those credentials";
+	public final static String NO_SUCH_USER = "There is no user mahching those credentials";
+	public final static String NO_SUCH_PLAYER = "There is no player matching those credentials";
 }
