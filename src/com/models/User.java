@@ -2,6 +2,7 @@ package com.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.hibernate.HibernateException;
 
@@ -16,8 +17,15 @@ public class User extends LabyrinthModel implements Serializable
 	private String lastName;
 	private String email;
 	private transient String password;
+	private Date createdAt;
+	private Date updatedAt;
+	private Date deletedAt;
 	
-	public User(){}
+	public User()
+	{
+		this.setCreatedAt(new Date());
+		this.setUpdatedAt(new Date());
+	}
 	
 	public Integer getId()
 	{
@@ -58,6 +66,30 @@ public class User extends LabyrinthModel implements Serializable
 	public void setPassword(String password)
 	{
 		this.password = password;
+	}
+	public Date getCreatedAt()
+	{
+		return createdAt;
+	}
+	public void setCreatedAt(Date createdAt)
+	{
+		this.createdAt = createdAt;
+	}
+	public Date getUpdatedAt()
+	{
+		return updatedAt;
+	}
+	public void setUpdatedAt(Date updatedAt)
+	{
+		this.updatedAt = updatedAt;
+	}
+	public Date getDeletedAt()
+	{
+		return deletedAt;
+	}
+	public void setDeletedAt(Date deletedAt)
+	{
+		this.deletedAt = deletedAt;
 	}
 
 	public boolean save() throws LabyrinthException

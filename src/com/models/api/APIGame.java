@@ -9,51 +9,28 @@ public class APIGame extends LabyrinthAPIModel
 {
 	private Integer id;
 	private Integer userId;
-	private APIHero hero;
-	private ArrayList<APIMap> maps;
+	private Integer heroId;
+	private ArrayList<Integer> mapIds;
 
 	public APIGame(Game g)
 	{
 		this.id = g.getId();
 		this.userId = g.getUserId();
-		this.maps = new ArrayList<APIMap>();
 	}
 	
-	public void addMap(APIMap map)
+	public void addMapId(Integer mapId)
 	{
-		maps.add(map);
+		if(mapIds == null)
+		{ mapIds = new ArrayList<Integer>(); }
+		mapIds.add(mapId);
 	}
 
-	public Integer getId()
-	{
-		return id;
-	}
-	public void setId(Integer id)
-	{
-		this.id = id;
-	}
-	public Integer getUserId()
-	{
-		return userId;
-	}
-	public void setUserId(Integer userId)
-	{
-		this.userId = userId;
-	}
-	public APIHero getHero()
-	{
-		return hero;
-	}
-	public void setHero(APIHero character)
-	{
-		this.hero = character;
-	}
-	public ArrayList<APIMap> getMaps()
-	{
-		return maps;
-	}
-	public void setMaps(ArrayList<APIMap> maps)
-	{
-		this.maps = maps;
-	}
+	public Integer getId() { return id; }
+	public void setId(Integer id) { this.id = id; }
+	public Integer getUserId() { return userId; }
+	public void setUserId(Integer userId) { this.userId = userId; }
+	public Integer getHeroId() { return heroId; }
+	public void setHeroId(Integer heroId) { this.heroId = heroId; }
+	public ArrayList<Integer> getMapIds() { return mapIds; }
+	public void setMapIds(ArrayList<Integer> maps) { this.mapIds = maps; }
 }

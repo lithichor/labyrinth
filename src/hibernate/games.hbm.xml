@@ -10,5 +10,7 @@
 		<property name="createdAt" type="java.util.Date" column="created_at"/>
 		<property name="updatedAt" type="java.util.Date" column="updated_at"/>
 		<property name="deletedAt" type="java.util.Date" column="deleted_at"/>
+		
+		
 	</class>
 </hibernate-mapping>

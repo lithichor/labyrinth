@@ -1,6 +1,7 @@
 package com.web.api;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,8 +14,6 @@ import com.LabyrinthConstants;
 import com.models.User;
 import com.models.api.APIErrorMessage;
 import com.models.api.APIGame;
-import com.models.api.APIHero;
-import com.models.api.APIMap;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthHttpServlet;
 
@@ -30,25 +29,49 @@ public class GameServlet extends LabyrinthHttpServlet
 		
 		// also need to make games before we can search for them by id
 		String[] ids = request.getRequestURI().split("games/");
-		String id = "";
+		String idStr = "";
+		int id = 0;
 		if(ids.length > 1)
 		{
-			id = ids[1];
+			idStr = ids[1];
 		}
-		if(id.length() > 0)
+		// if there is a string after the endpoint
+		if(idStr.length() > 0)
 		{
-			System.out.println("ID exists: " + id);
+			try
+			{
+				id = Integer.parseInt(idStr);
+			}
+			catch(NumberFormatException nfe)
+			{
+				// id was not a valid integer - ignore it
+				id = 0;
+			}
 		}
 
 		User user = this.authenticateUser(request, response);
 		
+		// the user is authenticated
 		if(user != null)
 		{
 			try
 			{
-				Game game = new Game().load(user.getId());
-				game.getId();
-				// TODO: check for games after we can create them
+				ArrayList<Game> games = new Game().load(user.getId(), id);
+				ArrayList<APIGame> gs = new ArrayList<APIGame>();
+				for(Game game: games)
+				{
+					APIGame g = new APIGame(game);
+					Hero hero = new Hero().load(game.getId(), 0);
+					ArrayList<Map> maps = new Map().load(game.getId(), 0);
+					g.setHeroId(hero.getId());
+					for(Map m: maps)
+					{
+						g.addMapId(m.getId());
+					}
+					gs.add(g);
+				}
+				
+				response.getWriter().write(gson.toJson(gs));
 			}
 			catch(LabyrinthException le)
 			{
@@ -86,6 +109,7 @@ public class GameServlet extends LabyrinthHttpServlet
 		{
 			try
 			{
+				// TODO: move this to model
 				Game game = new Game();
 				game.setUserId(user.getId());
 				game.save();
@@ -100,8 +124,8 @@ public class GameServlet extends LabyrinthHttpServlet
 				map.save();
 
 				APIGame g = new APIGame(game);
-				g.setHero(new APIHero(hero));
-				g.addMap(new APIMap(map));
+				g.setHeroId(hero.getId());
+				g.addMapId(map.getId());
 
 				response.getWriter().write(gson.toJson(g));
 			}

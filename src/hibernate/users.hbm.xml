@@ -10,5 +10,8 @@
 		<property name="password" type="java.lang.String" column="password"/>
 		<property name="firstName" type="java.lang.String" column="first_name"/>
 		<property name="lastName" type="java.lang.String" column="last_name"/>
+		<property name="createdAt" type="java.util.Date" column="created_at"/>
+		<property name="updatedAt" type="java.util.Date" column="updated_at"/>
+		<property name="deletedAt" type="java.util.Date" column="deleted_at"/>
 	</class>
 </hibernate-mapping>

@@ -1,6 +1,7 @@
 package com.models;
 
 import java.util.Date;
+
 import java.util.ArrayList;
 
 import org.hibernate.HibernateException;
@@ -24,66 +25,40 @@ public class Game extends LabyrinthModel
 		this.setUpdatedAt(new Date());
 	}
 
-	public Integer getId()
-	{
-		return id;
-	}
-	public void setId(Integer id)
-	{
-		this.id = id;
-	}
-	public Integer getUserId()
-	{
-		return userId;
-	}
-	public void setUserId(Integer userId)
-	{
-		this.userId = userId;
-	}
-	public Date getCreatedAt()
-	{
-		return createdAt;
-	}
-	public void setCreatedAt(Date createdAt)
-	{
-		this.createdAt = createdAt;
-	}
-	public Date getUpdatedAt()
-	{
-		return updatedAt;
-	}
-	public void setUpdatedAt(Date updatedAt)
-	{
-		this.updatedAt = updatedAt;
-	}
-	public Date getDeletedAt()
-	{
-		return deletedAt;
-	}
-	public void setDeletedAt(Date deletedAt)
-	{
-		this.deletedAt = deletedAt;
-	}
-
-	public Game load(Integer userId) throws LabyrinthException
+	public Integer getId() { return id; }
+	public void setId(Integer id) { this.id = id; }
+	public Integer getUserId() { return userId; }
+	public void setUserId(Integer userId) { this.userId = userId; }
+	public Date getCreatedAt() { return createdAt; }
+	public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
+	public Date getUpdatedAt() { return updatedAt; }
+	public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
+	public Date getDeletedAt() { return deletedAt; }
+	public void setDeletedAt(Date deletedAt) { this.deletedAt = deletedAt; }
+	
+	public ArrayList<Game> load(Integer userId, int gameId) throws LabyrinthException
 	{
 		this.getSession();
 
-		Game g = null;
 		ArrayList<Game> games = null;
 
 		try
 		{
-			// TODO: need to limit the list to just the current game - this query doesn't work, so find another
 			trans = session.beginTransaction();
-			games = (ArrayList<Game>)session.createQuery("from Game where user_id = :user_id and deleted_at is null")
-					.setParameter("user_id", userId).list();
-//					.setParameter("deleted_at", this.getDeletedAt()).list();
-			if(games != null && games.size() > 0)
+			String query = "FROM Game g WHERE user_id = :user_id AND deleted_at is null";
+			if(gameId > 0)
 			{
-				g = games.get(games.size()-1);
+				query += " and id = :id";
+				games = (ArrayList<Game>)session.createQuery(query)
+						.setParameter("user_id", userId)
+						.setParameter("id", gameId).list();
 			}
 			else
+			{
+				games = (ArrayList<Game>)session.createQuery(query)
+						.setParameter("user_id", userId).list();
+			}
+			if(games == null || games.size() == 0)
 			{
 				throw new LabyrinthException(LabyrinthConstants.NO_GAME);
 			}
@@ -92,17 +67,26 @@ public class Game extends LabyrinthModel
 		}
 		catch(HibernateException he)
 		{
-			g = null;
+			games = null;
 			if(trans != null)
 			{
 				trans.rollback();
 			}
 			throw new LabyrinthException(he);
 		}
+		catch(Exception e)
+		{
+			games = null;
+			if(trans != null)
+			{
+				trans.rollback();
+			}
+			throw new LabyrinthException(e);
+		}
 
-		return g;
+		return games;
 	}
-
+	
 	public void deleteGame() throws LabyrinthException
 	{
 		this.setDeletedAt(new Date());
