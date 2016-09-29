@@ -104,7 +104,7 @@ public class GameServlet extends LabyrinthHttpServlet
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		User user = this.authenticateUser(request, response);
-		boolean authenticated = user != null;
+		boolean authenticated = (user != null);
 		if(authenticated)
 		{
 			try
@@ -138,6 +138,69 @@ public class GameServlet extends LabyrinthHttpServlet
 		else
 		{
 			response.getWriter().write(gson.toJson(LabyrinthConstants.NO_SUCH_PLAYER));
+		}
+	}
+	
+	public void doDelete(HttpServletRequest request, HttpServletResponse response)
+	{
+		User user = this.authenticateUser(request, response);
+		boolean authenticated = (user != null);
+		
+		String[] ids = request.getRequestURI().split("games/");
+		String idStr = "";
+		int id = 0;
+		if(ids.length > 1)
+		{
+			idStr = ids[1];
+		}
+		// if there is a string after the endpoint
+		if(idStr.length() > 0)
+		{
+			try
+			{
+				id = Integer.parseInt(idStr);
+			}
+			catch(NumberFormatException nfe)
+			{
+				// id was not a valid integer - ignore it
+				id = 0;
+			}
+		}
+
+		if(authenticated)
+		{
+			System.out.println("IDENTIFICATION: " + id);
+			ArrayList<String> errors = new ArrayList<String>();
+
+			if(id == 0)
+			{
+				errors.add(LabyrinthConstants.NO_GAME_ID);
+			}
+			else
+			{
+				try
+				{
+					ArrayList<Game> games = new Game().load(user.getId(), id);
+					Game game = games.get(0);
+					game.deleteGame();
+				}
+				catch(LabyrinthException le)
+				{
+					errors.add(LabyrinthConstants.HORRIBLY_WRONG);
+					le.printStackTrace();
+				}
+			}
+		}
+		if(errors.size() > 0)
+		{
+			try
+			{
+				response.getWriter().write(gson.toJson(errors));
+			}
+			catch(IOException ioe)
+			{
+				ioe.printStackTrace();
+			}
 		}
 	}
 }

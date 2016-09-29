@@ -2,6 +2,7 @@ package com.parents;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
@@ -76,10 +77,23 @@ public abstract class LabyrinthHttpServlet extends HttpServlet implements Valida
 	
 	protected User authenticateUser(HttpServletRequest request, HttpServletResponse response)
 	{
+		boolean debug = false;
+		
 		Encryptor e = Encryptor.getInstance();
 		String[] authorization = null;
 		User u = null;
 		
+		if(debug)
+		{
+			Enumeration<String>requestHeaders = request.getHeaderNames();
+			while(requestHeaders.hasMoreElements())
+			{
+				String element = requestHeaders.nextElement();
+				String header = request.getHeader(element);
+				System.out.println(element + ": " + header);
+			}
+		}
+
 		try
 		{
 			authorization = request.getHeader("authorization").split(" ");

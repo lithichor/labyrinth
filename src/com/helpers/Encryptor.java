@@ -49,7 +49,7 @@ public class Encryptor
 		//http://stackoverflow.com/a/10319155
 		return StringUtils.newStringUtf8(Base64.decodeBase64(text));
 	}
-
+	
 	public static Encryptor getInstance()
 	{
 		if(Encryptor.instance == null)
