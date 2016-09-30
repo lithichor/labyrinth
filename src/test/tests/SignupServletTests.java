@@ -63,6 +63,8 @@ public class SignupServletTests extends LabyrinthJUnitTest
 		assertTrue(userSaved);
 	}
 	
+	// this doesn't work right. It invokes hibernate (it shouldn't) and
+	// it fails when it runs, saying the forward method wasn't invoked.
 //	@Test
 //	public void testWhenUserLoggedIn() throws Exception
 //	{
@@ -79,7 +81,7 @@ public class SignupServletTests extends LabyrinthJUnitTest
 //		signup.doPost(request, response);
 //		verify(rd).forward(request, response);
 //		
-////		assertTrue(forwardToHome);
+//		assertTrue(forwardToHome);
 //	}
 //	
 //	@Test
