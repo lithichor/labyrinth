@@ -107,33 +107,9 @@ public class GameServlet extends LabyrinthHttpServlet
 		boolean authenticated = (user != null);
 		if(authenticated)
 		{
-			try
-			{
-				// TODO: move this to model
-				Game game = new Game();
-				game.setUserId(user.getId());
-				game.save();
+			APIGame g = new Game().startNewGame(user.getId());
 
-				Hero hero = new Hero();
-				hero.setGameId(game.getId());
-
-				Map map = new Map();
-				map.setGameId(game.getId());
-
-				hero.save();
-				map.save();
-
-				APIGame g = new APIGame(game);
-				g.setHeroId(hero.getId());
-				g.addMapId(map.getId());
-
-				response.getWriter().write(gson.toJson(g));
-			}
-			catch (LabyrinthException le)
-			{
-				System.out.println(le.getMessage());
-				le.printStackTrace();
-			}
+			response.getWriter().write(gson.toJson(g));
 		}
 		else
 		{
@@ -169,7 +145,6 @@ public class GameServlet extends LabyrinthHttpServlet
 
 		if(authenticated)
 		{
-			System.out.println("IDENTIFICATION: " + id);
 			ArrayList<String> errors = new ArrayList<String>();
 
 			if(id == 0)

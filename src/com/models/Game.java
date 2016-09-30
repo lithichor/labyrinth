@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.hibernate.HibernateException;
 
 import com.LabyrinthConstants;
+import com.models.api.APIGame;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
 
@@ -85,6 +86,37 @@ public class Game extends LabyrinthModel
 		}
 
 		return games;
+	}
+	
+	public APIGame startNewGame(Integer userId)
+	{
+		APIGame g = null;
+		try
+		{
+			Game game = new Game();
+			game.setUserId(userId);
+			game.save();
+
+			Hero hero = new Hero();
+			hero.setGameId(game.getId());
+
+			Map map = new Map();
+			map.setGameId(game.getId());
+
+			hero.save();
+			map.save();
+
+			g = new APIGame(game);
+			g.setHeroId(hero.getId());
+			g.addMapId(map.getId());
+		}
+		catch(LabyrinthException le)
+		{
+			System.out.println(le.getMessage());
+			le.printStackTrace();
+		}
+		
+		return g;
 	}
 	
 	public void deleteGame() throws LabyrinthException
