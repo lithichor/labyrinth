@@ -13,11 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.helpers.Encryptor;
-import com.helpers.ValidationHelper;
 import com.models.User;
 import com.models.api.APIErrorMessage;
 
-public abstract class LabyrinthHttpServlet extends HttpServlet implements ValidationHelper
+public abstract class LabyrinthHttpServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 6063276226361967817L;
 	protected ArrayList<String> errors = new ArrayList<String>();

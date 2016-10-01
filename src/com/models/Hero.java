@@ -35,7 +35,7 @@ public class Hero extends LabyrinthModel
 	public Date getDeletedAt() { return deletedAt; }
 	public void setDeletedAt(Date deletedAt) { this.deletedAt = deletedAt; }
 	
-	// TODO: make this able to choose between load all and load
+	// TODO: GAME #27 - make this able to choose between load all and load
 	// one (now it only loads one for a game)
 	public Hero load(Integer gameId, Integer heroId) throws LabyrinthException
 	{

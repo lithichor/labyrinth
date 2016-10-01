@@ -117,7 +117,7 @@ public class GameServlet extends LabyrinthHttpServlet
 		}
 	}
 	
-	public void doDelete(HttpServletRequest request, HttpServletResponse response)
+	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		User user = this.authenticateUser(request, response);
 		boolean authenticated = (user != null);
@@ -145,8 +145,6 @@ public class GameServlet extends LabyrinthHttpServlet
 
 		if(authenticated)
 		{
-			ArrayList<String> errors = new ArrayList<String>();
-
 			if(id == 0)
 			{
 				errors.add(LabyrinthConstants.NO_GAME_ID);
@@ -168,14 +166,7 @@ public class GameServlet extends LabyrinthHttpServlet
 		}
 		if(errors.size() > 0)
 		{
-			try
-			{
-				response.getWriter().write(gson.toJson(errors));
-			}
-			catch(IOException ioe)
-			{
-				ioe.printStackTrace();
-			}
+			response.getWriter().write(gson.toJson(errors));
 		}
 	}
 }

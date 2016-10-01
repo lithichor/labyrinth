@@ -35,7 +35,7 @@ public class Map extends LabyrinthModel
 	public Date getDeletedAt() { return deletedAt; }
 	public void setDeletedAt(Date deletedAt) { this.deletedAt = deletedAt; }
 	
-	// TODO: make this able to choose between load all, load all for a game,
+	// TODO: GAME #27 - make this able to choose between load all, load all for a game,
 	//  and load one (now it only loads all for a given game)
 	public ArrayList<Map> load(Integer gameId, Integer mapId) throws LabyrinthException
 	{
