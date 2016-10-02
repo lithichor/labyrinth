@@ -21,8 +21,23 @@ public class GameServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = 8963309769094254259L;
 
+	/**
+	 * api/games -GET
+	 * api/games/:id -GET
+	 * 
+	 * If a valid ID is part of the URL, then the method will
+	 * parse it and retrieve just the game with that ID. If no
+	 * ID is found in the URL it returns all games for the user.
+	 * 
+	 * This method requires user credentials
+	 * 
+	 * response: The game, including user id, character id, map ids, and
+	 * current coordinates.
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		errors.clear();
+		
 		// this will get the id from the end of the url; need to add
 		// parsing to remove any other junk, and validation to make sure
 		// it's an integer. Maybe strip any extra junk by default
@@ -93,6 +108,8 @@ public class GameServlet extends LabyrinthHttpServlet
 	}
 	
 	/**
+	 * api/games -POST
+	 * 
 	 * Create a new game.
 	 * 
 	 * This action also creates a character and a map. The map is fully populated
@@ -103,6 +120,8 @@ public class GameServlet extends LabyrinthHttpServlet
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		errors.clear();
+		
 		User user = this.authenticateUser(request, response);
 		boolean authenticated = (user != null);
 		if(authenticated)
@@ -117,8 +136,17 @@ public class GameServlet extends LabyrinthHttpServlet
 		}
 	}
 	
+	/**
+	 * api/games/:id -DELETE
+	 * 
+	 * This deletes a game for the user. It is a soft delete; the
+	 * game is still present in the database, but is not available
+	 * to the player.
+	 */
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		errors.clear();
+		
 		User user = this.authenticateUser(request, response);
 		boolean authenticated = (user != null);
 		
@@ -159,11 +187,25 @@ public class GameServlet extends LabyrinthHttpServlet
 				}
 				catch(LabyrinthException le)
 				{
-					errors.add(LabyrinthConstants.HORRIBLY_WRONG);
-					le.printStackTrace();
+					// if there's no game, return that message
+					if(le.getMessage().contains(LabyrinthConstants.NO_GAME))
+					{
+						errors.add(LabyrinthConstants.NO_GAME);
+					}
+					// otherwise, there's a problem that needs to be fixed
+					else
+					{
+						errors.add(LabyrinthConstants.HORRIBLY_WRONG);
+						le.printStackTrace();
+					}
 				}
 			}
 		}
+		else
+		{
+			response.getWriter().write(gson.toJson(LabyrinthConstants.NO_SUCH_PLAYER));
+		}
+
 		if(errors.size() > 0)
 		{
 			response.getWriter().write(gson.toJson(errors));
