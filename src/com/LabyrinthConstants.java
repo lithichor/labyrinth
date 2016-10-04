@@ -9,15 +9,19 @@ package com;
  */
 public class LabyrinthConstants
 {
+	// Unknown errors
+	public final static String UNKNOWN_ERROR = "Something went wrong with your request";
 	public final static String HORRIBLY_WRONG = "Yikes! Something went horribly wrong with your request";
 	
+	// Game error messages
 	public final static String NO_GAME_ID = "You must provide an id to delete a Game";
-	public final static String NO_GAME = "There is no Game associated with this Player";
-	public final static String NO_GAME_WITH_THAT_ID = "That Player doesn't have a Game with that ID";
-	public final static String UNKNOWN_ERROR = "Something went wrong with your request";
+	public final static String NO_GAME = "This Player has no active Games";
+	public final static String NO_GAME_WITH_THAT_ID = "This Player doesn't have an active Game with that ID";
+	public final static String TOO_MANY_GAMES = "This Player has too many active Games. Delete some before trying to create another";
+	
+	// User error messages
 	public final static String NO_SUCH_USER = "There is no User matching those credentials";
 	public final static String NO_SUCH_PLAYER = "There is no Player matching those credentials";
-	public final static String TOO_MANY_GAMES = "This Player has too many active Games. Delete some before trying to create another";
 	
 	//User validation constants
 	public final static String USER_NEEDS_FIRST_NAME = "The Player needs to have a first name";

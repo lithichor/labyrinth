@@ -90,20 +90,19 @@ public class GameServlet extends LabyrinthHttpServlet
 			}
 			catch(LabyrinthException le)
 			{
-				if(le.getMessage().equalsIgnoreCase(LabyrinthConstants.NO_GAME))
+				if(le.getMessage().contains(LabyrinthConstants.NO_GAME))
 				{
 					response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_GAME)));
 				}
 				else
 				{
-					String message = LabyrinthConstants.UNKNOWN_ERROR + ": " + le.getMessage();
-					response.getWriter().write(gson.toJson(new APIErrorMessage(message)));
+					response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.UNKNOWN_ERROR)));
 				}
 			}
 		}
 		else
 		{
-			response.getWriter().write(gson.toJson(LabyrinthConstants.NO_SUCH_PLAYER));
+			response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_SUCH_PLAYER)));
 		}
 	}
 	
@@ -169,7 +168,7 @@ public class GameServlet extends LabyrinthHttpServlet
 		
 		if(errors.size() > 0)
 		{
-			response.getWriter().write(gson.toJson(errors));
+			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 		}
 	}
 	
@@ -245,7 +244,7 @@ public class GameServlet extends LabyrinthHttpServlet
 
 		if(errors.size() > 0)
 		{
-			response.getWriter().write(gson.toJson(errors));
+			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 		}
 	}
 }
