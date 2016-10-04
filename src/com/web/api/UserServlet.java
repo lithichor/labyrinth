@@ -31,11 +31,13 @@ public class UserServlet extends LabyrinthHttpServlet
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		errors.clear();
+		
 		boolean debug = false;
 		
 		if(debug)
 		{
-			Enumeration<String>requestHeaders = request.getHeaderNames();
+			Enumeration<String> requestHeaders = request.getHeaderNames();
 			while(requestHeaders.hasMoreElements())
 			{
 				String element = requestHeaders.nextElement();
@@ -79,12 +81,13 @@ public class UserServlet extends LabyrinthHttpServlet
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		errors.clear();
+		
 		// use reader to get data
 		BufferedReader br = request.getReader();
 		String line = "";
 		JsonObject data = null;
-		UserValidationHelper vhelper = new UserValidationHelper();
-		errors.clear();
+		UserValidationHelper validation = new UserValidationHelper();
 
 		while(line != null)
 		{
@@ -96,17 +99,14 @@ public class UserServlet extends LabyrinthHttpServlet
 			}
 			catch(JsonSyntaxException jse)
 			{
-				System.out.println("Uh oh!");
 				errors.add(LabyrinthConstants.MALFORMED_JSON);
 			}
-			
-			System.out.println(line);
 		}
 
 		User user = null;
 		if(data != null)
 		{
-			user = vhelper.validateApi(data);
+			user = validation.validateApi(data);
 		}
 		
 		// if the user is null, then either there were errors during
@@ -114,13 +114,104 @@ public class UserServlet extends LabyrinthHttpServlet
 		// we need to return an error.
 		if(user == null)
 		{
-			errors.addAll(vhelper.getErrors());
+			errors.addAll(validation.getErrors());
 			response.getWriter().write(gson.toJson(errors));
 		}
 		else
 		{
-			response.getWriter().write(gson.toJson(user));
+			try
+			{
+				user.update();
+				response.getWriter().write(gson.toJson(new APIUser(user)));
+			}
+			catch(LabyrinthException le)
+			{
+				le.printStackTrace();
+				response.getWriter().write(gson.toJson(LabyrinthConstants.HORRIBLY_WRONG));
+			}
 		}
+	}
+	
+	/**
+	 * api/user -DELETE
+	 * 
+	 * This method deletes the authenticated user with a soft delete; the
+	 * deleted_at field is set to now().
+	 */
+	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		errors.clear();
 		
+		User user = this.authenticateUser(request, response);
+		boolean authenticated = (user != null);
+
+		if(authenticated)
+		{
+			try
+			{
+				user.deleteUser();
+			}
+			catch(LabyrinthException sqle)
+			{
+				errors.add(LabyrinthConstants.HORRIBLY_WRONG);
+				sqle.printStackTrace();
+			}
+		}
+		else
+		{
+			response.getWriter().write(gson.toJson(LabyrinthConstants.NO_SUCH_PLAYER));
+		}
+
+		if(errors.size() > 0)
+		{
+			response.getWriter().write(gson.toJson(errors));
+		}
+	}
+	
+	public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		errors.clear();
+		
+		// use reader to get data
+		BufferedReader br = request.getReader();
+		String line = "";
+		JsonObject data = null;
+		UserValidationHelper validator = new UserValidationHelper();
+
+		User user = this.authenticateUser(request, response);
+		
+		if(user == null)
+		{
+			response.getWriter().write(gson.toJson(LabyrinthConstants.NO_SUCH_PLAYER));
+		}
+		else
+		{
+			while(line != null)
+			{
+				line = br.readLine();
+				try
+				{
+					data = gson.fromJson(line, JsonObject.class);
+					line = null;
+				}
+				catch(JsonSyntaxException jse)
+				{
+					errors.add(LabyrinthConstants.MALFORMED_JSON);
+				}
+
+				validator.validateApiPut(user, data);
+			}
+
+			try
+			{
+				user.update();
+				response.getWriter().write(gson.toJson(new APIUser(user)));
+			}
+			catch(LabyrinthException le)
+			{
+				le.printStackTrace();
+				response.getWriter().write(gson.toJson(LabyrinthConstants.HORRIBLY_WRONG));
+			}
+		}
 	}
 }

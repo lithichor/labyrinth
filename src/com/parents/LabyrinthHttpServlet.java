@@ -117,6 +117,7 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 			catch(LabyrinthException le)
 			{
 				this.returnError(response, "That user/password combination does not exist");
+				u = null;
 			}
 		}
 		return u;
