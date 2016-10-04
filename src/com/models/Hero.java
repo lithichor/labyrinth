@@ -1,5 +1,6 @@
 package com.models;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -79,6 +80,23 @@ public class Hero extends LabyrinthModel
 		else
 		{
 			return new Hero();
+		}
+	}
+	
+	public void deleteHero(Integer gameId) throws LabyrinthException
+	{
+		String sql = "UPDATE heros SET deleted_at = now() WHERE game_id = ?";
+		ArrayList<Object> params = new ArrayList<Object>();
+		params.add(gameId);
+		
+		try
+		{
+			dbh.execute(sql, params);
+		}
+		catch(SQLException sqle)
+		{
+			sqle.printStackTrace();
+			throw new LabyrinthException(sqle);
 		}
 	}
 }

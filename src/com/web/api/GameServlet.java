@@ -110,7 +110,10 @@ public class GameServlet extends LabyrinthHttpServlet
 	/**
 	 * api/games -POST
 	 * 
-	 * Create a new game.
+	 * Create a new game. A player can only have four active games at a time; if
+	 * this method is called and the player has four or more active games, it will return
+	 * an error message saying a new game cannot be created until one or more are
+	 * deleted.
 	 * 
 	 * This action also creates a character and a map. The map is fully populated
 	 * with everything necessary to start play.
@@ -124,15 +127,49 @@ public class GameServlet extends LabyrinthHttpServlet
 		
 		User user = this.authenticateUser(request, response);
 		boolean authenticated = (user != null);
-		if(authenticated)
+		boolean abort = false;
+		int numberOfGames = 0;
+		APIGame g = null;
+		
+		try
 		{
-			APIGame g = new Game().startNewGame(user.getId());
+			numberOfGames = new Game().getGameCount(user.getId());
+		}
+		catch(LabyrinthException le)
+		{
+			le.printStackTrace();
+			// add these errors to the error array and print that at the end
+			errors.add(LabyrinthConstants.HORRIBLY_WRONG);
+			abort = true;
+		}
+		
+		if(authenticated && numberOfGames < 4 && !abort)
+		{
+			try
+			{
+				g = new Game().startNewGame(user.getId());
+			}
+			catch(LabyrinthException le)
+			{
+				le.printStackTrace();
+				errors.add(LabyrinthConstants.HORRIBLY_WRONG);
+				abort = true;
+			}
 
 			response.getWriter().write(gson.toJson(g));
 		}
-		else
+		else if(numberOfGames >= 4 && !abort)
 		{
-			response.getWriter().write(gson.toJson(LabyrinthConstants.NO_SUCH_PLAYER));
+			errors.add(LabyrinthConstants.TOO_MANY_GAMES);
+		}
+		else if(!abort)
+		{
+			errors.add(LabyrinthConstants.NO_SUCH_PLAYER);
+		}
+		
+		if(errors.size() > 0)
+		{
+			response.getWriter().write(gson.toJson(errors));
 		}
 	}
 	
@@ -190,7 +227,7 @@ public class GameServlet extends LabyrinthHttpServlet
 					// if there's no game, return that message
 					if(le.getMessage().contains(LabyrinthConstants.NO_GAME))
 					{
-						errors.add(LabyrinthConstants.NO_GAME);
+						errors.add(LabyrinthConstants.NO_GAME_WITH_THAT_ID);
 					}
 					// otherwise, there's a problem that needs to be fixed
 					else

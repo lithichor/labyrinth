@@ -1,7 +1,8 @@
 package com.models;
 
 import java.util.Date;
-
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.hibernate.HibernateException;
@@ -88,7 +89,31 @@ public class Game extends LabyrinthModel
 		return games;
 	}
 	
-	public APIGame startNewGame(Integer userId)
+	public int getGameCount(Integer userId) throws LabyrinthException
+	{
+		int gameCount = 0;
+		ResultSet results = null;
+		String sql = "SELECT count(id) AS count FROM games WHERE user_id = ? AND deleted_at IS NULL";
+		ArrayList<Object> params = new ArrayList<Object>();
+		
+		params.add(userId);
+		try
+		{
+			results = dbh.executeQuery(sql, params);
+			while(results.next())
+			{
+				gameCount = results.getInt("count");
+			}
+		}
+		catch(SQLException sqle)
+		{
+			sqle.printStackTrace();
+		}
+		
+		return gameCount;
+	}
+	
+	public APIGame startNewGame(Integer userId) throws LabyrinthException
 	{
 		APIGame g = null;
 		try
@@ -114,6 +139,7 @@ public class Game extends LabyrinthModel
 		{
 			System.out.println(le.getMessage());
 			le.printStackTrace();
+			throw new LabyrinthException(le);
 		}
 		
 		return g;
@@ -126,10 +152,30 @@ public class Game extends LabyrinthModel
 		try
 		{
 			this.save();
+			new Hero().deleteHero(this.getId());
+			new Map().deleteMaps(this.getId());
 		}
 		catch (LabyrinthException le)
 		{
 			throw new LabyrinthException(le);
 		}
+	}
+	
+	public boolean Equals(Game other)
+	{
+		if(this == other) { return true; }
+		if(!(other instanceof Game)) { return false; }
+		
+		final Game game = (Game)other;
+		
+		if(!(this.getId() == game.getId())) { return false; }
+		if(!(this.getUserId() == game.getUserId())) { return false; }
+		
+		return true;
+	}
+	
+	public int hashCode()
+	{
+		return (29 * this.getUserId()) + this.getId();
 	}
 }

@@ -9,6 +9,8 @@ import com.models.User;
 
 public class UserValidationHelper extends ValidationHelper
 {
+	Encryptor encryptor = Encryptor.getInstance();
+	
 	public boolean validate(HashMap<String, String> params)
 	{
 		boolean valid = true;
@@ -59,7 +61,6 @@ public class UserValidationHelper extends ValidationHelper
 	{
 		User user = new User();
 		HashMap<String, String> params = new HashMap<String, String>();
-		Encryptor e = Encryptor.getInstance();
 		
 		// don't bother validating if the data is null (although
 		// it shouldn't be)
@@ -70,7 +71,7 @@ public class UserValidationHelper extends ValidationHelper
 		
 		if(data.has("firstName"))
 		{
-			user.setFirstName(data.get("firstName").toString());
+			user.setFirstName(data.get("firstName").toString().replaceAll("^\"|\"$", ""));
 			params.put("firstName", user.getFirstName());
 		}
 		else
@@ -79,7 +80,7 @@ public class UserValidationHelper extends ValidationHelper
 		}
 		if(data.has("lastName"))
 		{
-			user.setLastName(data.get("lastName").toString());
+			user.setLastName(data.get("lastName").toString().replaceAll("^\"|\"$", ""));
 			params.put("lastName",  user.getLastName());
 		}
 		else
@@ -88,7 +89,7 @@ public class UserValidationHelper extends ValidationHelper
 		}
 		if(data.has("email"))
 		{
-			user.setEmail(data.get("email").toString());
+			user.setEmail(data.get("email").toString().replaceAll("^\"|\"$", ""));
 			params.put("email", user.getEmail());
 		}
 		else
@@ -97,13 +98,13 @@ public class UserValidationHelper extends ValidationHelper
 		}
 		if(data.has("password"))
 		{
-			user.setPassword(e.encrypt(data.get("password").toString()));
+			user.setPassword(encryptor.encrypt((data.get("password").toString()).replaceAll("^\"|\"$", "")));
+			params.put("password", user.getPassword());
+			params.put("confirm", user.getPassword());
 		}
 		else
 		{
 			errors.add(LabyrinthConstants.USER_NEEDS_PASSWORD);
-			params.put("password", user.getPassword());
-			params.put("confirm", user.getPassword());
 		}
 		
 		// return the user only if it passes validation
@@ -121,6 +122,27 @@ public class UserValidationHelper extends ValidationHelper
 			}
 			
 			return null;
+		}
+	}
+	
+	public void validateApiPut(User user, JsonObject data)
+	{
+		if(data.has("firstName"))
+		{
+			user.setFirstName(data.get("firstName").toString().replaceAll("^\"|\"$", ""));
+		}
+		if(data.has("lastName"))
+		{
+			user.setLastName(data.get("lastName").toString().replaceAll("^\"|\"$", ""));
+		}
+		if(data.has("email"))
+		{
+			user.setEmail(data.get("email").toString().replaceAll("^\"|\"$", ""));
+		}
+		if(data.has("password"))
+		{
+			String password = data.get("password").toString().replaceAll("^\"|\"$", "");
+			user.setPassword(encryptor.encrypt(password));
 		}
 	}
 
