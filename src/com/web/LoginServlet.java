@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.LabyrinthConstants;
 import com.helpers.Encryptor;
 import com.models.User;
 import com.parents.LabyrinthException;
@@ -27,7 +28,18 @@ public class LoginServlet extends LabyrinthHttpServlet
 		String password = request.getParameter("password");
 		Encryptor e = Encryptor.getInstance();
 		User user = (User)request.getSession().getAttribute("user");
+		boolean hasCredentials = true;
 		
+		if("".equalsIgnoreCase(username))
+		{
+			errors.add(LabyrinthConstants.MUST_ENTER_EMAIL);
+			hasCredentials = false;
+		}
+		if("".equalsIgnoreCase(password))
+		{
+			errors.add(LabyrinthConstants.MUST_ENTER_PASSWORD);
+			hasCredentials = false;
+		}
 		if(action == null && user != null)
 		{
 			//logged in, clicked logout link
@@ -38,7 +50,7 @@ public class LoginServlet extends LabyrinthHttpServlet
 		{
 			this.forward(request, response, "/");
 		}
-		else if(action.equalsIgnoreCase("login") && user == null)
+		else if(action.equalsIgnoreCase("login") && user == null && hasCredentials)
 		{
 			user = new User();
 			try
@@ -49,6 +61,7 @@ public class LoginServlet extends LabyrinthHttpServlet
 			{
 				System.out.println("Error logging in: " + we.getMessage());
 				errors.add("That user password combination was not found");
+				user = null;
 			}
 			
 			request.getSession().setAttribute("user", user);
@@ -61,7 +74,14 @@ public class LoginServlet extends LabyrinthHttpServlet
 				this.forward(request, response, "/jsp/user/home.jsp");
 			}
 		}		
-		
-		
+		else if(!hasCredentials)
+		{
+			this.forward(request, response, "/");
+		}
+		else
+		{
+			errors.add(LabyrinthConstants.UNKNOWN_ERROR);
+			this.forward(request, response, "/");
+		}
 	}
 }

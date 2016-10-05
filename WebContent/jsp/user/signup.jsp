@@ -17,7 +17,7 @@
 		Email:<input id="signup_email" type="text" title="email" name="email" value="${email}" ><br/>
 		Password:<input id="signup_password" type="password" title="password" name="password" value="${password}" ><br/>
 		Password Confirm:<input id="signup_confirm" type="password" title="confirm" name="confirm" value="${confirm}" ><br/>
-		<input id="login_submit" type="submit" title="submit" name="submit" value="Signup" ><br/>
+		<input id="signup_submit" type="submit" title="submit" name="submit" value="Signup" ><br/>
 	</form>
 
 </body>

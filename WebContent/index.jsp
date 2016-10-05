@@ -26,7 +26,7 @@
 	<!-- Not sure if I'll use this -->
 	<c:if test="${user != null}" >
 		<jsp:include page="jsp/includes/logout_link.jsp" />
-		<h2>Welcome to The Labyrinth. You are logged in as ${user.firstName}</h2>
+		<h2 id="greetings" >Welcome to The Labyrinth. You are logged in as ${user.firstName} ${user.lastName}</h2>
 		<jsp:include page="/jsp/user/hello.jsp"></jsp:include>
 	</c:if>
 </body>

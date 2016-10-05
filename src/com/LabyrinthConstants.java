@@ -10,6 +10,7 @@ package com;
 public class LabyrinthConstants
 {
 	// Unknown errors
+	public final static String MALFORMED_JSON = "It looks like there was a problem with your JSON; see if you can fix it, then try again";
 	public final static String UNKNOWN_ERROR = "Something went wrong with your request";
 	public final static String HORRIBLY_WRONG = "Yikes! Something went horribly wrong with your request";
 	
@@ -23,11 +24,16 @@ public class LabyrinthConstants
 	public final static String NO_SUCH_USER = "There is no User matching those credentials";
 	public final static String NO_SUCH_PLAYER = "There is no Player matching those credentials";
 	
-	//User validation constants
+	// User login error messages
+	public final static String MUST_ENTER_PASSWORD = "You can't leave the password blank";
+	public final static String MUST_ENTER_EMAIL = "You have to enter your email address";
+	
+	
+	//User signup validation constants
 	public final static String USER_NEEDS_FIRST_NAME = "The Player needs to have a first name";
 	public final static String USER_NEEDS_LAST_NAME = "The Player needs to have a last name";
 	public final static String USER_NEEDS_EMAIL = "You need to include an email address";
 	public final static String USER_NEEDS_PASSWORD = "The Player needs a password";
-	public final static String PASSWORD_NEEDS_CONFIRMATION = "The passwords needs to be confirmed";
-	public final static String MALFORMED_JSON = "It looks like there was a problem with your JSON; see if you can fix it, then try again";
+	public final static String PASSWORD_NEEDS_CONFIRMATION = "The password needs to be confirmed";
+	public final static String PROBLEM_SAVING_USER = "There was a problem saving the Player";
 }

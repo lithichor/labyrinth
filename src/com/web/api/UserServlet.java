@@ -62,7 +62,9 @@ public class UserServlet extends LabyrinthHttpServlet
 			}
 			catch(LabyrinthException le)
 			{
-				le.printStackTrace();
+				// don't throw an error if there are no games; just add
+				// an empty array to the user
+				u.setGameIds(new ArrayList<Integer>());
 			}
 			
 			response.getWriter().println(gson.toJson(u));
