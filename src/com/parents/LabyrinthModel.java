@@ -4,14 +4,19 @@ import java.io.Serializable;
 
 import org.hibernate.HibernateException;
 
+import com.database.DatabaseHelper;
 import com.database.HibernateDBM;
-import com.helpers.DatabaseHelper;
 
 public abstract class LabyrinthModel extends HibernateDBM implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
-	protected DatabaseHelper dbh = new DatabaseHelper();
+	protected DatabaseHelper dbh;
+	
+	public LabyrinthModel()
+	{
+		dbh = DatabaseHelper.getInstance();		
+	}
 	
 	public boolean save() throws LabyrinthException
 	{
@@ -34,6 +39,11 @@ public abstract class LabyrinthModel extends HibernateDBM implements Serializabl
 			throw new LabyrinthException(he);
 		}
 		return good;
+	}
+	
+	protected DatabaseHelper getDbh()
+	{
+		return this.dbh;
 	}
 	
 	public boolean update() throws LabyrinthException

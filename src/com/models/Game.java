@@ -97,6 +97,7 @@ public class Game extends LabyrinthModel
 		ArrayList<Object> params = new ArrayList<Object>();
 		
 		params.add(userId);
+		
 		try
 		{
 			results = dbh.executeQuery(sql, params);
@@ -108,6 +109,7 @@ public class Game extends LabyrinthModel
 		catch(SQLException sqle)
 		{
 			sqle.printStackTrace();
+			throw new LabyrinthException(sqle);
 		}
 		
 		return gameCount;

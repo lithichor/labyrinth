@@ -1,11 +1,10 @@
 package com.models;
 
 import java.io.Serializable;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-
-import org.hibernate.HibernateException;
 
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
@@ -141,41 +140,33 @@ public class User extends LabyrinthModel implements Serializable
 	
 	public User login(String email, String password) throws LabyrinthException
 	{
-		this.getSession();
+		User user = new User();
+		ResultSet results = null;
+		String sql = "SELECT id, first_name, last_name, email"
+				+ " FROM users WHERE email = ? AND password = ? AND deleted_at IS NULL";
+		ArrayList<Object> params = new ArrayList<Object>();
 		
-		User u = null;
-		ArrayList<User> ual = null;
+		params.add(email);
+		params.add(password);
 		
 		try
 		{
-			trans = session.beginTransaction();
-			ual = (ArrayList<User>)session.createQuery("from User where email = :email and password = :password AND deleted_at IS NULL")
-					.setParameter("email", email)
-					.setParameter("password", password).list();
-			if(ual != null && ual.size() > 0)
+			results = user.getDbh().executeQuery(sql, params);
+			while(results.next())
 			{
-				u = ual.get(0);
+				user.setId(results.getInt("id"));
+				user.setFirstName(results.getString("first_name"));
+				user.setLastName(results.getString("last_name"));
+				user.setEmail(results.getString("email"));
 			}
-			else
-			{
-				throw new LabyrinthException("The user does not exist");
-			}
-			
-			trans.commit();
-			//do not return a user with a password
-			u.setPassword(null);
 		}
-		catch(HibernateException he)
+		catch(SQLException sqle)
 		{
-			u = null;
-			if(trans != null)
-			{
-				trans.rollback();
-			}
-			throw new LabyrinthException(he);
+			sqle.printStackTrace();
+			throw new LabyrinthException(sqle);
 		}
 		
-		return u;
+		return user;
 	}
 	
 	public void _deleteUser() throws LabyrinthException

@@ -1,4 +1,4 @@
-package com.helpers;
+package com.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,25 +10,41 @@ import java.util.Properties;
 
 public class DatabaseHelper
 {
-	Connection conn = null;
-	Properties props = new Properties();
-	String databaseUrl = "jdbc:mysql://localhost:3306/labyrinth";
+	private Connection conn = null;
+	private Properties props = new Properties();
+	private String databaseUrl = "jdbc:mysql://localhost:3306/labyrinth";
+	private static DatabaseHelper instance = null;
+	
 	private String username = "root";
 	private String password = "";
 	
-	public DatabaseHelper()
+	private DatabaseHelper()
 	{
 		props.put("user", username);
 		props.put("password", password);
 		
 		try
 		{
+			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(databaseUrl, props);
 		}
 		catch(SQLException sqe)
 		{
 			sqe.printStackTrace();
 		}
+		catch(ClassNotFoundException cnfe)
+		{
+			cnfe.printStackTrace();
+		}
+	}
+	
+	public static DatabaseHelper getInstance()
+	{
+		if(instance == null)
+		{
+			instance = new DatabaseHelper();
+		}
+		return instance;
 	}
 	
 	public ResultSet executeQuery(String sql) throws SQLException
