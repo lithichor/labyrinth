@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.LabyrinthConstants;
 import com.google.gson.Gson;
 import com.helpers.Encryptor;
 import com.models.User;
@@ -74,7 +75,7 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 		}
 	}
 	
-	protected User authenticateUser(HttpServletRequest request, HttpServletResponse response)
+	protected User authenticateUser(HttpServletRequest request, HttpServletResponse response) throws LabyrinthException
 	{
 		boolean debug = false;
 		
@@ -99,7 +100,10 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 		}
 		catch(NullPointerException npe)
 		{
-			this.returnError(response, "You must include authorization");
+			// this exception is expected for the case when the user has not
+			// included credentials
+			throw new LabyrinthException(LabyrinthConstants.NO_AUTHORIZATION);
+			
 		}
 
 		if(authorization != null && authorization[0].contains("Basic"))

@@ -46,9 +46,27 @@ public class UserServlet extends LabyrinthHttpServlet
 			}
 		}
 
-		User user = this.authenticateUser(request, response);
-		boolean authenticated = (user != null);
+		User user = null;
 		
+		try
+		{
+			user = this.authenticateUser(request, response);
+		}
+		catch(LabyrinthException le)
+		{
+			if(le.getMessage().contains(LabyrinthConstants.NO_AUTHORIZATION))
+			{
+				response.getWriter().println(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_AUTHORIZATION)));
+			}
+			else
+			{
+				response.getWriter().println(gson.toJson(new APIErrorMessage(LabyrinthConstants.UNKNOWN_ERROR)));
+			}
+			return;
+		}
+		
+		boolean authenticated = (user != null);
+
 		if(authenticated)
 		{
 			APIUser u = new APIUser(user);
@@ -144,7 +162,24 @@ public class UserServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		
-		User user = this.authenticateUser(request, response);
+		User user = null;
+		
+		try
+		{
+			user = this.authenticateUser(request, response);
+		}
+		catch(LabyrinthException le)
+		{
+			if(le.getMessage().contains(LabyrinthConstants.NO_AUTHORIZATION))
+			{
+				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_AUTHORIZATION)));
+			}
+			else
+			{
+				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.UNKNOWN_ERROR)));
+			}
+			return;
+		}
 		boolean authenticated = (user != null);
 
 		if(authenticated)
@@ -155,18 +190,18 @@ public class UserServlet extends LabyrinthHttpServlet
 			}
 			catch(LabyrinthException sqle)
 			{
-				errors.add(LabyrinthConstants.HORRIBLY_WRONG);
+				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.HORRIBLY_WRONG)));
 				sqle.printStackTrace();
 			}
 		}
 		else
 		{
-			response.getWriter().write(gson.toJson(LabyrinthConstants.NO_SUCH_PLAYER));
+			response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_SUCH_PLAYER)));
 		}
 
 		if(errors.size() > 0)
 		{
-			response.getWriter().write(gson.toJson(errors));
+			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 		}
 	}
 	
@@ -180,11 +215,28 @@ public class UserServlet extends LabyrinthHttpServlet
 		JsonObject data = null;
 		UserValidationHelper validator = new UserValidationHelper();
 
-		User user = this.authenticateUser(request, response);
+		User user = null;
+		
+		try
+		{
+			user = this.authenticateUser(request, response);
+		}
+		catch(LabyrinthException le)
+		{
+			if(le.getMessage().contains(LabyrinthConstants.NO_AUTHORIZATION))
+			{
+				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_AUTHORIZATION)));
+			}
+			else
+			{
+				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.UNKNOWN_ERROR)));
+			}
+			return;
+		}
 		
 		if(user == null)
 		{
-			response.getWriter().write(gson.toJson(LabyrinthConstants.NO_SUCH_PLAYER));
+			response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_SUCH_PLAYER)));
 		}
 		else
 		{
@@ -198,7 +250,7 @@ public class UserServlet extends LabyrinthHttpServlet
 				}
 				catch(JsonSyntaxException jse)
 				{
-					errors.add(LabyrinthConstants.MALFORMED_JSON);
+					response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.MALFORMED_JSON)));
 				}
 
 				validator.validateApiPut(user, data);
@@ -212,7 +264,7 @@ public class UserServlet extends LabyrinthHttpServlet
 			catch(LabyrinthException le)
 			{
 				le.printStackTrace();
-				response.getWriter().write(gson.toJson(LabyrinthConstants.HORRIBLY_WRONG));
+				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.HORRIBLY_WRONG)));
 			}
 		}
 	}

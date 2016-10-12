@@ -64,7 +64,24 @@ public class GameServlet extends LabyrinthHttpServlet
 			}
 		}
 
-		User user = this.authenticateUser(request, response);
+		User user = null;
+		
+		try
+		{
+			user = this.authenticateUser(request, response);
+		}
+		catch(LabyrinthException le)
+		{
+			if(le.getMessage().contains(LabyrinthConstants.NO_AUTHORIZATION))
+			{
+				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_AUTHORIZATION)));
+			}
+			else
+			{
+				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.UNKNOWN_ERROR)));
+			}
+			return;
+		}
 		
 		// the user is authenticated
 		if(user != null)
@@ -124,11 +141,29 @@ public class GameServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		
-		User user = this.authenticateUser(request, response);
-		boolean authenticated = (user != null);
-		boolean abort = false;
 		int numberOfGames = 0;
 		APIGame g = null;
+		
+		User user = null;
+		
+		try
+		{
+			user = this.authenticateUser(request, response);
+		}
+		catch(LabyrinthException le)
+		{
+			if(le.getMessage().contains(LabyrinthConstants.NO_AUTHORIZATION))
+			{
+				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_AUTHORIZATION)));
+			}
+			else
+			{
+				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.UNKNOWN_ERROR)));
+			}
+			return;
+		}
+		
+		boolean authenticated = (user != null);
 		
 		try
 		{
@@ -137,12 +172,11 @@ public class GameServlet extends LabyrinthHttpServlet
 		catch(LabyrinthException le)
 		{
 			le.printStackTrace();
-			// add these errors to the error array and print that at the end
-			errors.add(LabyrinthConstants.HORRIBLY_WRONG);
-			abort = true;
+			response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.UNKNOWN_ERROR)));
+			return;
 		}
 		
-		if(authenticated && numberOfGames < 4 && !abort)
+		if(authenticated && numberOfGames < 4)
 		{
 			try
 			{
@@ -152,16 +186,16 @@ public class GameServlet extends LabyrinthHttpServlet
 			{
 				le.printStackTrace();
 				errors.add(LabyrinthConstants.HORRIBLY_WRONG);
-				abort = true;
+				return;
 			}
 
 			response.getWriter().write(gson.toJson(g));
 		}
-		else if(numberOfGames >= 4 && !abort)
+		else if(numberOfGames >= 4)
 		{
 			errors.add(LabyrinthConstants.TOO_MANY_GAMES);
 		}
-		else if(!abort)
+		else
 		{
 			errors.add(LabyrinthConstants.NO_SUCH_PLAYER);
 		}
@@ -183,7 +217,25 @@ public class GameServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		
-		User user = this.authenticateUser(request, response);
+		User user = null;
+		
+		try
+		{
+			user = this.authenticateUser(request, response);
+		}
+		catch(LabyrinthException le)
+		{
+			if(le.getMessage().contains(LabyrinthConstants.NO_AUTHORIZATION))
+			{
+				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_AUTHORIZATION)));
+			}
+			else
+			{
+				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.UNKNOWN_ERROR)));
+			}
+			return;
+		}
+		
 		boolean authenticated = (user != null);
 		
 		String[] ids = request.getRequestURI().split("games/");

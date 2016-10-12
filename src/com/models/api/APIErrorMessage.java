@@ -7,7 +7,7 @@ import com.parents.LabyrinthAPIModel;
 public class APIErrorMessage extends LabyrinthAPIModel
 {
 	private String message;
-	private ArrayList<String> messages = new ArrayList<String>();
+	private ArrayList<String> messages = null;
 	
 	public APIErrorMessage(){}
 	public APIErrorMessage(String message)
@@ -16,6 +16,7 @@ public class APIErrorMessage extends LabyrinthAPIModel
 	}
 	public APIErrorMessage(ArrayList<String> messages)
 	{
+		this.messages = new ArrayList<String>();
 		this.messages = messages;
 	}
 

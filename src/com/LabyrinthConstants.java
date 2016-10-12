@@ -21,8 +21,9 @@ public class LabyrinthConstants
 	public final static String TOO_MANY_GAMES = "This Player has too many active Games. Delete some before trying to create another";
 	
 	// User error messages
-	public final static String NO_SUCH_USER = "There is no User matching those credentials";
-	public final static String NO_SUCH_PLAYER = "There is no Player matching those credentials";
+	public final static String NO_SUCH_USER = "There is no User matching that email-password combination";
+	public final static String NO_SUCH_PLAYER = "There is no Player matching that email-password combination";
+	public final static String NO_AUTHORIZATION = "You must include authorization";
 	
 	// User login error messages
 	public final static String MUST_ENTER_PASSWORD = "You can't leave the password blank";
