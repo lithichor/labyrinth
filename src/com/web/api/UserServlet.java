@@ -141,7 +141,7 @@ public class UserServlet extends LabyrinthHttpServlet
 		{
 			try
 			{
-				user.update();
+				user.save();
 				response.getWriter().write(gson.toJson(new APIUser(user)));
 			}
 			catch(LabyrinthException le)
