@@ -165,15 +165,18 @@ public class GameServlet extends LabyrinthHttpServlet
 		
 		boolean authenticated = (user != null);
 		
-		try
+		if(authenticated)
 		{
-			numberOfGames = new Game().getGameCount(user.getId());
-		}
-		catch(LabyrinthException le)
-		{
-			le.printStackTrace();
-			response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.UNKNOWN_ERROR)));
-			return;
+			try
+			{
+				numberOfGames = new Game().getGameCount(user.getId());
+			}
+			catch(LabyrinthException le)
+			{
+				le.printStackTrace();
+				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.UNKNOWN_ERROR)));
+				return;
+			}
 		}
 		
 		if(authenticated && numberOfGames < 4)

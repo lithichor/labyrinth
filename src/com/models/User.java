@@ -145,6 +145,7 @@ public class User extends LabyrinthModel implements Serializable
 		String sql = "SELECT id, first_name, last_name, email"
 				+ " FROM users WHERE email = ? AND password = ? AND deleted_at IS NULL";
 		ArrayList<Object> params = new ArrayList<Object>();
+		boolean hasResults = false;
 		
 		params.add(email);
 		params.add(password);
@@ -154,6 +155,7 @@ public class User extends LabyrinthModel implements Serializable
 			results = user.getDbh().executeQuery(sql, params);
 			while(results.next())
 			{
+				hasResults = true;
 				user.setId(results.getInt("id"));
 				user.setFirstName(results.getString("first_name"));
 				user.setLastName(results.getString("last_name"));
@@ -164,6 +166,12 @@ public class User extends LabyrinthModel implements Serializable
 		{
 			sqle.printStackTrace();
 			throw new LabyrinthException(sqle);
+		}
+		
+		// if the query returns nothing, set the user to null
+		if(!hasResults)
+		{
+			user = null;
 		}
 		
 		return user;
