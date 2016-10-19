@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +23,13 @@ import com.parents.LabyrinthHttpServlet;
 public class UserServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = 3194656746956466374L;
-
+	private User user;
+	
+	public UserServlet(User user)
+	{
+		this.user = user;
+	}
+	
 	/**
 	 * /api/user - the GET method returns the information for the user whose
 	 * credentials are used for authentication. A user cannot see other users'
@@ -47,7 +52,7 @@ public class UserServlet extends LabyrinthHttpServlet
 			}
 		}
 
-		User user = null;
+		user = null;
 		
 		try
 		{
@@ -104,8 +109,6 @@ public class UserServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		
-		ServletContext ctx = request.getServletContext();
-		
 		// use reader to get data
 		BufferedReader br = request.getReader();
 		String line = "";
@@ -126,7 +129,7 @@ public class UserServlet extends LabyrinthHttpServlet
 			}
 		}
 
-		User user = new User();
+		user = new User();
 		if(data != null)
 		{
 			user = validation.validateApi(data);
@@ -155,26 +158,6 @@ public class UserServlet extends LabyrinthHttpServlet
 		}
 	}
 	
-//	/**
-//	 * These methods are for dependency injection
-//	 */
-//	public User getNewUser()
-//	{
-//		return new User();
-//	}
-//	public boolean saveUser(User u) throws LabyrinthException
-//	{
-//		try
-//		{
-//			u.save();
-//			return true;
-//		}
-//		catch(LabyrinthException le)
-//		{
-//			throw le;
-//		}
-//	}
-	
 	/**
 	 * api/user -DELETE
 	 * 
@@ -185,7 +168,7 @@ public class UserServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		
-		User user = null;
+		user = null;
 		
 		try
 		{
@@ -238,7 +221,7 @@ public class UserServlet extends LabyrinthHttpServlet
 		JsonObject data = null;
 		UserValidationHelper validator = new UserValidationHelper();
 
-		User user = null;
+		user = null;
 		
 		try
 		{

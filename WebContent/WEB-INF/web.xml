@@ -47,14 +47,11 @@
     <url-pattern>/api/characters</url-pattern>
   </servlet-mapping>
   
-  <servlet>
-    <servlet-name>User</servlet-name>
-    <servlet-class>com.web.api.user.UserServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>User</servlet-name>
-    <url-pattern>/api/user</url-pattern>
-  </servlet-mapping>
+  <listener>
+  	<listener-class>
+  		com.web.api.user.UserServletContextListener
+  	</listener-class>
+  </listener>
   
   <servlet>
     <servlet-name>Game</servlet-name>

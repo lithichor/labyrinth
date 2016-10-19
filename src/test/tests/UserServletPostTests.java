@@ -29,7 +29,7 @@ public class UserServletPostTests extends LabyrinthJUnitTest
 	@Before
 	public void setup()
 	{
-		create = new UserServlet();
+		create = new UserServlet(new User());
 		request = mock(HttpServletRequest.class);
 		response = mock(HttpServletResponse.class);
 		session = mock(HttpSession.class);
