@@ -19,9 +19,6 @@ import test.parents.LabyrinthJUnitTest;
 public class SignupServletTests extends LabyrinthJUnitTest
 {
 	private SignupServlet signup;
-	private HttpServletRequest request;
-	private HttpServletResponse response;
-	private HttpSession session;
 	
 	@Before
 	public void setup()

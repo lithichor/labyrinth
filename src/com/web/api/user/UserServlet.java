@@ -1,10 +1,11 @@
-package com.web.api;
+package com.web.api.user;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -103,6 +104,8 @@ public class UserServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		
+		ServletContext ctx = request.getServletContext();
+		
 		// use reader to get data
 		BufferedReader br = request.getReader();
 		String line = "";
@@ -123,7 +126,7 @@ public class UserServlet extends LabyrinthHttpServlet
 			}
 		}
 
-		User user = null;
+		User user = new User();
 		if(data != null)
 		{
 			user = validation.validateApi(data);
@@ -151,6 +154,26 @@ public class UserServlet extends LabyrinthHttpServlet
 			}
 		}
 	}
+	
+//	/**
+//	 * These methods are for dependency injection
+//	 */
+//	public User getNewUser()
+//	{
+//		return new User();
+//	}
+//	public boolean saveUser(User u) throws LabyrinthException
+//	{
+//		try
+//		{
+//			u.save();
+//			return true;
+//		}
+//		catch(LabyrinthException le)
+//		{
+//			throw le;
+//		}
+//	}
 	
 	/**
 	 * api/user -DELETE

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
   <display-name>TheLabyrinth</display-name>
+  
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
@@ -9,6 +10,7 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  
   <servlet>
     <servlet-name>Login</servlet-name>
     <servlet-class>com.web.LoginServlet</servlet-class>
@@ -17,6 +19,7 @@
     <servlet-name>Login</servlet-name>
     <url-pattern>/login</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>Signup</servlet-name>
     <servlet-class>com.web.SignupServlet</servlet-class>
@@ -25,6 +28,7 @@
     <servlet-name>Signup</servlet-name>
     <url-pattern>/signup</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>Logout</servlet-name>
     <servlet-class>com.web.LoginServlet</servlet-class>
@@ -33,6 +37,7 @@
     <servlet-name>Logout</servlet-name>
     <url-pattern>/logout</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>Character</servlet-name>
     <servlet-class>com.web.api.CharacterServlet</servlet-class>
@@ -41,14 +46,16 @@
     <servlet-name>Character</servlet-name>
     <url-pattern>/api/characters</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>User</servlet-name>
-    <servlet-class>com.web.api.UserServlet</servlet-class>
+    <servlet-class>com.web.api.user.UserServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>User</servlet-name>
     <url-pattern>/api/user</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>Game</servlet-name>
     <servlet-class>com.web.api.GameServlet</servlet-class>
@@ -57,6 +64,7 @@
     <servlet-name>Game</servlet-name>
     <url-pattern>/api/games/*</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>Turn</servlet-name>
     <servlet-class>com.web.api.TurnServlet</servlet-class>
@@ -65,6 +73,7 @@
     <servlet-name>Turn</servlet-name>
     <url-pattern>/api/turns</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>Monster</servlet-name>
     <servlet-class>com.web.api.MonsterServlet</servlet-class>
@@ -73,6 +82,7 @@
     <servlet-name>Monster</servlet-name>
     <url-pattern>/api/monsters</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>Map</servlet-name>
     <servlet-class>com.web.api.MapServlet</servlet-class>
@@ -81,4 +91,5 @@
     <servlet-name>Map</servlet-name>
     <url-pattern>/api/maps</url-pattern>
   </servlet-mapping>
+  
 </web-app>
