@@ -11,6 +11,18 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   
+  <listener>
+  	<listener-class>
+  		com.web.api.user.UserServletContextListener
+  	</listener-class>
+  </listener>
+  
+  <listener>
+  	<listener-class>
+  		com.web.api.game.GameServletContextListener
+  	</listener-class>
+  </listener>
+  
   <servlet>
     <servlet-name>Login</servlet-name>
     <servlet-class>com.web.LoginServlet</servlet-class>
@@ -47,19 +59,13 @@
     <url-pattern>/api/characters</url-pattern>
   </servlet-mapping>
   
-  <listener>
-  	<listener-class>
-  		com.web.api.user.UserServletContextListener
-  	</listener-class>
-  </listener>
-  
   <servlet>
     <servlet-name>Game</servlet-name>
-    <servlet-class>com.web.api.GameServlet</servlet-class>
+    <servlet-class>com.web.api.game.GameServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Game</servlet-name>
-    <url-pattern>/api/games/*</url-pattern>
+    <url-pattern>/apigames/*</url-pattern>
   </servlet-mapping>
   
   <servlet>

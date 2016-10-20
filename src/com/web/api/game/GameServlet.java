@@ -1,4 +1,4 @@
-package com.web.api;
+package com.web.api.game;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +20,15 @@ import com.parents.LabyrinthHttpServlet;
 public class GameServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = 8963309769094254259L;
-
+	private Game game;
+	private User user;
+	
+	public GameServlet(Game game, User user)
+	{
+		this.game = game;
+		this.user = user;
+	}
+	
 	/**
 	 * api/games -GET
 	 * api/games/:id -GET
@@ -38,11 +46,7 @@ public class GameServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		
-		// this will get the id from the end of the url; need to add
-		// parsing to remove any other junk, and validation to make sure
-		// it's an integer. Maybe strip any extra junk by default
-		
-		// also need to make games before we can search for them by id
+		// this will get the id from the end of the url
 		String[] ids = request.getRequestURI().split("games/");
 		String idStr = "";
 		int id = 0;
@@ -64,7 +68,7 @@ public class GameServlet extends LabyrinthHttpServlet
 			}
 		}
 
-		User user = null;
+		user = null;
 		
 		try
 		{
@@ -144,7 +148,7 @@ public class GameServlet extends LabyrinthHttpServlet
 		int numberOfGames = 0;
 		APIGame g = null;
 		
-		User user = null;
+		user = null;
 		
 		try
 		{
@@ -169,7 +173,7 @@ public class GameServlet extends LabyrinthHttpServlet
 		{
 			try
 			{
-				numberOfGames = new Game().getGameCount(user.getId());
+				numberOfGames = game.getGameCount(user.getId());
 			}
 			catch(LabyrinthException le)
 			{
@@ -183,7 +187,7 @@ public class GameServlet extends LabyrinthHttpServlet
 		{
 			try
 			{
-				g = new Game().startNewGame(user.getId());
+				g = game.startNewGame(user.getId());
 			}
 			catch(LabyrinthException le)
 			{
@@ -220,7 +224,7 @@ public class GameServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		
-		User user = null;
+		user = null;
 		
 		try
 		{
@@ -273,7 +277,7 @@ public class GameServlet extends LabyrinthHttpServlet
 				try
 				{
 					ArrayList<Game> games = new Game().load(user.getId(), id);
-					Game game = games.get(0);
+					game = games.get(0);
 					game.deleteGame();
 				}
 				catch(LabyrinthException le)
