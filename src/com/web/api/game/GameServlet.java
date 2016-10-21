@@ -67,7 +67,7 @@ public class GameServlet extends LabyrinthHttpServlet
 				id = 0;
 			}
 		}
-
+		
 		user = null;
 		
 		try
@@ -94,8 +94,13 @@ public class GameServlet extends LabyrinthHttpServlet
 			{
 				ArrayList<Game> games = new Game().load(user.getId(), id);
 				ArrayList<APIGame> gs = new ArrayList<APIGame>();
-				for(Game game: games)
+				
+				if("last".equalsIgnoreCase(idStr))
 				{
+					// get the last game from the array
+					game = games.get(games.size() - 1);
+					
+					// create an api game, add hero and maps
 					APIGame g = new APIGame(game);
 					Hero hero = new Hero().load(game.getId(), 0);
 					ArrayList<Map> maps = new Map().load(game.getId(), 0);
@@ -104,10 +109,26 @@ public class GameServlet extends LabyrinthHttpServlet
 					{
 						g.addMapId(m.getId());
 					}
-					gs.add(g);
+					// return it as an array
+					response.getWriter().write(gson.toJson(g));
+				}
+				else
+				{
+					for(Game game: games)
+					{
+						APIGame g = new APIGame(game);
+						Hero hero = new Hero().load(game.getId(), 0);
+						ArrayList<Map> maps = new Map().load(game.getId(), 0);
+						g.setHeroId(hero.getId());
+						for(Map m: maps)
+						{
+							g.addMapId(m.getId());
+						}
+						gs.add(g);
+					}
+					response.getWriter().write(gson.toJson(gs));
 				}
 				
-				response.getWriter().write(gson.toJson(gs));
 			}
 			catch(LabyrinthException le)
 			{

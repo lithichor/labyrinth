@@ -38,6 +38,7 @@ public class Game extends LabyrinthModel
 	public Date getDeletedAt() { return deletedAt; }
 	public void setDeletedAt(Date deletedAt) { this.deletedAt = deletedAt; }
 	
+	// there is no explicit ordering here - when we change to jdbc we need it
 	public ArrayList<Game> load(Integer userId, int gameId) throws LabyrinthException
 	{
 		this.getSession();
