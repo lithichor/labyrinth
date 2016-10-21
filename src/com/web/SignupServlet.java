@@ -55,6 +55,26 @@ public class SignupServlet extends LabyrinthHttpServlet
 				params.put("confirm", confirm);
 				this.validate(params);
 
+				// create the user and check to see if the email is a dupe
+				User u = new User();
+				Encryptor e = Encryptor.getInstance();
+
+				u.setFirstName(firstname);
+				u.setLastName(lastname);
+				u.setEmail(email);
+				u.setPassword(e.encrypt(password));
+				try
+				{
+					if(u.duplicateEmail())
+					{
+						errors.add(LabyrinthConstants.USER_EXISTS);
+					}
+				}
+				catch(LabyrinthException le1)
+				{
+					le1.printStackTrace();
+				}
+
 				if(errors.size() > 0)
 				{
 					request.setAttribute("firstname", firstname);
@@ -66,22 +86,15 @@ public class SignupServlet extends LabyrinthHttpServlet
 				}
 				else
 				{
-					//create and save the user, and add to session
-					User u = new User();
-					Encryptor e = Encryptor.getInstance();
-
-					u.setFirstName(firstname);
-					u.setLastName(lastname);
-					u.setEmail(email);
-					u.setPassword(e.encrypt(password));
+					// save the user, and add it to session
 					try
 					{
 						this.save(u);
 					}
-					catch(LabyrinthException le)
+					catch(LabyrinthException le2)
 					{
-						System.out.println("Error saving user: " + le.getMessage());
-						le.printStackTrace();
+						System.out.println("Error saving user: " + le2.getMessage());
+						le2.printStackTrace();
 						errors.add(LabyrinthConstants.PROBLEM_SAVING_USER);
 					}
 

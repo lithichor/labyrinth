@@ -37,4 +37,5 @@ public class LabyrinthConstants
 	public final static String USER_NEEDS_PASSWORD = "The Player needs a password";
 	public final static String PASSWORD_NEEDS_CONFIRMATION = "The password needs to be confirmed";
 	public final static String PROBLEM_SAVING_USER = "There was a problem saving the Player";
+	public final static String USER_EXISTS = "That email address is already registered";
 }

@@ -177,25 +177,30 @@ public class User extends LabyrinthModel implements Serializable
 		return user;
 	}
 	
-	public void _deleteUser() throws LabyrinthException
+	public boolean duplicateEmail() throws LabyrinthException
 	{
-		this.setDeletedAt(new Date());
-		this.setUpdatedAt(new Date());
+		boolean hasDupe = false;
+		
+		String sql = "SELECT email FROM users WHERE email like ?";
+		ArrayList<Object> params = new ArrayList<Object>();
+		params.add(this.email);
+		ResultSet results = null;
+		
 		try
 		{
-			this.save();
+			results = this.getDbh().executeQuery(sql, params);
+			
+			while(results.next())
+			{
+				hasDupe = true;
+			}
 		}
-		catch (LabyrinthException le)
+		catch(SQLException sqle)
 		{
-			throw new LabyrinthException(le);
+			sqle.printStackTrace();
+			throw new LabyrinthException(sqle);
 		}
-	}
-	
-	public boolean _update() throws LabyrinthException
-	{
-		boolean success = this.save();
-		this.setUpdatedAt(new Date());
-		this.setPassword(null);
-		return success;
+		
+		return hasDupe;
 	}
 }
