@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.database.DatabaseHelper;
 import com.models.User;
 import com.web.SignupServlet;
 
@@ -44,6 +45,8 @@ public class SignupServletTests extends LabyrinthJUnitTest
 		u.setFirstName(firstName);
 		u.setLastName(lastName);
 		u.setPassword(password);
+		
+		DatabaseHelper dbh = mock(DatabaseHelper.class);
 		
 		when(session.getAttribute("user")).thenReturn(null);
 		when(request.getSession()).thenReturn(session);

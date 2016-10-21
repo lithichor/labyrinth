@@ -5,7 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
 
 public class DatabaseHelper
@@ -89,6 +91,11 @@ public class DatabaseHelper
 			if(params.get(x) instanceof Integer)
 			{
 				prep.setInt(x+1, (Integer)params.get(x));
+			}
+			if(params.get(x) instanceof Date)
+			{
+				long time = ((Date)params.get(x)).getTime();
+				prep.setTimestamp(x+1, new Timestamp(time));
 			}
 		}
 		

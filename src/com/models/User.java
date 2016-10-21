@@ -46,8 +46,27 @@ public class User extends LabyrinthModel implements Serializable
 
 	public boolean save() throws LabyrinthException
 	{
-		boolean success = super.save();
-		this.setPassword(null);
+		boolean success = false;
+		String sql = "INSERT INTO users (first_name, last_name, email, password, created_at, updated_at) "
+				+ "VALUES(?, ?, ?, ?, ?, ?)";
+		ArrayList<Object> params = new ArrayList<Object>();
+		params.add(this.firstName);
+		params.add(this.lastName);
+		params.add(this.email);
+		params.add(this.password);
+		params.add(this.createdAt);
+		params.add(this.updatedAt);
+		
+		try
+		{
+			success = dbh.execute(sql, params);
+		}
+		catch(SQLException sqle)
+		{
+			sqle.printStackTrace();
+			throw new LabyrinthException(sqle);
+		}
+		
 		return success;
 	}
 	
