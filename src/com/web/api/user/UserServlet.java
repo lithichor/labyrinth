@@ -129,23 +129,27 @@ public class UserServlet extends LabyrinthHttpServlet
 			}
 		}
 
-		user = new User();
+//		user = new User();
 		if(data != null)
 		{
+			// user is null here if it fails validation
 			user = validation.validateApi(data);
-			
-			// check to see if the email has already been used. If so, return with an error
-			try
+
+			if(user != null)
 			{
-				if(user.duplicateEmail())
+				// check to see if the email has already been used. If so, return with an error
+				try
 				{
-					response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.USER_EXISTS)));
-					return;
+					if(user.duplicateEmail())
+					{
+						response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.USER_EXISTS)));
+						return;
+					}
 				}
-			}
-			catch(LabyrinthException le)
-			{
-				le.printStackTrace();
+				catch(LabyrinthException le)
+				{
+					le.printStackTrace();
+				}
 			}
 		}
 		

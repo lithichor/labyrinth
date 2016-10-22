@@ -14,6 +14,7 @@ public class UserValidationHelper extends ValidationHelper
 	public boolean validate(HashMap<String, String> params)
 	{
 		boolean valid = true;
+		boolean password = true;
 		
 		if(params.get("firstName") == null || "".equalsIgnoreCase(params.get("firstName")))
 		{
@@ -39,6 +40,14 @@ public class UserValidationHelper extends ValidationHelper
 			}
 			valid = false;
 		}
+		else
+		{
+			if(!params.get("email").contains(".") || !params.get("email").contains("@"))
+			{
+				errors.add(LabyrinthConstants.MALFORMED_EMAIL);
+			}
+			valid = false;
+		}
 		if(params.get("password") == null || "".equalsIgnoreCase(params.get("password")))
 		{
 			if(!errors.contains(LabyrinthConstants.USER_NEEDS_PASSWORD))
@@ -46,11 +55,19 @@ public class UserValidationHelper extends ValidationHelper
 				errors.add(LabyrinthConstants.USER_NEEDS_PASSWORD);
 			}
 			valid = false;
+			password = false;
 		}
 		if(params.get("confirm") == null || "".equalsIgnoreCase(params.get("confirm")))
 		{
 			// there will not be a duplicate of this error
 			errors.add(LabyrinthConstants.PASSWORD_NEEDS_CONFIRMATION);
+			valid = false;
+			password = false;
+		}
+		if(password && (!params.get("confirm").equals(params.get("password"))))
+		{
+			// there will not be a duplicate of this error
+			errors.add(LabyrinthConstants.PASSWORDS_DO_NOT_MATCH);
 			valid = false;
 		}
 		
@@ -115,7 +132,8 @@ public class UserValidationHelper extends ValidationHelper
 		else
 		{
 			// if we're creating a user from the API endpoint, we don't need to
-			// check for a password.
+			// check for a password
+			// this will happen if the password provided is null or an empty string
 			if(errors.contains(LabyrinthConstants.PASSWORD_NEEDS_CONFIRMATION))
 			{
 				errors.remove(LabyrinthConstants.PASSWORD_NEEDS_CONFIRMATION);
