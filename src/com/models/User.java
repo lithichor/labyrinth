@@ -83,7 +83,7 @@ public class User extends LabyrinthModel implements Serializable
 			params.add(this.getFirstName());
 			first = false;
 		}
-		if(this.getFirstName() != null && !"".equalsIgnoreCase(this.getFirstName()))
+		if(this.getLastName() != null && !"".equalsIgnoreCase(this.getLastName()))
 		{
 			if(!first)
 			{
@@ -91,7 +91,7 @@ public class User extends LabyrinthModel implements Serializable
 				first = false;
 			}
 			sql += "last_name = ? ";
-			params.add(this.getFirstName());
+			params.add(this.getLastName());
 		}
 		if(this.getEmail() != null && !"".equalsIgnoreCase(this.getEmail()))
 		{

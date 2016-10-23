@@ -9,6 +9,15 @@ package com;
  */
 public class LabyrinthConstants
 {
+	// unsupported method errors
+	public final static String NO_GET = "GET not supported for this endpont";
+	public final static String NO_POST = "POST not supported for this endpont";
+	public final static String NO_PUT = "PUT not supported for this endpont";
+	public final static String NO_DELETE = "DELETE not supported for this endpont";
+	public final static String NO_HEAD = "HEAD not supported for this endpont";
+	public final static String NO_OPTIONS = "OPTIONS not supported for this endpont";
+	public final static String NO_TRACE = "TRACE not supported for this endpont";
+	
 	// Unknown errors
 	public final static String MALFORMED_JSON = "It looks like there was a problem with your JSON; see if you can fix it, then try again";
 	public final static String UNKNOWN_ERROR = "Something went wrong with your request";
@@ -28,7 +37,6 @@ public class LabyrinthConstants
 	// User login error messages
 	public final static String MUST_ENTER_PASSWORD = "You can't leave the password blank";
 	public final static String MUST_ENTER_EMAIL = "You have to enter your email address";
-	
 	
 	//User signup validation constants
 	public final static String USER_NEEDS_FIRST_NAME = "The Player needs to have a first name";

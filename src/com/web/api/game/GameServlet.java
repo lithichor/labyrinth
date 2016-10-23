@@ -67,13 +67,12 @@ public class GameServlet extends LabyrinthHttpServlet
 		{
 			if(le.getMessage().contains(LabyrinthConstants.NO_AUTHORIZATION))
 			{
-				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_AUTHORIZATION)));
+				errors.add(LabyrinthConstants.NO_AUTHORIZATION);
 			}
 			else
 			{
-				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.UNKNOWN_ERROR)));
+				errors.add(LabyrinthConstants.UNKNOWN_ERROR);
 			}
-			return;
 		}
 		
 		// the user is authenticated
@@ -121,19 +120,31 @@ public class GameServlet extends LabyrinthHttpServlet
 			}
 			catch(LabyrinthException le)
 			{
-				if(le.getMessage().contains(LabyrinthConstants.NO_GAME))
+				if(le.getMessage().contains(LabyrinthConstants.NO_GAME) && id == 0)
 				{
-					response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_GAME)));
+					errors.add(LabyrinthConstants.NO_GAME);
+				}
+				else if (le.getMessage().contains(LabyrinthConstants.NO_GAME))
+				{
+					errors.add(LabyrinthConstants.NO_GAME_WITH_THAT_ID);
 				}
 				else
 				{
-					response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.UNKNOWN_ERROR)));
+					errors.add(LabyrinthConstants.UNKNOWN_ERROR);
 				}
 			}
 		}
 		else
 		{
-			response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_SUCH_PLAYER)));
+			if(errors.size() == 0)
+			{
+				errors.add(LabyrinthConstants.NO_SUCH_PLAYER);
+			}
+		}
+		
+		if(errors.size() > 0)
+		{
+			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 		}
 	}
 	
@@ -168,12 +179,13 @@ public class GameServlet extends LabyrinthHttpServlet
 		{
 			if(le.getMessage().contains(LabyrinthConstants.NO_AUTHORIZATION))
 			{
-				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_AUTHORIZATION)));
+				errors.add(LabyrinthConstants.NO_AUTHORIZATION);
 			}
 			else
 			{
-				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.UNKNOWN_ERROR)));
+				errors.add(LabyrinthConstants.UNKNOWN_ERROR);
 			}
+			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 			return;
 		}
 		
@@ -188,7 +200,8 @@ public class GameServlet extends LabyrinthHttpServlet
 			catch(LabyrinthException le)
 			{
 				le.printStackTrace();
-				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.UNKNOWN_ERROR)));
+				errors.add(LabyrinthConstants.UNKNOWN_ERROR);
+				response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 				return;
 			}
 		}
@@ -203,6 +216,7 @@ public class GameServlet extends LabyrinthHttpServlet
 			{
 				le.printStackTrace();
 				errors.add(LabyrinthConstants.HORRIBLY_WRONG);
+				response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 				return;
 			}
 
@@ -244,12 +258,13 @@ public class GameServlet extends LabyrinthHttpServlet
 		{
 			if(le.getMessage().contains(LabyrinthConstants.NO_AUTHORIZATION))
 			{
-				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_AUTHORIZATION)));
+				errors.add(LabyrinthConstants.NO_AUTHORIZATION);
 			}
 			else
 			{
-				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.UNKNOWN_ERROR)));
+				errors.add(LabyrinthConstants.UNKNOWN_ERROR);
 			}
+			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 			return;
 		}
 		
@@ -296,7 +311,7 @@ public class GameServlet extends LabyrinthHttpServlet
 		}
 		else
 		{
-			response.getWriter().write(gson.toJson(LabyrinthConstants.NO_SUCH_PLAYER));
+			errors.add(LabyrinthConstants.NO_SUCH_PLAYER);
 		}
 
 		if(errors.size() > 0)

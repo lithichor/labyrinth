@@ -45,8 +45,8 @@ public class UserValidationHelper extends ValidationHelper
 			if(!params.get("email").contains(".") || !params.get("email").contains("@"))
 			{
 				errors.add(LabyrinthConstants.MALFORMED_EMAIL);
+				valid = false;
 			}
-			valid = false;
 		}
 		if(params.get("password") == null || "".equalsIgnoreCase(params.get("password")))
 		{

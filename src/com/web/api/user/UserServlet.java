@@ -62,12 +62,13 @@ public class UserServlet extends LabyrinthHttpServlet
 		{
 			if(le.getMessage().contains(LabyrinthConstants.NO_AUTHORIZATION))
 			{
-				response.getWriter().println(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_AUTHORIZATION)));
+				errors.add(LabyrinthConstants.NO_AUTHORIZATION);
 			}
 			else
 			{
-				response.getWriter().println(gson.toJson(new APIErrorMessage(LabyrinthConstants.UNKNOWN_ERROR)));
+				errors.add(LabyrinthConstants.UNKNOWN_ERROR);
 			}
+			response.getWriter().println(gson.toJson(new APIErrorMessage(errors)));
 			return;
 		}
 		
@@ -95,7 +96,11 @@ public class UserServlet extends LabyrinthHttpServlet
 		}
 		else
 		{
-			response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_SUCH_PLAYER)));
+			errors.add(LabyrinthConstants.NO_SUCH_PLAYER);
+		}
+		if(errors.size() > 0)
+		{
+			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 		}
 	}
 	
@@ -129,7 +134,6 @@ public class UserServlet extends LabyrinthHttpServlet
 			}
 		}
 
-//		user = new User();
 		if(data != null)
 		{
 			// user is null here if it fails validation
@@ -142,24 +146,32 @@ public class UserServlet extends LabyrinthHttpServlet
 				{
 					if(user.duplicateEmail())
 					{
-						response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.USER_EXISTS)));
-						return;
+						errors.add(LabyrinthConstants.USER_EXISTS);
+						user = null;
 					}
 				}
 				catch(LabyrinthException le)
 				{
 					le.printStackTrace();
+					errors.add(LabyrinthConstants.HORRIBLY_WRONG);
+					user = null;
 				}
 			}
 		}
+		else
+		{
+			// if the data is null, set the user to null so we skip the
+			// next block of code
+			user = null;
+		}
 		
 		// if the user is null, then either there were errors during
-		// validation or an exception when parsing the data. That means
-		// we need to return an error.
+		// validation, an exception when parsing the data, or an error
+		// while checking for duplicates. That means we need to return
+		// with the errors
 		if(user == null)
 		{
 			errors.addAll(validation.getErrors());
-			response.getWriter().write(gson.toJson(errors));
 		}
 		else
 		{
@@ -171,8 +183,12 @@ public class UserServlet extends LabyrinthHttpServlet
 			catch(LabyrinthException le)
 			{
 				le.printStackTrace();
-				response.getWriter().write(gson.toJson(LabyrinthConstants.HORRIBLY_WRONG));
+				errors.add(LabyrinthConstants.HORRIBLY_WRONG);
 			}
+		}
+		if(errors.size() > 0)
+		{
+			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 		}
 	}
 	
@@ -196,13 +212,15 @@ public class UserServlet extends LabyrinthHttpServlet
 		{
 			if(le.getMessage().contains(LabyrinthConstants.NO_AUTHORIZATION))
 			{
-				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_AUTHORIZATION)));
+				errors.add(LabyrinthConstants.NO_AUTHORIZATION);
 			}
 			else
 			{
-				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.UNKNOWN_ERROR)));
+				errors.add(LabyrinthConstants.UNKNOWN_ERROR);
 			}
+			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 			return;
+			
 		}
 		boolean authenticated = (user != null);
 
@@ -214,13 +232,13 @@ public class UserServlet extends LabyrinthHttpServlet
 			}
 			catch(LabyrinthException sqle)
 			{
-				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.HORRIBLY_WRONG)));
+				errors.add(LabyrinthConstants.HORRIBLY_WRONG);
 				sqle.printStackTrace();
 			}
 		}
 		else
 		{
-			response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_SUCH_PLAYER)));
+			errors.add(LabyrinthConstants.NO_SUCH_PLAYER);
 		}
 
 		if(errors.size() > 0)
@@ -249,18 +267,21 @@ public class UserServlet extends LabyrinthHttpServlet
 		{
 			if(le.getMessage().contains(LabyrinthConstants.NO_AUTHORIZATION))
 			{
-				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_AUTHORIZATION)));
+				errors.add(LabyrinthConstants.NO_AUTHORIZATION);
 			}
 			else
 			{
-				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.UNKNOWN_ERROR)));
+				le.printStackTrace();
+				errors.add(LabyrinthConstants.UNKNOWN_ERROR);
 			}
-			return;
 		}
 		
 		if(user == null)
 		{
-			response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.NO_SUCH_PLAYER)));
+			if(errors.size() == 0)
+			{
+				errors.add(LabyrinthConstants.NO_SUCH_PLAYER);
+			}
 		}
 		else
 		{
@@ -274,22 +295,30 @@ public class UserServlet extends LabyrinthHttpServlet
 				}
 				catch(JsonSyntaxException jse)
 				{
-					response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.MALFORMED_JSON)));
+					errors.add(LabyrinthConstants.MALFORMED_JSON);
 				}
-
+			}
+			
+			if(data != null)
+			{
 				validator.validateApiPut(user, data);
+				
+				try
+				{
+					user.update();
+					response.getWriter().write(gson.toJson(new APIUser(user)));
+				}
+				catch(LabyrinthException le)
+				{
+					le.printStackTrace();
+					errors.add(LabyrinthConstants.HORRIBLY_WRONG);
+				}
 			}
-
-			try
-			{
-				user.update();
-				response.getWriter().write(gson.toJson(new APIUser(user)));
-			}
-			catch(LabyrinthException le)
-			{
-				le.printStackTrace();
-				response.getWriter().write(gson.toJson(new APIErrorMessage(LabyrinthConstants.HORRIBLY_WRONG)));
-			}
+		}
+		
+		if(errors.size() > 0)
+		{
+			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 		}
 	}
 }

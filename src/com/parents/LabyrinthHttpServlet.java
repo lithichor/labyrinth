@@ -25,31 +25,47 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		this.returnError(response, "GET not supported for this endpont");
+		errors.clear();
+		errors.add(LabyrinthConstants.NO_GET);
+		response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 	}
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		this.returnError(response, "POST not supported for this endpont");
+		errors.clear();
+		errors.add(LabyrinthConstants.NO_POST);
+		response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 	}
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		this.returnError(response, "DELETE not supported for this endpont");
+		errors.clear();
+		errors.add(LabyrinthConstants.NO_DELETE);
+		response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 	}
 	public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		this.returnError(response, "PUT not supported for this endpont");
+		errors.clear();
+		errors.add(LabyrinthConstants.NO_PUT);
+		response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 	}
+	// HEAD is valid for all endpoints, because it doesn't
+	// return a body; it returns metadata only
 	public void doHead(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		this.returnError(response, "HEAD not supported for this endpont");
+		errors.clear();
 	}
 	public void doOptions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		this.returnError(response, "OPTIONS not supported for this endpont");
+		errors.clear();
+		errors.add(LabyrinthConstants.NO_OPTIONS);
+		response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 	}
+	// Tomcat seems to disallow this method; not sure if
+	// that would happen with other web containers or not
 	public void doTrace(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		this.returnError(response, "TRACE not supported for this endpont");
+		errors.clear();
+		errors.add(LabyrinthConstants.NO_TRACE);
+		response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 	}
 
 	protected void forward(HttpServletRequest request, HttpServletResponse response, String url) throws ServletException, IOException
@@ -61,20 +77,6 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 		rd.forward(request, response);
 	}
 
-	protected void returnError(HttpServletResponse response, String error)
-	{
-		APIErrorMessage aem = new APIErrorMessage(error);
-		try
-		{
-			response.getWriter().println(gson.toJson(aem));
-		}
-		catch(IOException ioe)
-		{
-			System.out.println("Something went horribly wrong while returning an error" + ioe.getMessage());
-			ioe.printStackTrace();
-		}
-	}
-	
 	protected User authenticateUser(HttpServletRequest request, HttpServletResponse response) throws LabyrinthException
 	{
 		boolean debug = false;
@@ -120,7 +122,7 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 			}
 			catch(LabyrinthException le)
 			{
-				this.returnError(response, "That user/password combination does not exist");
+				errors.add(LabyrinthConstants.UNKNOWN_ERROR);
 				u = null;
 			}
 		}

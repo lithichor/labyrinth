@@ -6,12 +6,13 @@ import com.parents.LabyrinthAPIModel;
 
 public class APIErrorMessage extends LabyrinthAPIModel
 {
-	private String message;
+	private String message = null;
 	private ArrayList<String> messages = null;
 	
 	public APIErrorMessage(){}
 	public APIErrorMessage(String message)
 	{
+		this.message = "";
 		this.message = message;
 	}
 	public APIErrorMessage(ArrayList<String> messages)
