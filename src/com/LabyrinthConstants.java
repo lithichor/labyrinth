@@ -39,6 +39,7 @@ public class LabyrinthConstants
 	public final static String MUST_ENTER_EMAIL = "You have to enter your email address";
 	
 	//User signup validation constants
+	public final static String USER_HAS_NO_DATA = "You have to include JSON formatted data to make a new Player";
 	public final static String USER_NEEDS_FIRST_NAME = "The Player needs to have a first name";
 	public final static String USER_NEEDS_LAST_NAME = "The Player needs to have a last name";
 	public final static String USER_NEEDS_EMAIL = "You need to include an email address";

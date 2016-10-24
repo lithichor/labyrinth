@@ -161,8 +161,10 @@ public class UserServlet extends LabyrinthHttpServlet
 		else
 		{
 			// if the data is null, set the user to null so we skip the
-			// next block of code
+			// next block of code, and add an error message so we have
+			// something to return
 			user = null;
+			errors.add(LabyrinthConstants.USER_HAS_NO_DATA);
 		}
 		
 		// if the user is null, then either there were errors during
