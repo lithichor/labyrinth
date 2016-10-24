@@ -26,7 +26,7 @@ public class LabyrinthConstants
 	// Game error messages
 	public final static String NO_GAME_ID = "You must provide an id to delete a Game";
 	public final static String NO_GAME = "This Player has no active Games";
-	public final static String NO_GAME_WITH_THAT_ID = "This Player doesn't have an active Game with that ID";
+	public final static String NO_GAME_WITH_THAT_ID = "This Player does not have an active Game with that ID";
 	public final static String TOO_MANY_GAMES = "This Player has too many active Games. Delete some before trying to create another";
 	
 	// User error messages

@@ -1,11 +1,11 @@
 package com.models;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.hibernate.HibernateException;
-
+import com.LabyrinthConstants;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
 
@@ -36,51 +36,43 @@ public class Hero extends LabyrinthModel
 	public Date getDeletedAt() { return deletedAt; }
 	public void setDeletedAt(Date deletedAt) { this.deletedAt = deletedAt; }
 	
-	// TODO: GAME #27 - make this able to choose between load all and load
-	// one (now it only loads one for a game)
-	public Hero load(Integer gameId, Integer heroId) throws LabyrinthException
+	public ArrayList<Hero> load(Integer gameId, Integer heroId) throws LabyrinthException
 	{
-		this.getSession();
-		ArrayList<Hero> heros = null;
+		ArrayList<Hero> heros = new ArrayList<Hero>();
+		ArrayList<Object> params = new ArrayList<Object>();
+		ResultSet results = null;
+		String sql = "SELECT id, game_id, created_at, updated_at FROM heros WHERE game_id = ? AND deleted_at IS NULL";
+		params.add(gameId);
+		
+		if(heroId != 0)
+		{
+			sql += " AND hero_id = ?";
+			params.add(heroId);
+		}
+		
+		sql += " ORDER BY id DESC";
 		
 		try
 		{
-			trans = session.beginTransaction();
+			results = this.getDbh().executeQuery(sql, params);
 			
-			String query = "FROM Hero WHERE game_id = :game_id AND deleted_at is null";
-			heros = ((ArrayList<Hero>)session.createQuery(query)
-					.setParameter("game_id", gameId).list());
-
-			trans.commit();
-		}
-		catch(HibernateException he)
-		{
-			heros = null;
-			if(trans != null)
+			while(results.next())
 			{
-				trans.rollback();
+				Hero hero = new Hero();
+				hero.setId(results.getInt("id"));
+				hero.setGameId(results.getInt("game_id"));
+				hero.setCreatedAt(results.getDate("created_at"));
+				hero.setUpdatedAt(results.getDate("updated_at"));
+				heros.add(hero);
 			}
-			throw new LabyrinthException(he);
 		}
-		catch(Exception e)
+		catch(SQLException sqle)
 		{
-			heros = null;
-			if(trans != null)
-			{
-				trans.rollback();
-			}
-			throw new LabyrinthException(e);
+			sqle.printStackTrace();
+			throw new LabyrinthException(LabyrinthConstants.HORRIBLY_WRONG);
 		}
 		
-		// If we have a list, return the first one. If not, return an empty hero
-		if(heros != null && heros.size() > 0)
-		{
-			return heros.get(0);
-		}
-		else
-		{
-			return new Hero();
-		}
+		return heros;
 	}
 	
 	public void deleteHero(Integer gameId) throws LabyrinthException

@@ -90,7 +90,7 @@ public class GameServlet extends LabyrinthHttpServlet
 					
 					// create an api game, add hero and maps
 					APIGame g = new APIGame(game);
-					Hero hero = new Hero().load(game.getId(), 0);
+					Hero hero = new Hero().load(game.getId(), 0).get(0);
 					ArrayList<Map> maps = new Map().load(game.getId(), 0);
 					g.setHeroId(hero.getId());
 					for(Map m: maps)
@@ -105,7 +105,7 @@ public class GameServlet extends LabyrinthHttpServlet
 					for(Game game: games)
 					{
 						APIGame g = new APIGame(game);
-						Hero hero = new Hero().load(game.getId(), 0);
+						Hero hero = new Hero().load(game.getId(), 0).get(0);
 						ArrayList<Map> maps = new Map().load(game.getId(), 0);
 						g.setHeroId(hero.getId());
 						for(Map m: maps)
