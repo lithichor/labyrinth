@@ -10,7 +10,13 @@ public abstract class ValidationHelper
 {
 	protected ArrayList<String> errors = new ArrayList<String>();
 	
-	public ArrayList<String> getErrors() { return this.errors; }
+	public ArrayList<String> getErrors()
+	{
+		// clear the errors when returning them
+		ArrayList<String> retErr = errors;
+		this.errors.clear();
+		return retErr;
+	}
 	
 
 	public abstract boolean validate(HashMap<String, String> params);

@@ -153,10 +153,6 @@ public class UserValidationHelper extends ValidationHelper
 		{
 			user.setLastName(data.get("lastName").toString().replaceAll("^\"|\"$", ""));
 		}
-		if(data.has("email"))
-		{
-			user.setEmail(data.get("email").toString().replaceAll("^\"|\"$", ""));
-		}
 		if(data.has("password"))
 		{
 			String password = data.get("password").toString().replaceAll("^\"|\"$", "");

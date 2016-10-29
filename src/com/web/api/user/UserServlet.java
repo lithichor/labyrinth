@@ -138,6 +138,7 @@ public class UserServlet extends LabyrinthHttpServlet
 		{
 			// user is null here if it fails validation
 			user = validation.validateApi(data);
+			errors.addAll(validation.getErrors());
 
 			if(user != null)
 			{
@@ -253,9 +254,9 @@ public class UserServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		
+		UserServletPutActions actions = new UserServletPutActions();
+		
 		// use reader to get data
-		BufferedReader br = request.getReader();
-		String line = "";
 		JsonObject data = null;
 		UserValidationHelper validator = new UserValidationHelper();
 
@@ -263,7 +264,7 @@ public class UserServlet extends LabyrinthHttpServlet
 		
 		try
 		{
-			user = this.authenticateUser(request, response);
+			user = actions.authenticateUser(request, response);
 		}
 		catch(LabyrinthException le)
 		{
@@ -287,24 +288,18 @@ public class UserServlet extends LabyrinthHttpServlet
 		}
 		else
 		{
-			while(line != null)
+			try
 			{
-				line = br.readLine();
-				try
-				{
-					data = gson.fromJson(line, JsonObject.class);
-					line = null;
-				}
-				catch(JsonSyntaxException jse)
-				{
-					errors.add(LabyrinthConstants.MALFORMED_JSON);
-				}
+				data = actions.getData(request);
+			}
+			catch(LabyrinthException le)
+			{
+				errors.add(le.getMessage());
 			}
 			
 			if(data != null)
 			{
 				validator.validateApiPut(user, data);
-				
 				try
 				{
 					user.update();
