@@ -181,7 +181,10 @@ public class UserServlet extends LabyrinthHttpServlet
 			try
 			{
 				user.save();
-				response.getWriter().write(gson.toJson(new APIUser(user)));
+				APIUser u = new APIUser(user);
+				// gameIds is empty because it's a new user
+				u.setGameIds(new ArrayList<Integer>());
+				response.getWriter().write(gson.toJson(u));
 			}
 			catch(LabyrinthException le)
 			{
@@ -302,8 +305,28 @@ public class UserServlet extends LabyrinthHttpServlet
 				validator.validateApiPut(user, data);
 				try
 				{
+					// save the user
 					user.update();
-					response.getWriter().write(gson.toJson(new APIUser(user)));
+					APIUser u = new APIUser(user);
+					try
+					{
+						// get the games for this user
+						ArrayList<Game> gs = new Game().load(user.getId(), 0);
+						ArrayList<Integer> gids = new ArrayList<Integer>();
+						// create a list of the game ids
+						for(int x = 0; x < gs.size(); x++)
+						{
+							gids.add(gs.get(x).getId());
+						}
+						// and put the list in the API user object
+						u.setGameIds(gids);
+					}
+					catch(LabyrinthException le)
+					{
+						// unless there are no games; then add an empty list
+						u.setGameIds(new ArrayList<Integer>());
+					}
+					response.getWriter().write(gson.toJson(u));
 				}
 				catch(LabyrinthException le)
 				{

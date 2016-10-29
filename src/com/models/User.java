@@ -67,6 +67,8 @@ public class User extends LabyrinthModel implements Serializable
 			throw new LabyrinthException(sqle);
 		}
 		
+		this.id = this.retrieveId();
+		
 		return success;
 	}
 	
@@ -93,16 +95,6 @@ public class User extends LabyrinthModel implements Serializable
 			sql += "last_name = ? ";
 			params.add(this.getLastName());
 		}
-		if(this.getEmail() != null && !"".equalsIgnoreCase(this.getEmail()))
-		{
-			if(!first)
-			{
-				sql += ", ";
-				first = false;
-			}
-			sql += "email = ? ";
-			params.add(this.getEmail());
-		}
 		if(this.getPassword() != null && !"".equalsIgnoreCase(this.getPassword()))
 		{
 			if(!first)
@@ -114,7 +106,7 @@ public class User extends LabyrinthModel implements Serializable
 			params.add(this.getPassword());
 		}
 		
-		sql += "WHERE id = ?";
+		sql += ", updated_at = now() WHERE id = ?";
 		params.add(this.getId());
 		
 		try
@@ -221,5 +213,30 @@ public class User extends LabyrinthModel implements Serializable
 		}
 		
 		return hasDupe;
+	}
+	
+	private Integer retrieveId()
+	{
+		String sql = "SELECT id FROM users WHERE email like ? AND deleted_at IS NULL";
+		ArrayList<Object> params = new ArrayList<Object>();
+		params.add(this.getEmail());
+		int id = 0;
+		ResultSet results = null;
+		
+		try
+		{
+			results = dbh.executeQuery(sql, params);
+			
+			while(results.next())
+			{
+				id = results.getInt("id");
+			}
+		}
+		catch(SQLException sqle)
+		{
+			sqle.printStackTrace();
+		}
+		
+		return id;
 	}
 }

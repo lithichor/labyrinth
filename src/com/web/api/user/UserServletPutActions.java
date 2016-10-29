@@ -4,8 +4,5 @@ import com.parents.LabyrinthServletActions;
 
 public class UserServletPutActions extends LabyrinthServletActions
 {
-	public void updateUser()
-	{
-		
-	}
+
 }
