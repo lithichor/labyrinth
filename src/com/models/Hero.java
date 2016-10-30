@@ -36,6 +36,14 @@ public class Hero extends LabyrinthModel
 	public Date getDeletedAt() { return deletedAt; }
 	public void setDeletedAt(Date deletedAt) { this.deletedAt = deletedAt; }
 	
+	/**
+	 * Load a list of games based on the id of the authenticated (or active) user
+	 * @param gameId - the game reference for the hero (a hero can only
+	 * belong to one game)
+	 * @param heroId - the id of the hero
+	 * @return a list of heros
+	 * @throws LabyrinthException
+	 */
 	public ArrayList<Hero> load(Integer gameId, Integer heroId) throws LabyrinthException
 	{
 		ArrayList<Hero> heros = new ArrayList<Hero>();
@@ -73,6 +81,19 @@ public class Hero extends LabyrinthModel
 		}
 		
 		return heros;
+	}
+	
+	/**
+	 * A convenience method to get the hero for a game. There is only one
+	 * hero per game, but the hero belongs to the game, not the other way
+	 * around
+	 * @param gameId
+	 * @return the hero associated with the game
+	 */
+	public Hero load(Integer gameId) throws LabyrinthException
+	{
+		ArrayList<Hero> heros = this.load(gameId, 0);
+		return heros.get(heros.size() - 1);
 	}
 	
 	public void deleteHero(Integer gameId) throws LabyrinthException

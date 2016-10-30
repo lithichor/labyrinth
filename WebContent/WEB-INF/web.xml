@@ -23,6 +23,12 @@
   	</listener-class>
   </listener>
   
+  <listener>
+  	<listener-class>
+  		com.web.api.hero.HeroServletContextListener
+  	</listener-class>
+  </listener>
+  
   <servlet>
     <servlet-name>Login</servlet-name>
     <servlet-class>com.web.LoginServlet</servlet-class>
@@ -48,24 +54,6 @@
   <servlet-mapping>
     <servlet-name>Logout</servlet-name>
     <url-pattern>/logout</url-pattern>
-  </servlet-mapping>
-  
-  <servlet>
-    <servlet-name>Character</servlet-name>
-    <servlet-class>com.web.api.CharacterServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Character</servlet-name>
-    <url-pattern>/api/characters</url-pattern>
-  </servlet-mapping>
-  
-  <servlet>
-    <servlet-name>Game</servlet-name>
-    <servlet-class>com.web.api.game.GameServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Game</servlet-name>
-    <url-pattern>/apigames/*</url-pattern>
   </servlet-mapping>
   
   <servlet>

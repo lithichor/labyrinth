@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.LabyrinthConstants;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import com.helpers.validation.UserValidationHelper;
 import com.models.Game;
 import com.models.User;
 import com.models.api.APIErrorMessage;

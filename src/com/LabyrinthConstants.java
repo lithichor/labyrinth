@@ -50,4 +50,7 @@ public class LabyrinthConstants
 	public final static String PASSWORDS_DO_NOT_MATCH = "The passwords do not match";
 	public final static String PROBLEM_SAVING_USER = "There was a problem saving the Player";
 	public final static String USER_EXISTS = "That email address is already registered";
+	
+	public final static String HERO_HAS_NO_DATA = "You have to include JSON formatted data to update a Hero";
+
 }

@@ -38,7 +38,15 @@ public class Game extends LabyrinthModel
 	public Date getDeletedAt() { return deletedAt; }
 	public void setDeletedAt(Date deletedAt) { this.deletedAt = deletedAt; }
 	
-	// there is no explicit ordering here - when we change to jdbc we need it
+	// there is no explicit ordering here - when we change to jdbc we need it 
+/**
+ * Load a list of games based on the id of the authenticated user
+ * @param userId - the id of the authenticated user
+ * @param gameId - the id of the game to load. If gameId is zero, return
+ * 				   all active games for the user
+ * @return a list of active games for the authenticate user
+ * @throws LabyrinthException
+ */
 	public ArrayList<Game> load(Integer userId, int gameId) throws LabyrinthException
 	{
 		this.getSession();

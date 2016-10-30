@@ -156,7 +156,7 @@ public class GameServlet extends LabyrinthHttpServlet
 	 * an error message saying a new game cannot be created until one or more are
 	 * deleted.
 	 * 
-	 * This action also creates a character and a map. The map is fully populated
+	 * This action also creates a hero and a map. The map is fully populated
 	 * with everything necessary to start play.
 	 * 
 	 * Response: The game, including user id, character id, map id, and starting

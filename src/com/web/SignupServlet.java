@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.LabyrinthConstants;
 import com.helpers.Encryptor;
-import com.helpers.validation.UserValidationHelper;
 import com.models.User;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthHttpServlet;
+import com.web.api.user.UserValidationHelper;
 
 public class SignupServlet extends LabyrinthHttpServlet
 {
