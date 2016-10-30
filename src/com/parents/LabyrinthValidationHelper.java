@@ -1,21 +1,17 @@
-package com.helpers.validation;
+package com.parents;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.google.gson.JsonObject;
-import com.parents.LabyrinthModel;
 
-public abstract class ValidationHelper
+public abstract class LabyrinthValidationHelper
 {
 	protected ArrayList<String> errors = new ArrayList<String>();
 	
 	public ArrayList<String> getErrors()
 	{
-		// clear the errors when returning them
-		ArrayList<String> retErr = errors;
-		this.errors.clear();
-		return retErr;
+		return errors;
 	}
 	
 

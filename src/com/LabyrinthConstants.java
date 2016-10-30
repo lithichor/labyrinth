@@ -45,6 +45,7 @@ public class LabyrinthConstants
 	public final static String USER_NEEDS_EMAIL = "You need to include an email address";
 	public final static String MALFORMED_EMAIL = "The email is not in the correct format";
 	public final static String USER_NEEDS_PASSWORD = "The Player needs a password";
+	public final static String PASSWORD_TOO_SHORT = "The password needs to be more than six (6) characters";
 	public final static String PASSWORD_NEEDS_CONFIRMATION = "The password needs to be confirmed";
 	public final static String PASSWORDS_DO_NOT_MATCH = "The passwords do not match";
 	public final static String PROBLEM_SAVING_USER = "There was a problem saving the Player";

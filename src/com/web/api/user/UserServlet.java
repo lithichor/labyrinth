@@ -24,12 +24,12 @@ public class UserServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = 3194656746956466374L;
 	private User user;
-	
+
 	public UserServlet(User user)
 	{
 		this.user = user;
 	}
-	
+
 	/**
 	 * /api/user - the GET method returns the information for the user whose
 	 * credentials are used for authentication. A user cannot see other users'
@@ -38,9 +38,9 @@ public class UserServlet extends LabyrinthHttpServlet
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-		
+
 		boolean debug = false;
-		
+
 		if(debug)
 		{
 			Enumeration<String> requestHeaders = request.getHeaderNames();
@@ -53,7 +53,7 @@ public class UserServlet extends LabyrinthHttpServlet
 		}
 
 		user = null;
-		
+
 		try
 		{
 			user = this.authenticateUser(request, response);
@@ -71,7 +71,7 @@ public class UserServlet extends LabyrinthHttpServlet
 			response.getWriter().println(gson.toJson(new APIErrorMessage(errors)));
 			return;
 		}
-		
+
 		boolean authenticated = (user != null);
 
 		if(authenticated)
@@ -91,7 +91,7 @@ public class UserServlet extends LabyrinthHttpServlet
 				// an empty array to the user
 				u.setGameIds(new ArrayList<Integer>());
 			}
-			
+
 			response.getWriter().println(gson.toJson(u));
 		}
 		else
@@ -103,7 +103,7 @@ public class UserServlet extends LabyrinthHttpServlet
 			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 		}
 	}
-	
+
 	/**
 	 * api/user - the POST method creates a new user; used by clients for signup when
 	 * there is no signup page.
@@ -113,7 +113,7 @@ public class UserServlet extends LabyrinthHttpServlet
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-		
+
 		// use reader to get data
 		BufferedReader br = request.getReader();
 		String line = "";
@@ -136,9 +136,8 @@ public class UserServlet extends LabyrinthHttpServlet
 
 		if(data != null)
 		{
-			// user is null here if it fails validation
+			// user returns null here if it fails validation
 			user = validation.validateApi(data);
-			errors.addAll(validation.getErrors());
 
 			if(user != null)
 			{
@@ -164,10 +163,13 @@ public class UserServlet extends LabyrinthHttpServlet
 			// if the data is null, set the user to null so we skip the
 			// next block of code, and add an error message so we have
 			// something to return
+			
+			// this will never happen - a POST with no data is automatically
+			// translated to a GET
 			user = null;
 			errors.add(LabyrinthConstants.USER_HAS_NO_DATA);
 		}
-		
+
 		// if the user is null, then either there were errors during
 		// validation, an exception when parsing the data, or an error
 		// while checking for duplicates. That means we need to return
@@ -197,74 +199,19 @@ public class UserServlet extends LabyrinthHttpServlet
 			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 		}
 	}
-	
-	/**
-	 * api/user -DELETE
-	 * 
-	 * This method deletes the authenticated user with a soft delete; the
-	 * deleted_at field is set to now().
-	 */
-	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
-		errors.clear();
-		
-		user = null;
-		
-		try
-		{
-			user = this.authenticateUser(request, response);
-		}
-		catch(LabyrinthException le)
-		{
-			if(le.getMessage().contains(LabyrinthConstants.NO_AUTHORIZATION))
-			{
-				errors.add(LabyrinthConstants.NO_AUTHORIZATION);
-			}
-			else
-			{
-				errors.add(LabyrinthConstants.UNKNOWN_ERROR);
-			}
-			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
-			return;
-			
-		}
-		boolean authenticated = (user != null);
 
-		if(authenticated)
-		{
-			try
-			{
-				user.deleteUser();
-			}
-			catch(LabyrinthException sqle)
-			{
-				errors.add(LabyrinthConstants.HORRIBLY_WRONG);
-				sqle.printStackTrace();
-			}
-		}
-		else
-		{
-			errors.add(LabyrinthConstants.NO_SUCH_PLAYER);
-		}
-
-		if(errors.size() > 0)
-		{
-			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
-		}
-	}
-	
 	public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-		
+
 		UserServletPutActions actions = new UserServletPutActions();
-		
+
 		// use reader to get data
 		JsonObject data = null;
 		UserValidationHelper validator = new UserValidationHelper();
 
 		user = null;
-		
+
 		try
 		{
 			user = actions.authenticateUser(request, response);
@@ -281,7 +228,7 @@ public class UserServlet extends LabyrinthHttpServlet
 				errors.add(LabyrinthConstants.UNKNOWN_ERROR);
 			}
 		}
-		
+
 		if(user == null)
 		{
 			if(errors.size() == 0)
@@ -299,7 +246,7 @@ public class UserServlet extends LabyrinthHttpServlet
 			{
 				errors.add(le.getMessage());
 			}
-			
+
 			if(data != null)
 			{
 				validator.validateApiPut(user, data);
@@ -335,7 +282,62 @@ public class UserServlet extends LabyrinthHttpServlet
 				}
 			}
 		}
-		
+
+		if(errors.size() > 0)
+		{
+			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
+		}
+	}
+
+	/**
+	 * api/user -DELETE
+	 * 
+	 * This method deletes the authenticated user with a soft delete; the
+	 * deleted_at field is set to now().
+	 */
+	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		errors.clear();
+
+		user = null;
+
+		try
+		{
+			user = this.authenticateUser(request, response);
+		}
+		catch(LabyrinthException le)
+		{
+			if(le.getMessage().contains(LabyrinthConstants.NO_AUTHORIZATION))
+			{
+				errors.add(LabyrinthConstants.NO_AUTHORIZATION);
+			}
+			else
+			{
+				errors.add(LabyrinthConstants.UNKNOWN_ERROR);
+			}
+			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
+			return;
+
+		}
+		boolean authenticated = (user != null);
+
+		if(authenticated)
+		{
+			try
+			{
+				user.deleteUser();
+			}
+			catch(LabyrinthException sqle)
+			{
+				errors.add(LabyrinthConstants.HORRIBLY_WRONG);
+				sqle.printStackTrace();
+			}
+		}
+		else
+		{
+			errors.add(LabyrinthConstants.NO_SUCH_PLAYER);
+		}
+
 		if(errors.size() > 0)
 		{
 			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));

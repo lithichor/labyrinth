@@ -6,8 +6,9 @@ import com.LabyrinthConstants;
 import com.google.gson.JsonObject;
 import com.helpers.Encryptor;
 import com.models.User;
+import com.parents.LabyrinthValidationHelper;
 
-public class UserValidationHelper extends ValidationHelper
+public class UserValidationHelper extends LabyrinthValidationHelper
 {
 	Encryptor encryptor = Encryptor.getInstance();
 	
@@ -54,6 +55,12 @@ public class UserValidationHelper extends ValidationHelper
 			{
 				errors.add(LabyrinthConstants.USER_NEEDS_PASSWORD);
 			}
+			valid = false;
+			password = false;
+		}
+		else if(params.get("password").length() < 6)
+		{
+			errors.add(LabyrinthConstants.PASSWORD_TOO_SHORT);
 			valid = false;
 			password = false;
 		}
@@ -116,8 +123,8 @@ public class UserValidationHelper extends ValidationHelper
 		if(data.has("password"))
 		{
 			user.setPassword(encryptor.encrypt((data.get("password").toString()).replaceAll("^\"|\"$", "")));
-			params.put("password", user.getPassword());
-			params.put("confirm", user.getPassword());
+			params.put("password", data.get("password").toString());
+			params.put("confirm", data.get("password").toString());
 		}
 		else
 		{
