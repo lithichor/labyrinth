@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.LabyrinthConstants;
 import com.google.gson.JsonObject;
 import com.models.Hero;
+import com.parents.LabyrinthException;
 import com.parents.LabyrinthValidationHelper;
 
 public class HeroValidationHelper extends LabyrinthValidationHelper
@@ -55,5 +56,33 @@ public class HeroValidationHelper extends LabyrinthValidationHelper
 		{
 			return null;
 		}
+	}
+	
+	public Hero validateApiPut(JsonObject data, Integer heroId) throws LabyrinthException
+	{
+		Hero hero = new Hero();
+		if(heroId == null || heroId == 0)
+		{
+			throw new LabyrinthException(LabyrinthConstants.HERO_NEEDS_ID);
+		}
+		
+		if(data.has("strength"))
+		{
+			hero.setStrength(data.get("strength").getAsInt());
+		}
+		if(data.has("magic"))
+		{
+			hero.setMagic(data.get("magic").getAsInt());
+		}
+		if(data.has("attack"))
+		{
+			hero.setAttack(data.get("attack").getAsInt());
+		}
+		if(data.has("defense"))
+		{
+			hero.setDefense(data.get("defense").getAsInt());
+		}
+		
+		return hero;
 	}
 }

@@ -72,5 +72,4 @@ public abstract class LabyrinthModel extends HibernateDBM implements Serializabl
 		}
 		return good;
 	}
-	
 }

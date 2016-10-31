@@ -64,7 +64,7 @@ public class HeroServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		
-//		HeroValidationHelper validation = new HeroValidationHelper();
+		HeroValidationHelper validation = new HeroValidationHelper();
 		HeroServletActions actions = new HeroServletActions();
 		User user;
 		JsonObject data = null;
@@ -84,9 +84,27 @@ public class HeroServlet extends LabyrinthHttpServlet
 			errors.add(le.getMessage());
 		}
 		
-		if(data == null && errors.isEmpty())
+		if(data == null)
 		{
-			errors.add(LabyrinthConstants.HERO_HAS_NO_DATA);
+			if(errors.isEmpty())
+			{
+				errors.add(LabyrinthConstants.HERO_HAS_NO_DATA);
+			}
+		}
+		else
+		{
+			try
+			{
+				hero.merge(validation.validateApiPut(data, hero.getId()));
+				hero.update();
+			}
+			catch(LabyrinthException le)
+			{
+				le.printStackTrace();
+				// either the heroId is missing or something else went
+				// kablooie, so hide the details from the end user
+				errors.add(LabyrinthConstants.HORRIBLY_WRONG);
+			}
 		}
 		
 		if(errors.size() > 0)

@@ -52,5 +52,5 @@ public class LabyrinthConstants
 	public final static String USER_EXISTS = "That email address is already registered";
 	
 	public final static String HERO_HAS_NO_DATA = "You have to include JSON formatted data to update a Hero";
-
+	public static final String HERO_NEEDS_ID = "The Hero needs an ID to be updated";
 }
