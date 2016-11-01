@@ -18,7 +18,7 @@ public class LoginServlet extends LabyrinthHttpServlet
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		this.doPost(request,  response);
+		this.doPost(request, response);
 	}
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
@@ -40,22 +40,21 @@ public class LoginServlet extends LabyrinthHttpServlet
 			errors.add(LabyrinthConstants.MUST_ENTER_PASSWORD);
 			hasCredentials = false;
 		}
-		if(action == null && user != null)
+		if(action == null)
+		{
+			this.forward(request, response, "/");
+		}
+		else if(action.equalsIgnoreCase("logout"))
 		{
 			//logged in, clicked logout link
 			request.getSession().setAttribute("user", null);
 			this.forward(request, response, "/");
 		}
-		else if(action == null && user == null)
-		{
-			this.forward(request, response, "/");
-		}
 		else if(action.equalsIgnoreCase("login") && user == null && hasCredentials)
 		{
-			user = new User();
 			try
 			{
-				user.login(username, e.encrypt(password));
+				user = new User().login(username, e.encrypt(password));
 			}
 			catch (LabyrinthException we)
 			{
@@ -71,7 +70,7 @@ public class LoginServlet extends LabyrinthHttpServlet
 			}
 			else
 			{
-				this.forward(request, response, "/jsp/user/home.jsp");
+				this.forward(request, response, "/");
 			}
 		}		
 		else if(!hasCredentials)

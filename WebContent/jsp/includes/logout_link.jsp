@@ -5,6 +5,6 @@
 
 <div id="logout_div" >
 	<c:if test="${user != null}" >
-		<a id="logout_link" href="logout" >Logout</a><br/><br/>
+		<a id="logout_link" href="logout?action=logout" >Logout</a><br/><br/>
 	</c:if>
 </div>
