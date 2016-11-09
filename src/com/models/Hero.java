@@ -23,12 +23,6 @@ public class Hero extends LabyrinthModel
 	private Integer attack = 0;
 	private Integer defense = 0;
 
-	public Hero()
-	{
-		this.setCreatedAt(new Date());
-		this.setUpdatedAt(new Date());
-	}
-
 	public Integer getId() { return id; }
 	public void setId(Integer id) { this.id = id; }
 	public Integer getGameId() { return gameId; }
@@ -47,6 +41,33 @@ public class Hero extends LabyrinthModel
 	public void setAttack(Integer attack) { this.attack = attack; }
 	public Integer getDefense() { return defense; }
 	public void setDefense(Integer defense) { this.defense = defense; }
+	
+	public boolean save() throws LabyrinthException
+	{
+		boolean success = false;
+		String sql = "INSERT INTO heros (game_id, strength, magic, attack, defense, created_at, updated_at) "
+				+ "VALUES(?, ?, ?, ?, ?, now(), now())";
+		ArrayList<Object> params = new ArrayList<Object>();
+		params.add(this.gameId);
+		params.add(this.strength);
+		params.add(this.magic);
+		params.add(this.attack);
+		params.add(this.defense);
+		
+		try
+		{
+			success = dbh.execute(sql, params);
+		}
+		catch(SQLException sqle)
+		{
+			sqle.printStackTrace();
+			throw new LabyrinthException(sqle);
+		}
+		
+		this.id = this.retrieveId();
+		
+		return success;
+	}
 	
 	/**
 	 * Load a list of games based on the id of the authenticated (or active) user
@@ -182,7 +203,7 @@ public class Hero extends LabyrinthModel
 	
 	public void deleteHero(Integer gameId) throws LabyrinthException
 	{
-		String sql = "UPDATE heros SET deleted_at = now() WHERE game_id = ?";
+		String sql = "UPDATE heros SET updated_at = now(), deleted_at = now() WHERE game_id = ?";
 		ArrayList<Object> params = new ArrayList<Object>();
 		params.add(gameId);
 		
@@ -231,5 +252,30 @@ public class Hero extends LabyrinthModel
 		{
 			this.defense = other.getDefense();
 		}
+	}
+	
+	private Integer retrieveId() throws LabyrinthException
+	{
+		String sql = "SELECT id FROM heros WHERE game_id = ?";
+		ArrayList<Object> params = new ArrayList<>();
+		params.add(this.gameId);
+		ResultSet results = null;
+		
+		try
+		{
+			results = dbh.executeQuery(sql, params);
+			
+			while(results.next())
+			{
+				id = results.getInt("id");
+			}
+		}
+		catch(SQLException sqle)
+		{
+			sqle.printStackTrace();
+			throw new LabyrinthException(messages.getMessage("unknown.unknown_error"));
+		}
+		
+		return 0;
 	}
 }
