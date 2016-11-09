@@ -5,8 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import org.hibernate.HibernateException;
-
 import com.models.api.APIGame;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
@@ -37,7 +35,6 @@ public class Game extends LabyrinthModel
 	public Date getDeletedAt() { return deletedAt; }
 	public void setDeletedAt(Date deletedAt) { this.deletedAt = deletedAt; }
 	
-	// there is no explicit ordering here - when we change to jdbc we need it 
 /**
  * Load a list of games based on the id of the authenticated user
  * @param userId - the id of the authenticated user
@@ -46,52 +43,42 @@ public class Game extends LabyrinthModel
  * @return a list of active games for the authenticate user
  * @throws LabyrinthException
  */
-	public ArrayList<Game> load(Integer userId, int gameId) throws LabyrinthException
+	public ArrayList<Game> load(Integer userId, Integer gameId) throws LabyrinthException
 	{
-		this.getSession();
-
-		ArrayList<Game> games = null;
+		ArrayList<Game> games = new ArrayList<>();
+		String sql = "SELECT id, user_id, created_at, updated_at FROM games WHERE user_id = ? AND deleted_at IS NULL";
+		ArrayList<Object> params = new ArrayList<>();
+		ResultSet results = null;
+		params.add(userId);
+		
+		if(gameId > 0)
+		{
+			sql += " AND id = ?";
+			params.add(gameId);
+		}
+		
+		sql += " ORDER BY ID ASC";
 
 		try
 		{
-			trans = session.beginTransaction();
-			String query = "FROM Game g WHERE user_id = :user_id AND deleted_at is null";
-			if(gameId > 0)
+			results = dbh.executeQuery(sql, params);
+			while(results.next())
 			{
-				query += " and id = :id";
-				games = (ArrayList<Game>)session.createQuery(query)
-						.setParameter("user_id", userId)
-						.setParameter("id", gameId).list();
-			}
-			else
-			{
-				games = (ArrayList<Game>)session.createQuery(query)
-						.setParameter("user_id", userId).list();
+				Game game = new Game();
+				game.setId(results.getInt("id"));
+				game.setUserId(results.getInt("user_id"));
+				game.setCreatedAt(results.getDate("created_at"));
+				game.setUpdatedAt(results.getDate("updated_at"));
+				games.add(game);
 			}
 			if(games == null || games.size() == 0)
 			{
 				throw new LabyrinthException(messages.getMessage("game.no_games"));
 			}
-
-			trans.commit();
 		}
-		catch(HibernateException he)
+		catch(SQLException sqle)
 		{
-			games = null;
-			if(trans != null)
-			{
-				trans.rollback();
-			}
-			throw new LabyrinthException(he);
-		}
-		catch(Exception e)
-		{
-			games = null;
-			if(trans != null)
-			{
-				trans.rollback();
-			}
-			throw new LabyrinthException(e);
+			sqle.printStackTrace();
 		}
 
 		return games;
