@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.LabyrinthConstants;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
 
@@ -102,7 +101,7 @@ public class Hero extends LabyrinthModel
 		catch(SQLException sqle)
 		{
 			sqle.printStackTrace();
-			throw new LabyrinthException(LabyrinthConstants.HORRIBLY_WRONG);
+			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
 		}
 		
 		return heros;

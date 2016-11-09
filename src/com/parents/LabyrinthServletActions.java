@@ -7,16 +7,17 @@ import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.LabyrinthConstants;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.helpers.Encryptor;
+import com.labels.LabyrinthMessages;
 import com.models.User;
 
 public class LabyrinthServletActions
 {
 	protected Gson gson = new Gson();
+	protected LabyrinthMessages messages = new LabyrinthMessages();
 
 	public JsonObject getData(HttpServletRequest request) throws IOException, LabyrinthException
 	{
@@ -34,7 +35,7 @@ public class LabyrinthServletActions
 			}
 			catch(JsonSyntaxException jse)
 			{
-				throw new LabyrinthException(LabyrinthConstants.MALFORMED_JSON);
+				throw new LabyrinthException(messages.getMessage("unknown.malformed_json"));
 			}
 		}
 		
@@ -68,7 +69,7 @@ public class LabyrinthServletActions
 		{
 			// this exception is expected for the case when the user has not
 			// included credentials
-			throw new LabyrinthException(LabyrinthConstants.NO_AUTHORIZATION);
+			throw new LabyrinthException(messages.getMessage("user.no_authorization"));
 			
 		}
 
@@ -87,7 +88,7 @@ public class LabyrinthServletActions
 			catch(LabyrinthException le)
 			{
 				u = null;
-				throw new LabyrinthException(LabyrinthConstants.UNKNOWN_ERROR);
+				throw new LabyrinthException(messages.getMessage("unknown.unknown_error"));
 			}
 		}
 		return u;

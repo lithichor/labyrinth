@@ -6,7 +6,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.LabyrinthConstants;
 import com.google.gson.JsonObject;
 import com.models.Hero;
 import com.models.User;
@@ -46,7 +45,6 @@ public class HeroServlet extends LabyrinthHttpServlet
 		}
 		catch(LabyrinthException le)
 		{
-			le.printStackTrace();
 			errors.add(le.getMessage());
 		}
 		
@@ -88,7 +86,7 @@ public class HeroServlet extends LabyrinthHttpServlet
 		{
 			if(errors.isEmpty())
 			{
-				errors.add(LabyrinthConstants.HERO_HAS_NO_DATA);
+				errors.add(messages.getMessage("hero.hero_has_no_data"));
 			}
 		}
 		else
@@ -103,7 +101,7 @@ public class HeroServlet extends LabyrinthHttpServlet
 				le.printStackTrace();
 				// either the heroId is missing or something else went
 				// kablooie, so hide the details from the end user
-				errors.add(LabyrinthConstants.HORRIBLY_WRONG);
+				errors.add(messages.getMessage("unknown.horribly_wrong"));
 			}
 		}
 		

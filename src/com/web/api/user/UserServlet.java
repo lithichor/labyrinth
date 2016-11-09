@@ -9,7 +9,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.LabyrinthConstants;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.models.Game;
@@ -59,13 +58,13 @@ public class UserServlet extends LabyrinthHttpServlet
 		}
 		catch(LabyrinthException le)
 		{
-			if(le.getMessage().contains(LabyrinthConstants.NO_AUTHORIZATION))
+			if(le.getMessage().contains(messages.getMessage("user.no_authorization")))
 			{
-				errors.add(LabyrinthConstants.NO_AUTHORIZATION);
+				errors.add(messages.getMessage("user.no_authorization"));
 			}
 			else
 			{
-				errors.add(LabyrinthConstants.UNKNOWN_ERROR);
+				errors.add(messages.getMessage("unknown.unknown_error"));
 			}
 			response.getWriter().println(gson.toJson(new APIErrorMessage(errors)));
 			return;
@@ -95,7 +94,7 @@ public class UserServlet extends LabyrinthHttpServlet
 		}
 		else
 		{
-			errors.add(LabyrinthConstants.NO_SUCH_PLAYER);
+			errors.add(messages.getMessage("user.no_such_player"));
 		}
 		if(errors.size() > 0)
 		{
@@ -129,7 +128,7 @@ public class UserServlet extends LabyrinthHttpServlet
 			}
 			catch(JsonSyntaxException jse)
 			{
-				errors.add(LabyrinthConstants.MALFORMED_JSON);
+				errors.add(messages.getMessage("unknown.malformed_json"));
 			}
 		}
 
@@ -145,14 +144,14 @@ public class UserServlet extends LabyrinthHttpServlet
 				{
 					if(user.duplicateEmail())
 					{
-						errors.add(LabyrinthConstants.USER_EXISTS);
+						errors.add(messages.getMessage("signup.user_exists"));
 						user = null;
 					}
 				}
 				catch(LabyrinthException le)
 				{
 					le.printStackTrace();
-					errors.add(LabyrinthConstants.HORRIBLY_WRONG);
+					errors.add(messages.getMessage("unknown.horribly_wrong"));
 					user = null;
 				}
 			}
@@ -162,11 +161,8 @@ public class UserServlet extends LabyrinthHttpServlet
 			// if the data is null, set the user to null so we skip the
 			// next block of code, and add an error message so we have
 			// something to return
-			
-			// this will never happen - a POST with no data is automatically
-			// translated to a GET
 			user = null;
-			errors.add(LabyrinthConstants.USER_HAS_NO_DATA);
+			errors.add(messages.getMessage("signup.user_has_no_data"));
 		}
 
 		// if the user is null, then either there were errors during
@@ -190,7 +186,7 @@ public class UserServlet extends LabyrinthHttpServlet
 			catch(LabyrinthException le)
 			{
 				le.printStackTrace();
-				errors.add(LabyrinthConstants.HORRIBLY_WRONG);
+				errors.add(messages.getMessage("unknown.horribly_wrong"));
 			}
 		}
 		if(errors.size() > 0)
@@ -217,14 +213,14 @@ public class UserServlet extends LabyrinthHttpServlet
 		}
 		catch(LabyrinthException le)
 		{
-			if(le.getMessage().contains(LabyrinthConstants.NO_AUTHORIZATION))
+			if(le.getMessage().contains(messages.getMessage("user.no_authorization")))
 			{
-				errors.add(LabyrinthConstants.NO_AUTHORIZATION);
+				errors.add(messages.getMessage("user.no_authorization"));
 			}
 			else
 			{
 				le.printStackTrace();
-				errors.add(LabyrinthConstants.UNKNOWN_ERROR);
+				errors.add(messages.getMessage("unknown.unknown_error"));
 			}
 		}
 
@@ -232,7 +228,7 @@ public class UserServlet extends LabyrinthHttpServlet
 		{
 			if(errors.size() == 0)
 			{
-				errors.add(LabyrinthConstants.NO_SUCH_PLAYER);
+				errors.add(messages.getMessage("user.no_such_player"));
 			}
 		}
 		else
@@ -277,7 +273,7 @@ public class UserServlet extends LabyrinthHttpServlet
 				catch(LabyrinthException le)
 				{
 					le.printStackTrace();
-					errors.add(LabyrinthConstants.HORRIBLY_WRONG);
+					errors.add(messages.getMessage("unknown.horribly_wrong"));
 				}
 			}
 		}
@@ -306,13 +302,13 @@ public class UserServlet extends LabyrinthHttpServlet
 		}
 		catch(LabyrinthException le)
 		{
-			if(le.getMessage().contains(LabyrinthConstants.NO_AUTHORIZATION))
+			if(le.getMessage().contains(messages.getMessage("user.no_authorization")))
 			{
-				errors.add(LabyrinthConstants.NO_AUTHORIZATION);
+				errors.add(messages.getMessage("user.no_authorization"));
 			}
 			else
 			{
-				errors.add(LabyrinthConstants.UNKNOWN_ERROR);
+				errors.add(messages.getMessage("unknown.unknown_error"));
 			}
 			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 			return;
@@ -328,13 +324,13 @@ public class UserServlet extends LabyrinthHttpServlet
 			}
 			catch(LabyrinthException sqle)
 			{
-				errors.add(LabyrinthConstants.HORRIBLY_WRONG);
+				errors.add(messages.getMessage("unknown.horribly_wrong"));
 				sqle.printStackTrace();
 			}
 		}
 		else
 		{
-			errors.add(LabyrinthConstants.NO_SUCH_PLAYER);
+			errors.add(messages.getMessage("user.no_such_player"));
 		}
 
 		if(errors.size() > 0)

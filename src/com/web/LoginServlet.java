@@ -6,7 +6,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.LabyrinthConstants;
 import com.helpers.Encryptor;
 import com.models.User;
 import com.parents.LabyrinthException;
@@ -32,12 +31,12 @@ public class LoginServlet extends LabyrinthHttpServlet
 		
 		if("".equalsIgnoreCase(username))
 		{
-			errors.add(LabyrinthConstants.MUST_ENTER_EMAIL);
+			errors.add(messages.getMessage("user.no_email"));
 			hasCredentials = false;
 		}
 		if("".equalsIgnoreCase(password))
 		{
-			errors.add(LabyrinthConstants.MUST_ENTER_PASSWORD);
+			errors.add(messages.getMessage("login.no_password"));
 			hasCredentials = false;
 		}
 		if(action == null)
@@ -79,7 +78,7 @@ public class LoginServlet extends LabyrinthHttpServlet
 		}
 		else
 		{
-			errors.add(LabyrinthConstants.UNKNOWN_ERROR);
+			errors.add(messages.getMessage("unknown.unknown_error"));
 			this.forward(request, response, "/");
 		}
 	}

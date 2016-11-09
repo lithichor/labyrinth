@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.LabyrinthConstants;
 import com.google.gson.Gson;
 import com.helpers.Encryptor;
+import com.labels.LabyrinthMessages;
 import com.models.User;
 import com.models.api.APIErrorMessage;
 
@@ -22,29 +22,30 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 	private static final long serialVersionUID = 6063276226361967817L;
 	protected ArrayList<String> errors = new ArrayList<String>();
 	protected Gson gson = new Gson();
+	protected LabyrinthMessages messages = new LabyrinthMessages();
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-		errors.add(LabyrinthConstants.NO_GET);
+		errors.add(messages.getMessage("method.no_get"));
 		response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 	}
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-		errors.add(LabyrinthConstants.NO_POST);
+		errors.add(messages.getMessage("method.no_post"));
 		response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 	}
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-		errors.add(LabyrinthConstants.NO_DELETE);
+		errors.add(messages.getMessage("method.no_delete"));
 		response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 	}
 	public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-		errors.add(LabyrinthConstants.NO_PUT);
+		errors.add(messages.getMessage("method.no_put"));
 		response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 	}
 	// HEAD is valid for all endpoints, because it doesn't
@@ -56,7 +57,7 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 	public void doOptions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-		errors.add(LabyrinthConstants.NO_OPTIONS);
+		errors.add(messages.getMessage("method.no_options"));
 		response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 	}
 	// Tomcat seems to disallow this method; not sure if
@@ -64,7 +65,7 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 	public void doTrace(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-		errors.add(LabyrinthConstants.NO_TRACE);
+		errors.add(messages.getMessage("method.no_trace"));
 		response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 	}
 
@@ -104,7 +105,7 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 		{
 			// this exception is expected for the case when the user has not
 			// included credentials
-			throw new LabyrinthException(LabyrinthConstants.NO_AUTHORIZATION);
+			throw new LabyrinthException(messages.getMessage("user.no_authorization"));
 			
 		}
 
@@ -122,7 +123,7 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 			}
 			catch(LabyrinthException le)
 			{
-				errors.add(LabyrinthConstants.UNKNOWN_ERROR);
+				errors.add(messages.getMessage("unknown.unknown_error"));
 				u = null;
 			}
 		}

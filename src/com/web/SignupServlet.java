@@ -7,7 +7,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.LabyrinthConstants;
 import com.helpers.Encryptor;
 import com.models.User;
 import com.parents.LabyrinthException;
@@ -67,7 +66,7 @@ public class SignupServlet extends LabyrinthHttpServlet
 				{
 					if(u.duplicateEmail())
 					{
-						errors.add(LabyrinthConstants.USER_EXISTS);
+						errors.add(messages.getMessage("signup.user_exists"));
 					}
 				}
 				catch(LabyrinthException le1)
@@ -95,7 +94,7 @@ public class SignupServlet extends LabyrinthHttpServlet
 					{
 						System.out.println("Error saving user: " + le2.getMessage());
 						le2.printStackTrace();
-						errors.add(LabyrinthConstants.PROBLEM_SAVING_USER);
+						errors.add(messages.getMessage("signup.problem_saving_user"));
 					}
 
 					if(errors.size() > 0)

@@ -6,12 +6,14 @@ import org.hibernate.HibernateException;
 
 import com.database.DatabaseHelper;
 import com.database.HibernateDBM;
+import com.labels.LabyrinthMessages;
 
 public abstract class LabyrinthModel extends HibernateDBM implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
 	protected DatabaseHelper dbh;
+	protected LabyrinthMessages messages = new LabyrinthMessages();
 	
 	public LabyrinthModel()
 	{

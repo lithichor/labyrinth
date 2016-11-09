@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import org.hibernate.HibernateException;
 
-import com.LabyrinthConstants;
 import com.models.api.APIGame;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
@@ -71,7 +70,7 @@ public class Game extends LabyrinthModel
 			}
 			if(games == null || games.size() == 0)
 			{
-				throw new LabyrinthException(LabyrinthConstants.NO_GAME);
+				throw new LabyrinthException(messages.getMessage("game.no_games"));
 			}
 
 			trans.commit();

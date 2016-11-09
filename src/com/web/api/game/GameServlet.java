@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.models.Game;
 import com.models.Hero;
 import com.models.Map;
-import com.LabyrinthConstants;
 import com.models.User;
 import com.models.api.APIErrorMessage;
 import com.models.api.APIGame;
@@ -65,13 +64,13 @@ public class GameServlet extends LabyrinthHttpServlet
 		}
 		catch(LabyrinthException le)
 		{
-			if(le.getMessage().contains(LabyrinthConstants.NO_AUTHORIZATION))
+			if(le.getMessage().contains(messages.getMessage("user.no_authorization")))
 			{
-				errors.add(LabyrinthConstants.NO_AUTHORIZATION);
+				errors.add(messages.getMessage("user.no_authorization"));
 			}
 			else
 			{
-				errors.add(LabyrinthConstants.UNKNOWN_ERROR);
+				errors.add(messages.getMessage("unknown.unknown_error"));
 			}
 		}
 		
@@ -120,17 +119,17 @@ public class GameServlet extends LabyrinthHttpServlet
 			}
 			catch(LabyrinthException le)
 			{
-				if(le.getMessage().contains(LabyrinthConstants.NO_GAME) && id == 0)
+				if(le.getMessage().contains(messages.getMessage("game.no_games")) && id == 0)
 				{
-					errors.add(LabyrinthConstants.NO_GAME);
+					errors.add(messages.getMessage("game.no_games"));
 				}
-				else if (le.getMessage().contains(LabyrinthConstants.NO_GAME))
+				else if (le.getMessage().contains(messages.getMessage("game.no_games")))
 				{
-					errors.add(LabyrinthConstants.NO_GAME_WITH_THAT_ID);
+					errors.add(messages.getMessage("game.no_game_with_that_id"));
 				}
 				else
 				{
-					errors.add(LabyrinthConstants.UNKNOWN_ERROR);
+					errors.add(messages.getMessage("unknown.unknown_error"));
 				}
 			}
 		}
@@ -138,7 +137,7 @@ public class GameServlet extends LabyrinthHttpServlet
 		{
 			if(errors.size() == 0)
 			{
-				errors.add(LabyrinthConstants.NO_SUCH_PLAYER);
+				errors.add(messages.getMessage("game.too_many_games"));
 			}
 		}
 		
@@ -177,13 +176,13 @@ public class GameServlet extends LabyrinthHttpServlet
 		}
 		catch(LabyrinthException le)
 		{
-			if(le.getMessage().contains(LabyrinthConstants.NO_AUTHORIZATION))
+			if(le.getMessage().contains(messages.getMessage("user.no_authorization")))
 			{
-				errors.add(LabyrinthConstants.NO_AUTHORIZATION);
+				errors.add(messages.getMessage("user.no_authorization"));
 			}
 			else
 			{
-				errors.add(LabyrinthConstants.UNKNOWN_ERROR);
+				errors.add(messages.getMessage("unknown.unknown_error"));
 			}
 			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 			return;
@@ -200,7 +199,7 @@ public class GameServlet extends LabyrinthHttpServlet
 			catch(LabyrinthException le)
 			{
 				le.printStackTrace();
-				errors.add(LabyrinthConstants.UNKNOWN_ERROR);
+				errors.add(messages.getMessage("unknown.unknown_error"));
 				response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 				return;
 			}
@@ -215,7 +214,7 @@ public class GameServlet extends LabyrinthHttpServlet
 			catch(LabyrinthException le)
 			{
 				le.printStackTrace();
-				errors.add(LabyrinthConstants.HORRIBLY_WRONG);
+				errors.add(messages.getMessage("unknown.horribly_wrong"));
 				response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 				return;
 			}
@@ -224,11 +223,11 @@ public class GameServlet extends LabyrinthHttpServlet
 		}
 		else if(numberOfGames >= 4)
 		{
-			errors.add(LabyrinthConstants.TOO_MANY_GAMES);
+			errors.add(messages.getMessage("game.too_many_games"));
 		}
 		else
 		{
-			errors.add(LabyrinthConstants.NO_SUCH_PLAYER);
+			errors.add(messages.getMessage("user.no_such_player"));
 		}
 		
 		if(errors.size() > 0)
@@ -256,13 +255,13 @@ public class GameServlet extends LabyrinthHttpServlet
 		}
 		catch(LabyrinthException le)
 		{
-			if(le.getMessage().contains(LabyrinthConstants.NO_AUTHORIZATION))
+			if(le.getMessage().contains(messages.getMessage("user.no_authorization")))
 			{
-				errors.add(LabyrinthConstants.NO_AUTHORIZATION);
+				errors.add(messages.getMessage("user.no_authorization"));
 			}
 			else
 			{
-				errors.add(LabyrinthConstants.UNKNOWN_ERROR);
+				errors.add(messages.getMessage("unknown.unknown_error"));
 			}
 			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
 			return;
@@ -283,7 +282,7 @@ public class GameServlet extends LabyrinthHttpServlet
 		{
 			if(id == 0)
 			{
-				errors.add(LabyrinthConstants.NO_GAME_ID);
+				errors.add(messages.getMessage("unknown.no_game_id_delete"));
 			}
 			else
 			{
@@ -296,14 +295,14 @@ public class GameServlet extends LabyrinthHttpServlet
 				catch(LabyrinthException le)
 				{
 					// if there's no game, return that message
-					if(le.getMessage().contains(LabyrinthConstants.NO_GAME))
+					if(le.getMessage().contains(messages.getMessage("game.no_games")))
 					{
-						errors.add(LabyrinthConstants.NO_GAME_WITH_THAT_ID);
+						errors.add(messages.getMessage("no_game_with_that_id"));
 					}
 					// otherwise, there's a problem that needs to be fixed
 					else
 					{
-						errors.add(LabyrinthConstants.HORRIBLY_WRONG);
+						errors.add(messages.getMessage("unknown.horribly_wrong"));
 						le.printStackTrace();
 					}
 				}
@@ -311,7 +310,7 @@ public class GameServlet extends LabyrinthHttpServlet
 		}
 		else
 		{
-			errors.add(LabyrinthConstants.NO_SUCH_PLAYER);
+			errors.add(messages.getMessage("user.no_such_player"));
 		}
 
 		if(errors.size() > 0)

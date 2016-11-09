@@ -2,7 +2,6 @@ package com.web.api.user;
 
 import java.util.HashMap;
 
-import com.LabyrinthConstants;
 import com.google.gson.JsonObject;
 import com.helpers.Encryptor;
 import com.models.User;
@@ -19,25 +18,25 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 		
 		if(params.get("firstName") == null || "".equalsIgnoreCase(params.get("firstName")))
 		{
-			if(!errors.contains(LabyrinthConstants.USER_NEEDS_FIRST_NAME))
+			if(!errors.contains(messages.getMessage("signup.user_needs_first_name")))
 			{
-				errors.add(LabyrinthConstants.USER_NEEDS_FIRST_NAME);
+				errors.add(messages.getMessage("signup.user_needs_first_name"));
 			}
 			valid = false;
 		}
 		if(params.get("lastName") == null || "".equalsIgnoreCase(params.get("lastName")))
 		{
-			if(!errors.contains(LabyrinthConstants.USER_NEEDS_LAST_NAME))
+			if(!errors.contains(messages.getMessage("signup.user_needs_last_name")))
 			{
-				errors.add(LabyrinthConstants.USER_NEEDS_LAST_NAME);
+				errors.add(messages.getMessage("signup.user_needs_last_name"));
 			}
 			valid = false;
 		}
 		if(params.get("email") == null || "".equalsIgnoreCase(params.get("email")))
 		{
-			if(!errors.contains(LabyrinthConstants.USER_NEEDS_EMAIL))
+			if(!errors.contains(messages.getMessage("signup.user_needs_email")))
 			{
-				errors.add(LabyrinthConstants.USER_NEEDS_EMAIL);
+				errors.add(messages.getMessage("signup.user_needs_email"));
 			}
 			valid = false;
 		}
@@ -45,36 +44,36 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 		{
 			if(!params.get("email").contains(".") || !params.get("email").contains("@"))
 			{
-				errors.add(LabyrinthConstants.MALFORMED_EMAIL);
+				errors.add(messages.getMessage("signup.malformed_email"));
 				valid = false;
 			}
 		}
 		if(params.get("password") == null || "".equalsIgnoreCase(params.get("password")))
 		{
-			if(!errors.contains(LabyrinthConstants.USER_NEEDS_PASSWORD))
+			if(!errors.contains(messages.getMessage("signup.user_needs_password")))
 			{
-				errors.add(LabyrinthConstants.USER_NEEDS_PASSWORD);
+				errors.add(messages.getMessage("signup.user_needs_password"));
 			}
 			valid = false;
 			password = false;
 		}
 		else if(params.get("password").length() < 6)
 		{
-			errors.add(LabyrinthConstants.PASSWORD_TOO_SHORT);
+			errors.add(messages.getMessage("signup.password_too_short"));
 			valid = false;
 			password = false;
 		}
 		if(params.get("confirm") == null || "".equalsIgnoreCase(params.get("confirm")))
 		{
 			// there will not be a duplicate of this error
-			errors.add(LabyrinthConstants.PASSWORD_NEEDS_CONFIRMATION);
+			errors.add(messages.getMessage("signup.password_needs_confirmation"));
 			valid = false;
 			password = false;
 		}
 		if(password && (!params.get("confirm").equals(params.get("password"))))
 		{
 			// there will not be a duplicate of this error
-			errors.add(LabyrinthConstants.PASSWORDS_DO_NOT_MATCH);
+			errors.add(messages.getMessage("signup.passwords_do_not_match"));
 			valid = false;
 		}
 		
@@ -100,7 +99,7 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 		}
 		else
 		{
-			errors.add(LabyrinthConstants.USER_NEEDS_FIRST_NAME);
+			errors.add(messages.getMessage("signup.user_needs_first_name"));
 		}
 		if(data.has("lastName"))
 		{
@@ -109,7 +108,7 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 		}
 		else
 		{
-			errors.add(LabyrinthConstants.USER_NEEDS_LAST_NAME);
+			errors.add(messages.getMessage("signup.user_needs_last_name"));
 		}
 		if(data.has("email"))
 		{
@@ -118,7 +117,7 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 		}
 		else
 		{
-			errors.add(LabyrinthConstants.USER_NEEDS_EMAIL);
+			errors.add(messages.getMessage("signup.user_needs_last_name"));
 		}
 		if(data.has("password"))
 		{
@@ -128,7 +127,7 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 		}
 		else
 		{
-			errors.add(LabyrinthConstants.USER_NEEDS_PASSWORD);
+			errors.add(messages.getMessage("signup.user_needs_password"));
 		}
 		
 		// return the user only if it passes validation
@@ -141,9 +140,9 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 			// if we're creating a user from the API endpoint, we don't need to
 			// check for a password
 			// this will happen if the password provided is null or an empty string
-			if(errors.contains(LabyrinthConstants.PASSWORD_NEEDS_CONFIRMATION))
+			if(errors.contains(messages.getMessage("signup.password_needs_confirmation")))
 			{
-				errors.remove(LabyrinthConstants.PASSWORD_NEEDS_CONFIRMATION);
+				errors.remove(messages.getMessage("signup.password_needs_confirmation"));
 			}
 			
 			return null;
