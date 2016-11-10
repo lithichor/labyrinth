@@ -1,10 +1,9 @@
 package com.models;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-
-import org.hibernate.HibernateException;
 
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
@@ -36,45 +35,51 @@ public class Map extends LabyrinthModel
 	public Date getDeletedAt() { return deletedAt; }
 	public void setDeletedAt(Date deletedAt) { this.deletedAt = deletedAt; }
 	
-	// TODO: GAME #27 - make this able to choose between load all, load all for a game,
-	//  and load one (now it only loads all for a given game)
 	public ArrayList<Map> load(Integer gameId, Integer mapId) throws LabyrinthException
 	{
-		this.getSession();
-		ArrayList<Map> maps = null;
+		ArrayList<Map> maps = new ArrayList<>();
+		ArrayList<Object> params = new ArrayList<>();
+		ResultSet results = null;
+		String sql = "SELECT id, "
+				+ "game_id, "
+				+ "created_at, "
+				+ "updated_at "
+				+ "FROM maps "
+				+ "WHERE game_id = ? "
+				+ "AND deleted_at IS NULL";
+		params.add(gameId);
 		
+		if(mapId > 0)
+		{
+			sql += " AND id = ?";
+			params.add(mapId);
+		}
+		sql += " ORDER BY id DESC";
+
 		try
 		{
-			trans = session.beginTransaction();
+			results = dbh.executeQuery(sql, params);
 			
-			String query = "FROM Map WHERE game_id = :game_id AND deleted_at is null";
-			maps = (ArrayList<Map>)session.createQuery(query)
-					.setParameter("game_id", gameId).list();
-
-			trans.commit();
-		}
-		catch(HibernateException he)
-		{
-			maps = null;
-			if(trans != null)
+			while(results.next())
 			{
-				trans.rollback();
+				Map map = new Map();
+				map.setCreatedAt(results.getDate("created_at"));
+				map.setUpdatedAt(results.getDate("updated_at"));
+				map.setGameId(results.getInt("game_id"));
+				map.setId(results.getInt("id"));
+				
+				maps.add(map);
 			}
-			throw new LabyrinthException(he);
 		}
-		catch(Exception e)
+		catch(SQLException sqle)
 		{
-			maps = null;
-			if(trans != null)
-			{
-				trans.rollback();
-			}
-			throw new LabyrinthException(e);
+			sqle.printStackTrace();
+			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
 		}
 		
 		return maps;
 	}
-
+	
 	public void deleteMaps(Integer gameId) throws LabyrinthException
 	{
 		String sql = "UPDATE maps SET deleted_at = now() WHERE game_id = ?";

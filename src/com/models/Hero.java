@@ -95,7 +95,7 @@ public class Hero extends LabyrinthModel
 		
 		if(heroId != 0)
 		{
-			sql += " AND hero_id = ?";
+			sql += " AND id = ?";
 			params.add(heroId);
 		}
 		
