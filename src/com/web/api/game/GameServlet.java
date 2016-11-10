@@ -282,7 +282,7 @@ public class GameServlet extends LabyrinthHttpServlet
 		{
 			if(id == 0)
 			{
-				errors.add(messages.getMessage("unknown.no_game_id_delete"));
+				errors.add(messages.getMessage("game.no_game_id_delete"));
 			}
 			else
 			{

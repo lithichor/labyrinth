@@ -260,6 +260,7 @@ public class Hero extends LabyrinthModel
 		ArrayList<Object> params = new ArrayList<>();
 		params.add(this.gameId);
 		ResultSet results = null;
+		int heroId = 0;
 		
 		try
 		{
@@ -267,7 +268,7 @@ public class Hero extends LabyrinthModel
 			
 			while(results.next())
 			{
-				id = results.getInt("id");
+				heroId = results.getInt("id");
 			}
 		}
 		catch(SQLException sqle)
@@ -276,6 +277,6 @@ public class Hero extends LabyrinthModel
 			throw new LabyrinthException(messages.getMessage("unknown.unknown_error"));
 		}
 		
-		return 0;
+		return heroId;
 	}
 }
