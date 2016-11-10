@@ -14,9 +14,9 @@ import org.junit.Test;
 import com.models.User;
 import com.web.SignupServlet;
 
-import test.parents.LabyrinthJUnitTest;
+import test.parents.LabyrinthHttpTest;
 
-public class SignupServletTests extends LabyrinthJUnitTest
+public class SignupServletTests extends LabyrinthHttpTest
 {
 	private SignupServlet signup;
 	

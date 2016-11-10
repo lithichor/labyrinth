@@ -19,10 +19,10 @@ import com.models.User;
 import com.web.api.user.UserServlet;
 import com.web.api.user.UserValidationHelper;
 
-import test.parents.LabyrinthJUnitTest;
+import test.parents.LabyrinthHttpTest;
 import test.utils.RandomStrings;
 
-public class UserServletPostTests extends LabyrinthJUnitTest
+public class UserServletPostTests extends LabyrinthHttpTest
 {
 	private UserServlet create;
 	private RandomStrings rand;
