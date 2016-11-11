@@ -219,10 +219,10 @@ public class Hero extends LabyrinthModel
 	}
 
 	/**
-	 * this method merges a Hero into the current Hero. New
-	 * fields take precedence, except for id and gameId; these
-	 * are immutable, but might be set on a new Hero object from
-	 * values loaded from disk
+	 * This method merges a Hero into the current Hero. New
+	 * fields take precedence, except for id, createdAt, and
+	 * gameId; these are immutable, but might be set on a
+	 * new Hero object from values loaded from disk
 	 * 
 	 * @param other - another Hero object
 	 */
@@ -231,6 +231,10 @@ public class Hero extends LabyrinthModel
 		if(this.id == null || this.id == 0)
 		{
 			this.id = other.getId();
+		}
+		if(this.createdAt == null)
+		{
+			this.createdAt = other.getCreatedAt();
 		}
 		if(this.gameId == null || this.gameId == 0)
 		{

@@ -158,21 +158,41 @@ public class Game extends LabyrinthModel
 		}
 	}
 	
-	public boolean Equals(Game other)
+	/**
+	 * This method merges a Game into the current Game. New
+	 * fields take precedence, except for id and createdAt
+	 * these are immutable, but might be set on a new Game
+	 * object from values loaded from disk
+	 * 
+	 * @param other - Game object to be merged into this
+	 */
+	public void merge(Game other)
 	{
-		if(this == other) { return true; }
-		if(!(other instanceof Game)) { return false; }
-		
-		final Game game = (Game)other;
-		
-		if(!(this.getId() == game.getId())) { return false; }
-		if(!(this.getUserId() == game.getUserId())) { return false; }
-		
-		return true;
+		if(this.id == null || this.id == 0)
+		{
+			this.id = other.getId();
+		}
+		if(this.createdAt == null)
+		{
+			this.createdAt = other.getCreatedAt();
+		}
 	}
 	
-	public int hashCode()
-	{
-		return (29 * this.getUserId()) + this.getId();
-	}
+//	public boolean Equals(Game other)
+//	{
+//		if(this == other) { return true; }
+//		if(!(other instanceof Game)) { return false; }
+//		
+//		final Game game = (Game)other;
+//		
+//		if(!(this.getId() == game.getId())) { return false; }
+//		if(!(this.getUserId() == game.getUserId())) { return false; }
+//		
+//		return true;
+//	}
+//	
+//	public int hashCode()
+//	{
+//		return (29 * this.getUserId()) + this.getId();
+//	}
 }
