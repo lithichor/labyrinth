@@ -215,6 +215,39 @@ public class User extends LabyrinthModel implements Serializable
 		return hasDupe;
 	}
 	
+	/**
+	 * This method merges a User into the current User. New
+	 * fields take precedence, except for id and createdAt;
+	 * these are immutable, but might be set on a new User
+	 * object from values loaded from disk. We never keep the
+	 * password in memory after authentication.
+	 * 
+	 * @param other - User object to be merged into this
+	 */
+	public void merge(User other)
+	{
+		if(this.id == null || this.id == 0)
+		{
+			this.id = other.getId();
+		}
+		if(this.createdAt == null)
+		{
+			this.createdAt = other.getCreatedAt();
+		}
+		if(this.firstName == null || "".equals(this.firstName))
+		{
+			this.firstName = other.getFirstName();
+		}
+		if(this.lastName == null || "".equals(this.lastName))
+		{
+			this.lastName = other.getLastName();
+		}
+		if(this.email == null || "".equals(this.email))
+		{
+			this.email = other.getEmail();
+		}
+	}
+	
 	private Integer retrieveId()
 	{
 		String sql = "SELECT id FROM users WHERE email like ? AND deleted_at IS NULL";

@@ -160,7 +160,7 @@ public class Game extends LabyrinthModel
 	
 	/**
 	 * This method merges a Game into the current Game. New
-	 * fields take precedence, except for id and createdAt
+	 * fields take precedence, except for id and createdAt;
 	 * these are immutable, but might be set on a new Game
 	 * object from values loaded from disk
 	 * 
