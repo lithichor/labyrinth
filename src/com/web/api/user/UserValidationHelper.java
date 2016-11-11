@@ -1,6 +1,8 @@
 package com.web.api.user;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.gson.JsonObject;
 import com.helpers.Encryptor;
@@ -57,9 +59,8 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 			valid = false;
 			password = false;
 		}
-		else if(params.get("password").length() < 6)
+		else if (!validatePassword(params.get("password")))
 		{
-			errors.add(messages.getMessage("signup.password_too_short"));
 			valid = false;
 			password = false;
 		}
@@ -117,13 +118,13 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 		}
 		else
 		{
-			errors.add(messages.getMessage("signup.user_needs_last_name"));
+			errors.add(messages.getMessage("signup.user_needs_email"));
 		}
 		if(data.has("password"))
 		{
 			user.setPassword(encryptor.encrypt((data.get("password").toString()).replaceAll("^\"|\"$", "")));
-			params.put("password", data.get("password").toString());
-			params.put("confirm", data.get("password").toString());
+			params.put("password", data.get("password").getAsString());
+			params.put("confirm", data.get("password").getAsString());
 		}
 		else
 		{
@@ -165,5 +166,30 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 			user.setPassword(encryptor.encrypt(password));
 		}
 	}
-
+	
+	public boolean validatePassword(String password)
+	{
+		boolean valid = true;
+		
+		// need at least one digit, one lowercase letter, and one uppercase letter
+		String regex = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})";
+		
+		// this solution found here:
+		// http://stackoverflow.com/questions/8923398/regex-doesnt-work-in-string-matches
+		Pattern pattern = Pattern.compile(regex);
+		Matcher match = pattern.matcher(password);
+		
+		if(password.length() < 6)
+		{
+			errors.add(messages.getMessage("signup.password_too_short"));
+			valid = false;
+		}
+		else if(!match.find())
+		{
+			errors.add(messages.getMessage("signup.password_reqs_not_met"));
+			valid = false;
+		}
+		
+		return valid;
+	}
 }
