@@ -113,7 +113,16 @@ public class GameServlet extends LabyrinthHttpServlet
 						}
 						gs.add(g);
 					}
-					response.getWriter().write(gson.toJson(gs));
+					// if we're only returning one game, don't return an array
+					if(gs.size() == 1)
+					{
+						response.getWriter().write(gson.toJson(gs.get(0)));
+					}
+					else
+					{
+						response.getWriter().write(gson.toJson(gs));
+					}
+					
 				}
 				
 			}
