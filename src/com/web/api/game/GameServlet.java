@@ -146,7 +146,7 @@ public class GameServlet extends LabyrinthHttpServlet
 		{
 			if(errors.size() == 0)
 			{
-				errors.add(messages.getMessage("game.too_many_games"));
+				errors.add(messages.getMessage("user.no_such_player"));
 			}
 		}
 		
