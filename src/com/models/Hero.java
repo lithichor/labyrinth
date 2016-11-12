@@ -110,8 +110,8 @@ public class Hero extends LabyrinthModel
 				Hero hero = new Hero();
 				hero.setId(results.getInt("id"));
 				hero.setGameId(results.getInt("game_id"));
-				hero.setCreatedAt(results.getDate("created_at"));
-				hero.setUpdatedAt(results.getDate("updated_at"));
+				hero.setCreatedAt(new Date(results.getTimestamp("created_at").getTime()));
+				hero.setUpdatedAt(new Date(results.getTimestamp("updated_at").getTime()));
 				hero.setStrength(results.getInt("strength"));
 				hero.setMagic(results.getInt("magic"));
 				hero.setAttack(results.getInt("attack"));

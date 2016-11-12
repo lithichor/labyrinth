@@ -63,8 +63,8 @@ public class Map extends LabyrinthModel
 			while(results.next())
 			{
 				Map map = new Map();
-				map.setCreatedAt(results.getDate("created_at"));
-				map.setUpdatedAt(results.getDate("updated_at"));
+				map.setCreatedAt(new Date(results.getTimestamp("created_at").getTime()));
+				map.setUpdatedAt(new Date(results.getTimestamp("updated_at").getTime()));
 				map.setGameId(results.getInt("game_id"));
 				map.setId(results.getInt("id"));
 				

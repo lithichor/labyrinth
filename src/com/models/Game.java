@@ -67,8 +67,8 @@ public class Game extends LabyrinthModel
 				Game game = new Game();
 				game.setId(results.getInt("id"));
 				game.setUserId(results.getInt("user_id"));
-				game.setCreatedAt(results.getDate("created_at"));
-				game.setUpdatedAt(results.getDate("updated_at"));
+				game.setCreatedAt(new Date(results.getTimestamp("created_at").getTime()));
+				game.setUpdatedAt(new Date(results.getTimestamp("updated_at").getTime()));
 				games.add(game);
 			}
 			if(games == null || games.size() == 0)
