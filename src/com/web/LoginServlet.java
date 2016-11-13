@@ -31,7 +31,7 @@ public class LoginServlet extends LabyrinthHttpServlet
 		
 		if("".equalsIgnoreCase(username))
 		{
-			errors.add(messages.getMessage("user.no_email"));
+			errors.add(messages.getMessage("login.no_email"));
 			hasCredentials = false;
 		}
 		if("".equalsIgnoreCase(password))
