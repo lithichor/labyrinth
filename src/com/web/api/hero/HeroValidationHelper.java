@@ -67,19 +67,51 @@ public class HeroValidationHelper extends LabyrinthValidationHelper
 		
 		if(data.has("strength"))
 		{
-			hero.setStrength(data.get("strength").getAsInt());
+			try
+			{
+				hero.setStrength(data.get("strength").getAsInt());
+			}
+			catch(NumberFormatException nfe)
+			{
+				errors.add(messages.getMessage("hero.strength_is_not_a_number"));
+			}
 		}
 		if(data.has("magic"))
 		{
-			hero.setMagic(data.get("magic").getAsInt());
+			try
+			{
+				hero.setMagic(data.get("magic").getAsInt());
+			}
+			catch(NumberFormatException nfe)
+			{
+				errors.add(messages.getMessage("hero.magic_is_not_a_number"));
+			}
 		}
 		if(data.has("attack"))
 		{
-			hero.setAttack(data.get("attack").getAsInt());
+			try
+			{
+				hero.setAttack(data.get("attack").getAsInt());
+			}
+			catch(NumberFormatException nfe)
+			{
+				errors.add(messages.getMessage("hero.attack_is_not_a_number"));
+			}
 		}
 		if(data.has("defense"))
 		{
-			hero.setDefense(data.get("defense").getAsInt());
+			try
+			{
+				hero.setDefense(data.get("defense").getAsInt());
+			}
+			catch(NumberFormatException nfe)
+			{
+				errors.add(messages.getMessage("hero.defense_is_not_a_number"));
+			}
+		}
+		if(errors.size() > 0)
+		{
+			throw new LabyrinthException(messages.getMessage("hero.bad_attributes"));
 		}
 		
 		return hero;

@@ -55,8 +55,8 @@ public class HeroServlet extends LabyrinthHttpServlet
 	}
 
 	/**
-	 * Heros are only created in the context of a game, but they
-	 * will be updated during gameplay
+	 * Heros are generally only updated in the context of a game. This allows for
+	 * non-play upgrades to a Hero
 	 */
 	public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
@@ -98,10 +98,18 @@ public class HeroServlet extends LabyrinthHttpServlet
 			}
 			catch(LabyrinthException le)
 			{
-				le.printStackTrace();
-				// either the heroId is missing or something else went
-				// kablooie, so hide the details from the end user
-				errors.add(messages.getMessage("unknown.horribly_wrong"));
+				// if because of a bad attribute value, add errors to the errors array
+				if(le.getMessage().contains(messages.getMessage("hero.bad_attributes")))
+				{
+					errors.addAll(validation.getErrors());
+				}
+				else
+				{
+					le.printStackTrace();
+					// either the heroId is missing or something else went
+					// kablooie, so hide the details from the end user
+					errors.add(messages.getMessage("unknown.horribly_wrong"));
+				}
 			}
 		}
 		
