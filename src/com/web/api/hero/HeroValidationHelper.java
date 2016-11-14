@@ -71,7 +71,7 @@ public class HeroValidationHelper extends LabyrinthValidationHelper
 			{
 				hero.setStrength(data.get("strength").getAsInt());
 			}
-			catch(NumberFormatException nfe)
+			catch(NumberFormatException | IllegalStateException  | UnsupportedOperationException ex)
 			{
 				errors.add(messages.getMessage("hero.strength_is_not_a_number"));
 			}
@@ -82,7 +82,7 @@ public class HeroValidationHelper extends LabyrinthValidationHelper
 			{
 				hero.setMagic(data.get("magic").getAsInt());
 			}
-			catch(NumberFormatException nfe)
+			catch(NumberFormatException | IllegalStateException  | UnsupportedOperationException ex)
 			{
 				errors.add(messages.getMessage("hero.magic_is_not_a_number"));
 			}
@@ -93,7 +93,7 @@ public class HeroValidationHelper extends LabyrinthValidationHelper
 			{
 				hero.setAttack(data.get("attack").getAsInt());
 			}
-			catch(NumberFormatException nfe)
+			catch(NumberFormatException | IllegalStateException  | UnsupportedOperationException ex)
 			{
 				errors.add(messages.getMessage("hero.attack_is_not_a_number"));
 			}
@@ -104,7 +104,7 @@ public class HeroValidationHelper extends LabyrinthValidationHelper
 			{
 				hero.setDefense(data.get("defense").getAsInt());
 			}
-			catch(NumberFormatException nfe)
+			catch(NumberFormatException | IllegalStateException | UnsupportedOperationException ex)
 			{
 				errors.add(messages.getMessage("hero.defense_is_not_a_number"));
 			}
