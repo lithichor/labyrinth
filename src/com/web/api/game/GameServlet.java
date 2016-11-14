@@ -97,7 +97,7 @@ public class GameServlet extends LabyrinthHttpServlet
 						g.addMapId(m.getId());
 					}
 					// return it as an array
-					response.getWriter().write(gson.toJson(g));
+					apiOut(gson.toJson(g), response);
 				}
 				else
 				{
@@ -116,11 +116,11 @@ public class GameServlet extends LabyrinthHttpServlet
 					// if we're only returning one game, don't return an array
 					if(gs.size() == 1)
 					{
-						response.getWriter().write(gson.toJson(gs.get(0)));
+						apiOut(gson.toJson(gs.get(0)), response);
 					}
 					else
 					{
-						response.getWriter().write(gson.toJson(gs));
+						apiOut(gson.toJson(gs), response);
 					}
 					
 				}
@@ -152,7 +152,7 @@ public class GameServlet extends LabyrinthHttpServlet
 		
 		if(errors.size() > 0)
 		{
-			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
+			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 		}
 	}
 	
@@ -193,7 +193,7 @@ public class GameServlet extends LabyrinthHttpServlet
 			{
 				errors.add(messages.getMessage("unknown.unknown_error"));
 			}
-			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
+			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 			return;
 		}
 		
@@ -209,7 +209,7 @@ public class GameServlet extends LabyrinthHttpServlet
 			{
 				le.printStackTrace();
 				errors.add(messages.getMessage("unknown.unknown_error"));
-				response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
+				apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 				return;
 			}
 		}
@@ -224,11 +224,11 @@ public class GameServlet extends LabyrinthHttpServlet
 			{
 				le.printStackTrace();
 				errors.add(messages.getMessage("unknown.horribly_wrong"));
-				response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
+				apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 				return;
 			}
 
-			response.getWriter().write(gson.toJson(g));
+			apiOut(gson.toJson(g), response);
 		}
 		else if(numberOfGames >= 4)
 		{
@@ -241,7 +241,7 @@ public class GameServlet extends LabyrinthHttpServlet
 		
 		if(errors.size() > 0)
 		{
-			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
+			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 		}
 	}
 	
@@ -272,7 +272,7 @@ public class GameServlet extends LabyrinthHttpServlet
 			{
 				errors.add(messages.getMessage("unknown.unknown_error"));
 			}
-			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
+			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 			return;
 		}
 		
@@ -324,7 +324,7 @@ public class GameServlet extends LabyrinthHttpServlet
 
 		if(errors.size() > 0)
 		{
-			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
+			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 		}
 	}
 	

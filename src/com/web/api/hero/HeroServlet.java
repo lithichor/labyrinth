@@ -41,7 +41,7 @@ public class HeroServlet extends LabyrinthHttpServlet
 			gameId = actions.getGameId(user, data);
 			
 			hero = new Hero().load(gameId);
-			response.getWriter().println(gson.toJson(new APIHero(hero)));
+			apiOut(gson.toJson(new APIHero(hero)), response);
 		}
 		catch(LabyrinthException le)
 		{
@@ -50,7 +50,7 @@ public class HeroServlet extends LabyrinthHttpServlet
 		
 		if(errors.size() > 0)
 		{
-			response.getWriter().println(gson.toJson(new APIErrorMessage(errors)));
+			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 		}
 	}
 
@@ -115,11 +115,11 @@ public class HeroServlet extends LabyrinthHttpServlet
 		
 		if(errors.size() > 0)
 		{
-			response.getWriter().println(gson.toJson(new APIErrorMessage(errors)));
+			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 		}
 		else
 		{
-			response.getWriter().println(gson.toJson(new APIHero(hero)));
+			apiOut(gson.toJson(new APIHero(hero)), response);
 		}
 	}
 

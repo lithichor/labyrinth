@@ -3,7 +3,6 @@ package com.parents;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -129,15 +128,9 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 		}
 		return u;
 	}
-
-	public boolean validate(HashMap<String, String> params, ArrayList<String> errors)
+	
+	public void apiOut(String output, HttpServletResponse response) throws IOException
 	{
-		return false;
+		response.getWriter().println(output);
 	}
-
-	public boolean save(LabyrinthModel model)
-	{
-		return false;
-	}
-
 }

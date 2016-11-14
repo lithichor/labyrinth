@@ -66,7 +66,7 @@ public class UserServlet extends LabyrinthHttpServlet
 			{
 				errors.add(messages.getMessage("unknown.unknown_error"));
 			}
-			response.getWriter().println(gson.toJson(new APIErrorMessage(errors)));
+			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 			return;
 		}
 
@@ -90,7 +90,7 @@ public class UserServlet extends LabyrinthHttpServlet
 				u.setGameIds(new ArrayList<Integer>());
 			}
 
-			response.getWriter().println(gson.toJson(u));
+			apiOut(gson.toJson(u), response);
 		}
 		else
 		{
@@ -98,7 +98,7 @@ public class UserServlet extends LabyrinthHttpServlet
 		}
 		if(errors.size() > 0)
 		{
-			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
+			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 		}
 	}
 
@@ -181,7 +181,7 @@ public class UserServlet extends LabyrinthHttpServlet
 				APIUser u = new APIUser(user);
 				// gameIds is empty because it's a new user
 				u.setGameIds(new ArrayList<Integer>());
-				response.getWriter().write(gson.toJson(u));
+				apiOut(gson.toJson(u), response);
 			}
 			catch(LabyrinthException le)
 			{
@@ -191,7 +191,7 @@ public class UserServlet extends LabyrinthHttpServlet
 		}
 		if(errors.size() > 0)
 		{
-			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
+			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 		}
 	}
 
@@ -268,7 +268,7 @@ public class UserServlet extends LabyrinthHttpServlet
 						// unless there are no games; then add an empty list
 						u.setGameIds(new ArrayList<Integer>());
 					}
-					response.getWriter().write(gson.toJson(u));
+					apiOut(gson.toJson(u), response);
 				}
 				catch(LabyrinthException le)
 				{
@@ -280,7 +280,7 @@ public class UserServlet extends LabyrinthHttpServlet
 
 		if(errors.size() > 0)
 		{
-			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
+			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 		}
 	}
 
@@ -310,7 +310,7 @@ public class UserServlet extends LabyrinthHttpServlet
 			{
 				errors.add(messages.getMessage("unknown.unknown_error"));
 			}
-			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
+			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 			return;
 
 		}
@@ -335,7 +335,7 @@ public class UserServlet extends LabyrinthHttpServlet
 
 		if(errors.size() > 0)
 		{
-			response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
+			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 		}
 	}
 }
