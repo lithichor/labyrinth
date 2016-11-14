@@ -234,15 +234,15 @@ public class User extends LabyrinthModel implements Serializable
 		{
 			this.createdAt = other.getCreatedAt();
 		}
-		if(this.firstName == null || "".equals(this.firstName))
+		if(other.firstName != null && !"".equals(other.firstName))
 		{
 			this.firstName = other.getFirstName();
 		}
-		if(this.lastName == null || "".equals(this.lastName))
+		if(other.lastName != null && !"".equals(other.lastName))
 		{
 			this.lastName = other.getLastName();
 		}
-		if(this.email == null || "".equals(this.email))
+		if(other.email != null && !"".equals(other.email))
 		{
 			this.email = other.getEmail();
 		}

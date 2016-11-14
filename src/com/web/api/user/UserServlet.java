@@ -244,11 +244,8 @@ public class UserServlet extends LabyrinthHttpServlet
 
 			if(data != null)
 			{
-				// a temporary hack until the User.merge() method works correctly
 				User newUser = validator.validateApiPut(data);
-				newUser.setId(user.getId());
-				newUser.setEmail(user.getEmail());
-				user = newUser;
+				user.merge(newUser);
 				
 				try
 				{
