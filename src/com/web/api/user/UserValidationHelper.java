@@ -157,21 +157,25 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 		}
 	}
 	
-	public void validateApiPut(User user, JsonObject data)
+	public User validateApiPut(JsonObject data)
 	{
+		User user = new User();
+		
 		if(data.has("firstName"))
 		{
-			user.setFirstName(data.get("firstName").toString().replaceAll("^\"|\"$", ""));
+			user.setFirstName(data.get("firstName").getAsString());
 		}
 		if(data.has("lastName"))
 		{
-			user.setLastName(data.get("lastName").toString().replaceAll("^\"|\"$", ""));
+			user.setLastName(data.get("lastName").getAsString());
 		}
 		if(data.has("password"))
 		{
-			String password = data.get("password").toString().replaceAll("^\"|\"$", "");
+			String password = data.get("password").getAsString();
 			user.setPassword(encryptor.encrypt(password));
 		}
+		
+		return user;
 	}
 	
 	public boolean validatePassword(String password)
