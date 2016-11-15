@@ -96,4 +96,31 @@ public class Map extends LabyrinthModel
 			throw new LabyrinthException(sqle);
 		}
 	}
+	
+	public boolean save() throws LabyrinthException
+	{
+		boolean success = false;
+		String sql = "INSERT INTO maps (game_id, created_at, updated_at) "
+				+ "VALUES(?, now(), now())";
+		ArrayList<Object> params = new ArrayList<Object>();
+		params.add(this.gameId);
+		ResultSet keys = null;
+		
+		try
+		{
+			keys = dbh.executeAndReturnKeys(sql, params);
+			while(keys.next())
+			{
+				this.id = keys.getInt(1);
+				success = true;
+			}
+		}
+		catch(SQLException sqle)
+		{
+			sqle.printStackTrace();
+			throw new LabyrinthException(sqle);
+		}
+		
+		return success;
+	}
 }
