@@ -29,6 +29,12 @@
   	</listener-class>
   </listener>
   
+  <listener>
+  	<listener-class>
+  		com.web.api.map.MapServletContextListener
+  	</listener-class>
+  </listener>
+  
   <servlet>
     <servlet-name>Login</servlet-name>
     <servlet-class>com.web.LoginServlet</servlet-class>
@@ -72,15 +78,6 @@
   <servlet-mapping>
     <servlet-name>Monster</servlet-name>
     <url-pattern>/api/monsters</url-pattern>
-  </servlet-mapping>
-  
-  <servlet>
-    <servlet-name>Map</servlet-name>
-    <servlet-class>com.web.api.MapServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Map</servlet-name>
-    <url-pattern>/api/maps</url-pattern>
   </servlet-mapping>
   
 </web-app>
