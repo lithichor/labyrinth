@@ -48,7 +48,7 @@ public class GameServlet extends LabyrinthHttpServlet
 		// this will get the id from the end of the url
 		int id = 0;
 		
-		String idStr = splitUrl(request.getRequestURI());
+		String idStr = splitUrl(request.getRequestURI(), "games");
 		
 		// if there is a string after the endpoint
 		if(idStr.length() > 0)
@@ -132,7 +132,8 @@ public class GameServlet extends LabyrinthHttpServlet
 				{
 					errors.add(messages.getMessage("game.no_games"));
 				}
-				else if (le.getMessage().contains(messages.getMessage("game.no_games")))
+				else if (le.getMessage().contains(messages.getMessage("game.no_games")) ||
+						le.getMessage().contains(messages.getMessage("game.no_game_with_that_id")))
 				{
 					errors.add(messages.getMessage("game.no_game_with_that_id"));
 				}
@@ -279,7 +280,7 @@ public class GameServlet extends LabyrinthHttpServlet
 		boolean authenticated = (user != null);
 		int id = 0;
 		
-		String idStr = splitUrl(request.getRequestURI());
+		String idStr = splitUrl(request.getRequestURI(), "games");
 		
 		// if there is a string after the endpoint
 		if(idStr.length() > 0)
@@ -326,35 +327,5 @@ public class GameServlet extends LabyrinthHttpServlet
 		{
 			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 		}
-	}
-	
-	private String splitUrl(String url)
-	{
-		String[] parsedUrl = url.split("games/");
-		String idString = "";
-		
-		if(parsedUrl.length > 1)
-		{
-			idString = parsedUrl[1];
-		}
-		
-		return idString;
-	}
-	
-	private int parseIdFromString(String idString)
-	{
-		int id = 0;
-		
-		try
-		{
-			id = Integer.parseInt(idString);
-		}
-		catch(NumberFormatException nfe)
-		{
-			// id was not a valid integer - ignore it
-			id = 0;
-		}
-		
-		return id;
 	}
 }

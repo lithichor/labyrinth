@@ -73,7 +73,14 @@ public class Game extends LabyrinthModel
 			}
 			if(games == null || games.size() == 0)
 			{
-				throw new LabyrinthException(messages.getMessage("game.no_games"));
+				if(gameId == 0)
+				{
+					throw new LabyrinthException(messages.getMessage("game.no_games"));
+				}
+				else
+				{
+					throw new LabyrinthException(messages.getMessage("game.no_game_with_that_id"));
+				}
 			}
 		}
 		catch(SQLException sqle)

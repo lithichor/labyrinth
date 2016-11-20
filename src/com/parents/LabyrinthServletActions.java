@@ -103,7 +103,14 @@ public class LabyrinthServletActions
 		// if the gameId is specified, use that
 		if(data != null && data.has("gameId"))
 		{
-			gameId = data.get("gameId").getAsInt();
+			try
+			{
+				gameId = data.get("gameId").getAsInt();
+			}
+			catch(NumberFormatException | IllegalStateException  | UnsupportedOperationException ex)
+			{
+				throw new LabyrinthException(messages.getMessage("map.gameId_not_integer"));
+			}
 		}
 		else
 		{

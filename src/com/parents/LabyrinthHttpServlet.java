@@ -133,4 +133,35 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 	{
 		response.getWriter().println(output);
 	}
+
+	// endpoint should be an enum - only certain endpoints can have an id
+	protected String splitUrl(String url, String endpoint)
+	{
+		String[] parsedUrl = url.split(endpoint + "/");
+		String idString = "";
+		
+		if(parsedUrl.length > 1)
+		{
+			idString = parsedUrl[1];
+		}
+		
+		return idString;
+	}
+	
+	protected int parseIdFromString(String idString)
+	{
+		int id = 0;
+		
+		try
+		{
+			id = Integer.parseInt(idString);
+		}
+		catch(NumberFormatException nfe)
+		{
+			// id was not a valid integer - ignore it
+			id = 0;
+		}
+		
+		return id;
+	}
 }
