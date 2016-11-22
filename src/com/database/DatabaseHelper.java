@@ -1,5 +1,6 @@
 package com.database;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,8 +13,9 @@ import java.util.Properties;
 
 import com.mysql.jdbc.Statement;
 
-public class DatabaseHelper
+public class DatabaseHelper implements Serializable
 {
+	private static final long serialVersionUID = -9175632877354809313L;
 	private Connection conn = null;
 	private Properties props = new Properties();
 	private String databaseUrl = "jdbc:mysql://localhost:3306/labyrinth";

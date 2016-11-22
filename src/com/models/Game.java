@@ -149,22 +149,6 @@ public class Game extends LabyrinthModel
 		return g;
 	}
 	
-	public void deleteGame() throws LabyrinthException
-	{
-		this.setDeletedAt(new Date());
-		this.setUpdatedAt(new Date());
-		try
-		{
-			this.save();
-			new Hero().deleteHero(this.getId());
-			new Map().deleteMaps(this.getId());
-		}
-		catch (LabyrinthException le)
-		{
-			throw new LabyrinthException(le);
-		}
-	}
-	
 	/**
 	 * This method merges a Game into the current Game. New
 	 * fields take precedence, except for id and createdAt;
@@ -185,21 +169,117 @@ public class Game extends LabyrinthModel
 		}
 	}
 	
-//	public boolean Equals(Game other)
-//	{
-//		if(this == other) { return true; }
-//		if(!(other instanceof Game)) { return false; }
-//		
-//		final Game game = (Game)other;
-//		
-//		if(!(this.getId() == game.getId())) { return false; }
-//		if(!(this.getUserId() == game.getUserId())) { return false; }
-//		
-//		return true;
-//	}
-//	
-//	public int hashCode()
-//	{
-//		return (29 * this.getUserId()) + this.getId();
-//	}
+	/**
+	 * Delete a Game. The ID must be set on the Game object to successfully
+	 * delete it. This is a soft deleted; it changes the deleted_at
+	 * field to the current time, but does not destroy data.
+	 * @throws LabyrinthException
+	 */
+	public void deleteGame() throws LabyrinthException
+	{
+		this.setDeletedAt(new Date());
+		this.setUpdatedAt(new Date());
+		
+		String sql = "UPDATE games SET updated_at = now(), deleted_at = now() WHERE id = ?";
+		ArrayList<Object> params = new ArrayList<Object>();
+		params.add(this.id);
+		
+		try
+		{
+			dbh.execute(sql, params);
+		}
+		catch(SQLException sqle)
+		{
+			sqle.printStackTrace();
+			throw new LabyrinthException(sqle);
+		}
+				
+		try
+		{
+			new Hero().deleteHero(this.getId());
+			new Map().deleteMaps(this.getId());
+		}
+		catch (LabyrinthException le)
+		{
+			throw new LabyrinthException(le);
+		}
+	}
+	
+	/**
+	 * Save a new Game. Not applicable for games that have already been
+	 * created; for those use update(). Sets the created_at and updated_at
+	 * fields to the current time.
+	 * 
+	 * @throws LabyrinthException
+	 */
+	public boolean save() throws LabyrinthException
+	{
+		boolean success = false;
+		int gameId = 0;
+		ResultSet results = null;
+		String sql = "INSERT INTO games (user_id, created_at, updated_at) VALUES(?, now(), now())";
+		ArrayList<Object> params = new ArrayList<>();
+		params.add(this.userId);
+		
+		try
+		{
+			results = dbh.executeAndReturnKeys(sql, params);
+			while(results.next())
+			{
+				gameId = results.getInt(1);
+			}
+		}
+		catch(SQLException sqle)
+		{
+			sqle.printStackTrace();
+			throw new LabyrinthException(sqle);
+		}
+		
+		if(gameId > 0)
+		{
+			success = true;
+			this.id = gameId;
+		}
+		else
+		{
+			success = false;
+			throw new LabyrinthException(messages.getMessage("unknown.no_id_returned"));
+		}
+		
+		return success;
+	}
+	
+	/**
+	 * Updates a Game with new information. Changes the updated_at
+	 * field to the current time.
+	 * 
+	 * @throws LabyrinthException
+	 */
+	public boolean update() throws LabyrinthException
+	{
+		boolean success = false;
+		String sql = "UPDATE games SET ";
+		ArrayList<Object> params = new ArrayList<>();
+		
+		if(this.getUserId() != null && !(this.getUserId() == 0))
+		{
+			sql += "user_id = ? ";
+			params.add(this.getUserId());
+		}
+		
+		sql += ", updated_at = now() WHERE id = ?";
+		params.add(this.id);
+		
+		try
+		{
+			success = dbh.execute(sql, params);
+		}
+		catch(SQLException sqle)
+		{
+			sqle.printStackTrace();
+			throw new LabyrinthException(sqle);
+		}
+
+		return success;
+	}
 }
