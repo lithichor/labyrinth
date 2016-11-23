@@ -113,6 +113,10 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 			String auth = e.decrypt(authorization[1]);
 			String email = auth.split(":")[0];
 			String password = auth.split(":")[1];
+			if(email == null || "".equals(email) || password == null || "".equals(password))
+			{
+				throw new LabyrinthException(messages.getMessage("user.partial_authorization"));
+			}
 			u = new User();
 			u.setEmail(email);
 			u.setPassword(e.encrypt(password));
@@ -122,8 +126,9 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 			}
 			catch(LabyrinthException le)
 			{
-				errors.add(messages.getMessage("unknown.unknown_error"));
-				u = null;
+//				errors.add(messages.getMessage("unknown.unknown_error"));
+//				u = null;
+				throw le;
 			}
 		}
 		return u;

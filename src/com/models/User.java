@@ -163,7 +163,7 @@ public class User extends LabyrinthModel implements Serializable
 		
 		try
 		{
-			results = user.getDbh().executeQuery(sql, params);
+			results = dbh.executeQuery(sql, params);
 			while(results.next())
 			{
 				hasResults = true;
@@ -179,10 +179,10 @@ public class User extends LabyrinthModel implements Serializable
 			throw new LabyrinthException(sqle);
 		}
 		
-		// if the query returns nothing, set the user to null
+		// if the query returns nothing, throw exception
 		if(!hasResults)
 		{
-			user = null;
+			throw new LabyrinthException(messages.getMessage("user.no_such_player"));
 		}
 		
 		return user;

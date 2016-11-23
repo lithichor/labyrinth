@@ -62,6 +62,10 @@ public class UserServlet extends LabyrinthHttpServlet
 			{
 				errors.add(messages.getMessage("user.no_authorization"));
 			}
+			else if(le.getMessage().contains(messages.getMessage("user.no_such_player")))
+			{
+				errors.add(messages.getMessage("user.no_such_player"));
+			}
 			else
 			{
 				errors.add(messages.getMessage("unknown.unknown_error"));

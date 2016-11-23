@@ -35,6 +35,7 @@ public class HeroServlet extends LabyrinthHttpServlet
 		
 		try
 		{
+			// might still need a check here
 			user = this.authenticateUser(request, response);
 			data = actions.getData(request);
 
