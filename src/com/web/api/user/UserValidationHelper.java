@@ -95,7 +95,14 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 		
 		if(data.has("firstName"))
 		{
-			user.setFirstName(data.get("firstName").getAsString());
+			try
+			{
+				user.setFirstName(data.get("firstName").getAsString());
+			}
+			catch(IllegalStateException  | UnsupportedOperationException ex)
+			{
+				errors.add(messages.getMessage("signup.user_needs_first_name"));
+			}
 			params.put("firstName", user.getFirstName());
 		}
 		else
@@ -104,7 +111,14 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 		}
 		if(data.has("lastName"))
 		{
-			user.setLastName(data.get("lastName").getAsString());
+			try
+			{
+				user.setLastName(data.get("lastName").getAsString());
+			}
+			catch(IllegalStateException  | UnsupportedOperationException ex)
+			{
+				errors.add(messages.getMessage("signup.user_needs_last_name"));
+			}
 			params.put("lastName",  user.getLastName());
 		}
 		else
@@ -113,7 +127,14 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 		}
 		if(data.has("email"))
 		{
-			user.setEmail(data.get("email").getAsString());
+			try
+			{
+				user.setEmail(data.get("email").getAsString());
+			}
+			catch(IllegalStateException  | UnsupportedOperationException ex)
+			{
+				errors.add(messages.getMessage("signup.user_needs_email"));
+			}
 			params.put("email", user.getEmail());
 		}
 		else
