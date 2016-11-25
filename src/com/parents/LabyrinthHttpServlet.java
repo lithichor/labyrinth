@@ -126,8 +126,6 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 			}
 			catch(LabyrinthException le)
 			{
-//				errors.add(messages.getMessage("unknown.unknown_error"));
-//				u = null;
 				throw le;
 			}
 		}

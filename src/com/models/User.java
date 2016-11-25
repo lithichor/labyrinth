@@ -168,6 +168,8 @@ public class User extends LabyrinthModel implements Serializable
 			{
 				hasResults = true;
 				user.setId(results.getInt("id"));
+				// set the ID for this object so we can record the login time
+				this.setId(results.getInt("id"));
 				user.setFirstName(results.getString("first_name"));
 				user.setLastName(results.getString("last_name"));
 				user.setEmail(results.getString("email"));
@@ -185,6 +187,7 @@ public class User extends LabyrinthModel implements Serializable
 			throw new LabyrinthException(messages.getMessage("user.no_such_player"));
 		}
 		
+		setLoginTime();
 		return user;
 	}
 	
@@ -271,5 +274,21 @@ public class User extends LabyrinthModel implements Serializable
 		}
 		
 		return id;
+	}
+	
+	public void setLoginTime() throws LabyrinthException
+	{
+		String sql = "UPDATE users SET last_login = now() WHERE id = ?";
+		ArrayList<Object> params = new ArrayList<>();
+		params.add(this.id);
+		try
+		{
+			dbh.execute(sql, params);
+		}
+		catch(SQLException sqle)
+		{
+			sqle.printStackTrace();
+			throw new LabyrinthException(sqle);
+		}
 	}
 }
