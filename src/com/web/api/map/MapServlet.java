@@ -49,7 +49,16 @@ public class MapServlet extends LabyrinthHttpServlet
 				APIMap am = new APIMap(m);
 				apiMaps.add(am);
 			}
-			apiOut(gson.toJson(apiMaps), response);
+			
+			// if we're only returning one map, don't return an array
+			if(apiMaps.size() == 1)
+			{
+				apiOut(gson.toJson(apiMaps.get(0)), response);
+			}
+			else
+			{
+				apiOut(gson.toJson(apiMaps), response);
+			}
 		}
 		catch(LabyrinthException le)
 		{
