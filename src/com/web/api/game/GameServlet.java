@@ -186,9 +186,10 @@ public class GameServlet extends LabyrinthHttpServlet
 		}
 		catch(LabyrinthException le)
 		{
-			if(le.getMessage().contains(messages.getMessage("user.no_authorization")))
+			if(le.getMessage().contains(messages.getMessage("user.no_authorization")) ||
+					le.getMessage().contains(messages.getMessage("user.no_such_player")))
 			{
-				errors.add(messages.getMessage("user.no_authorization"));
+				errors.add(le.getMessage());
 			}
 			else
 			{
