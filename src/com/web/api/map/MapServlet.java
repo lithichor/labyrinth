@@ -106,6 +106,8 @@ public class MapServlet extends LabyrinthHttpServlet
 			errors.add(le.getMessage());
 		}
 		
+		// we require data to create a map to reinforce the fact that
+		// a game is required (unlike getting the most recent map)
 		if(data == null)
 		{
 			errors.add(messages.getMessage("map.map_has_no_data"));
@@ -122,7 +124,7 @@ public class MapServlet extends LabyrinthHttpServlet
 				}
 				else
 				{
-					// replace this with map.gemerateMap();
+					// replace this with map.generateMap();
 					map.save();
 				}
 			}
