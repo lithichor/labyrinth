@@ -115,6 +115,14 @@ public class MapServlet extends LabyrinthHttpServlet
 		else
 		{
 			map = validation.validateApi(data);
+			// if the map is null, then something went wrong during
+			// validation. Add the errors to the output and return
+			if(map == null)
+			{
+				errors.addAll(validation.getErrors());
+				apiOut(gson.toJson(new APIErrorMessage(errors)), response);
+				return;
+			}
 			try
 			{
 				ArrayList<Game> games = new Game().load(user.getId(), map.getGameId());
