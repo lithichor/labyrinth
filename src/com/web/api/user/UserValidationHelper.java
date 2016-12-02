@@ -18,6 +18,11 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 		boolean valid = true;
 		boolean password = true;
 		
+		if(!validateParameterLength(params))
+		{
+			valid = false;
+		}
+		
 		if(params.get("firstName") == null || "".equalsIgnoreCase(params.get("firstName")))
 		{
 			if(!errors.contains(messages.getMessage("signup.user_needs_first_name")))
@@ -81,6 +86,22 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 		return valid;
 	}
 	
+	private boolean validateParameterLength(HashMap<String, String> params)
+	{
+		boolean valid = true;
+		
+		for(String key: params.keySet())
+		{
+			if(!"confirm".equalsIgnoreCase(params.get(key)) && params.get(key).length() > 250)
+			{
+				valid = false;
+				errors.add("The " + key + " " + messages.getMessage("signup.parameter_too_long"));
+			}
+		}
+		
+		return valid;
+	}
+
 	public User validateApi(JsonObject data)
 	{
 		User user = new User();
@@ -98,12 +119,12 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 			try
 			{
 				user.setFirstName(data.get("firstName").getAsString());
+				params.put("firstName", user.getFirstName());
 			}
 			catch(IllegalStateException  | UnsupportedOperationException ex)
 			{
 				errors.add(messages.getMessage("signup.user_needs_first_name"));
 			}
-			params.put("firstName", user.getFirstName());
 		}
 		else
 		{
@@ -114,12 +135,12 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 			try
 			{
 				user.setLastName(data.get("lastName").getAsString());
+				params.put("lastName",  user.getLastName());
 			}
 			catch(IllegalStateException  | UnsupportedOperationException ex)
 			{
 				errors.add(messages.getMessage("signup.user_needs_last_name"));
 			}
-			params.put("lastName",  user.getLastName());
 		}
 		else
 		{
@@ -130,12 +151,12 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 			try
 			{
 				user.setEmail(data.get("email").getAsString());
+				params.put("email", user.getEmail());
 			}
 			catch(IllegalStateException  | UnsupportedOperationException ex)
 			{
 				errors.add(messages.getMessage("signup.user_needs_email"));
 			}
-			params.put("email", user.getEmail());
 		}
 		else
 		{
@@ -167,7 +188,7 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 		else
 		{
 			// if we're creating a user from the API endpoint, we don't need to
-			// check for a password
+			// check for a password confirmation
 			// this will happen if the password provided is null or an empty string
 			if(errors.contains(messages.getMessage("signup.password_needs_confirmation")))
 			{
