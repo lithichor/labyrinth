@@ -133,7 +133,7 @@ public class Game extends LabyrinthModel
 			map.setGameId(game.getId());
 
 			hero.save();
-			map.save();
+			map.generateMap();
 
 			g = new APIGame(game);
 			g.setHeroId(hero.getId());

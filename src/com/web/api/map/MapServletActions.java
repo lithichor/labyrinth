@@ -4,5 +4,4 @@ import com.parents.LabyrinthServletActions;
 
 public class MapServletActions extends LabyrinthServletActions
 {
-
 }

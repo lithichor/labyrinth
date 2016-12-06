@@ -4,7 +4,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
+import com.models.Tile.Boundary;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
 
@@ -17,13 +19,8 @@ public class Map extends LabyrinthModel
 	private Date createdAt;
 	private Date updatedAt;
 	private Date deletedAt;
+	private ArrayList<ArrayList<Tile>> grid = new ArrayList<>();
 
-	public Map()
-	{
-		this.setCreatedAt(new Date());
-		this.setUpdatedAt(new Date());
-	}
-	
 	public Integer getId() { return id; }
 	public void setId(Integer id) { this.id = id; }
 	public Integer getGameId() { return gameId; }
@@ -34,6 +31,8 @@ public class Map extends LabyrinthModel
 	public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
 	public Date getDeletedAt() { return deletedAt; }
 	public void setDeletedAt(Date deletedAt) { this.deletedAt = deletedAt; }
+	public ArrayList<ArrayList<Tile>> getGrid() { return this.grid; }
+	public void setGrid(ArrayList<ArrayList<Tile>> grid) { this.grid = grid; }
 	
 	public ArrayList<Map> load(Integer gameId, Integer mapId) throws LabyrinthException
 	{
@@ -122,5 +121,115 @@ public class Map extends LabyrinthModel
 		}
 		
 		return success;
+	}
+	
+	/**
+	 * This is the first method to generate a map. Later
+	 * efforts will be more complex. The idea is to have
+	 * multiple types of Labyrinths that are generated at
+	 * random.
+	 * @return
+	 * @throws LabyrinthException
+	 */
+	public boolean generateMap() throws LabyrinthException
+	{
+		// first save the map; this creates an ID for it.
+		boolean success = save();
+		
+		// then generate the grid of Tiles (need the Map's ID)
+		for(int x = 0; x < 10; x++)
+		{
+			ArrayList<Tile> column = new ArrayList<>();
+			for(int y = 0; y < 10; y++)
+			{
+				Tile t = new Tile(x, y, this.id);
+				column.add(t);
+			}
+			grid.add(column);
+		}
+		
+		// finally, go through the grid, creating walls
+		Random rand = new Random();
+		for(int x = 0; x < grid.size(); x++)
+		{
+			ArrayList<Tile> column = grid.get(x);
+			for(int y = 0; y < column.size(); y++)
+			{
+				Tile t = column.get(y);
+				//north-south
+				if(x == 0)
+				{
+					t.setNorth(Boundary.WALL);
+				}
+				else if(x == 9)
+				{
+					t.setSouth(Boundary.WALL);
+				}
+				else if(rand.nextInt(10) < 3)
+				{
+					t.setNorth(Boundary.WALL);
+					try
+					{
+						grid.get(x - 1).get(y).setSouth(Boundary.WALL);
+					}
+					catch(ArrayIndexOutOfBoundsException aioob)
+					{
+						System.out.println("\n\nERROR:\nX: " + x + "\nY: " + y);
+						throw new ArrayIndexOutOfBoundsException();
+					}
+				}
+				//east-west
+				if(y == 0)
+				{
+					t.setWest(Boundary.WALL);
+				}
+				else if(y == 9)
+				{
+					t.setEast(Boundary.WALL);
+				}
+				else if(rand.nextInt(10) < 3)
+				{
+					t.setWest(Boundary.WALL);
+					try
+					{
+						column.get(y - 1).setEast(Boundary.WALL);
+					}
+					catch(ArrayIndexOutOfBoundsException aioob)
+					{
+						System.out.println("\n\nERROR:\nX: " + x + "\nY: " + y);
+						throw new ArrayIndexOutOfBoundsException();
+					}
+				}
+				// save the tile
+				t.save();
+			}
+		}
+		System.out.println(toString());
+		return success;
+	}
+	
+	public String toString()
+	{
+		String southWalls = "";
+		String eastWalls = "";
+		
+		for(int x = 0; x < grid.size(); x++)
+		{
+			ArrayList<Tile> col = grid.get(x);
+			for(int y = 0; y < col.size(); y++)
+			{
+				Tile t = col.get(y);
+				if(t.getSouth() == Boundary.WALL)
+				{
+					southWalls += "(" + x + ", " + y + "), ";
+				}
+				if(t.getEast() == Boundary.WALL)
+				{
+					eastWalls += "(" + x + ", " + y + "), ";
+				}
+			}
+		}
+		
+		return "SOUTH: " + southWalls + "\nEAST: " + eastWalls;
 	}
 }
