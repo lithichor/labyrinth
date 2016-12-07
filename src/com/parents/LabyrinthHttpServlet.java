@@ -138,7 +138,6 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 		response.getWriter().println(output);
 	}
 
-	// endpoint should be an enum - only certain endpoints can have an id
 	protected String splitUrl(String url, EndpointsWithIds endpoint)
 	{
 		String[] parsedUrl = url.split(endpoint.toString().toLowerCase() + "/");
