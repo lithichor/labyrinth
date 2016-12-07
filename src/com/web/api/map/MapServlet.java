@@ -54,6 +54,14 @@ public class MapServlet extends LabyrinthHttpServlet
 		try
 		{
 			user = this.authenticateUser(request, response);
+			
+			// if no gameId is provided, we need to get
+			// the most recent gameId for the user
+			if(gameId == 0)
+			{
+				ArrayList<Game> games = new Game().load(user.getId(), 0);
+				gameId = games.get(games.size() - 1).getId();
+			}
 
 			if(user != null)
 			{
