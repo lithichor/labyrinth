@@ -76,6 +76,11 @@ public class Map extends LabyrinthModel
 			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
 		}
 		
+		if(maps.size() == 0)
+		{
+			throw new LabyrinthException(messages.getMessage("map.no_maps"));
+		}
+		
 		return maps;
 	}
 	
