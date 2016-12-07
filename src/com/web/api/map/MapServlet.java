@@ -27,44 +27,59 @@ public class MapServlet extends LabyrinthHttpServlet
 		this.maps = map;
 	}
 
+	/**
+	 * api/maps
+	 * api/maps/:gameId
+	 * 
+	 * If a valid Game ID is included, the servlet will parse it and use
+	 * that to load the Maps. If no Game ID is provided, it loads the
+	 * Maps for the most recent Game
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
 		
-		MapServletActions actions = new MapServletActions();
 		User user;
-		JsonObject data;
-		int gameId;
+		int gameId = 0;
 		ArrayList<APIMap> apiMaps = new ArrayList<APIMap>();
 		
+		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.GAMES);
+		
+		// if there is a string after the endpoint
+		if(idStr.length() > 0)
+		{
+			gameId = parseIdFromString(idStr);
+		}
+
 		try
 		{
 			user = this.authenticateUser(request, response);
-			data = actions.getData(request);
-			
-			gameId = actions.getGameId(user, data);
-			
-			maps = new Map().load(gameId, 0);
-			for(Map m: maps)
+
+			if(user != null)
 			{
-				APIMap am = new APIMap(m);
-				apiMaps.add(am);
-			}
-			
-			// if we're only returning one map, don't return an array
-			if(apiMaps.size() == 1)
-			{
-				apiOut(gson.toJson(apiMaps.get(0)), response);
-			}
-			else
-			{
-				apiOut(gson.toJson(apiMaps), response);
+
+				maps = new Map().load(gameId, 0);
+				for(Map m: maps)
+				{
+					APIMap am = new APIMap(m);
+					apiMaps.add(am);
+				}
 			}
 		}
 		catch(LabyrinthException le)
 		{
 			errors.add(le.getMessage());
 			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
+		}
+		
+		// if we're only returning one map, don't return an array
+		if(apiMaps.size() == 1)
+		{
+			apiOut(gson.toJson(apiMaps.get(0)), response);
+		}
+		else
+		{
+			apiOut(gson.toJson(apiMaps), response);
 		}
 	}
 	
