@@ -13,6 +13,7 @@ import com.models.Map;
 import com.models.User;
 import com.models.api.APIErrorMessage;
 import com.models.api.APIMap;
+import com.models.enums.EndpointsWithIds;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthHttpServlet;
 
@@ -167,7 +168,7 @@ public class MapServlet extends LabyrinthHttpServlet
 		int mapId = 0;
 		
 		// get mapId from url
-		String idStr = splitUrl(request.getRequestURI(), "maps");
+		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.MAPS);
 		// if there is a string after the endpoint
 		if(idStr.length() > 0)
 		{

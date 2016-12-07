@@ -15,6 +15,7 @@ import com.helpers.Encryptor;
 import com.labels.LabyrinthMessages;
 import com.models.User;
 import com.models.api.APIErrorMessage;
+import com.models.enums.EndpointsWithIds;
 
 public abstract class LabyrinthHttpServlet extends HttpServlet
 {
@@ -138,9 +139,9 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 	}
 
 	// endpoint should be an enum - only certain endpoints can have an id
-	protected String splitUrl(String url, String endpoint)
+	protected String splitUrl(String url, EndpointsWithIds endpoint)
 	{
-		String[] parsedUrl = url.split(endpoint + "/");
+		String[] parsedUrl = url.split(endpoint.toString().toLowerCase() + "/");
 		String idString = "";
 		
 		if(parsedUrl.length > 1)
