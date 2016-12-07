@@ -14,6 +14,6 @@ public class MapServletContextListener extends LabyrinthServletContextListener
 	public void contextInitialized(ServletContextEvent event)
 	{
 		ServletContext context = event.getServletContext();
-		context.addServlet("mapServlet", new MapServlet(new ArrayList<Map>())).addMapping("/api/maps");
+		context.addServlet("mapServlet", new MapServlet(new ArrayList<Map>())).addMapping("/api/maps/*");
 	}
 }

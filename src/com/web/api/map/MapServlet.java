@@ -43,7 +43,7 @@ public class MapServlet extends LabyrinthHttpServlet
 		int gameId = 0;
 		ArrayList<APIMap> apiMaps = new ArrayList<APIMap>();
 		
-		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.GAMES);
+		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.MAPS);
 		
 		// if there is a string after the endpoint
 		if(idStr.length() > 0)
