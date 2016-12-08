@@ -40,6 +40,7 @@ public class MapServlet extends LabyrinthHttpServlet
 		errors.clear();
 		
 		User user;
+		int mapId = 0;
 		int gameId = 0;
 		ArrayList<APIMap> apiMaps = new ArrayList<APIMap>();
 		
@@ -48,16 +49,16 @@ public class MapServlet extends LabyrinthHttpServlet
 		// if there is a string after the endpoint
 		if(idStr.length() > 0)
 		{
-			gameId = parseIdFromString(idStr);
+			mapId = parseIdFromString(idStr);
 		}
 
 		try
 		{
 			user = this.authenticateUser(request, response);
 			
-			// if no gameId is provided, we need to get
-			// the most recent gameId for the user
-			if(gameId == 0)
+			// if no id is provided, we need to get the most recent
+			// gameId for the user and load with that
+			if(mapId == 0)
 			{
 				ArrayList<Game> games = new Game().load(user.getId(), 0);
 				gameId = games.get(games.size() - 1).getId();
@@ -66,7 +67,7 @@ public class MapServlet extends LabyrinthHttpServlet
 			if(user != null)
 			{
 
-				maps = new Map().load(gameId, 0);
+				maps = new Map().load(gameId, mapId);
 				for(Map m: maps)
 				{
 					APIMap am = new APIMap(m);

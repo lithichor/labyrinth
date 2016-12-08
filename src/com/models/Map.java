@@ -43,17 +43,26 @@ public class Map extends LabyrinthModel
 				+ "game_id, "
 				+ "created_at, "
 				+ "updated_at "
-				+ "FROM maps "
-				+ "WHERE game_id = ? "
-				+ "AND deleted_at IS NULL";
-		params.add(gameId);
-		
-		if(mapId > 0)
+				+ "FROM maps ";
+		// if a gameId is provided (also if both ids are provided - which
+		// should never happen, but it might)
+		if(gameId > 0)
 		{
-			sql += " AND id = ?";
+			sql += "WHERE game_id = ? ";
+			params.add(gameId);			
+		}
+		// if a mapId is provided
+		else if(mapId > 0)
+		{
+			sql += "WHERE id = ? ";
 			params.add(mapId);
 		}
-		sql += " ORDER BY id DESC";
+		// throw an exception if neither is provided
+		else
+		{
+			throw new LabyrinthException(messages.getMessage("map.no_ids"));
+		}
+		sql += "AND deleted_at IS NULL ORDER BY id DESC";
 
 		try
 		{
@@ -78,7 +87,7 @@ public class Map extends LabyrinthModel
 		
 		if(maps.size() == 0)
 		{
-			throw new LabyrinthException(messages.getMessage("map.no_maps"));
+			throw new LabyrinthException(messages.getMessage("map.no_maps_for_game"));
 		}
 		
 		return maps;
