@@ -13,7 +13,7 @@ import com.models.Map;
 import com.models.User;
 import com.models.api.APIErrorMessage;
 import com.models.api.APIMap;
-import com.models.enums.EndpointsWithIds;
+import com.models.constants.EndpointsWithIds;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthHttpServlet;
 
@@ -78,6 +78,7 @@ public class MapServlet extends LabyrinthHttpServlet
 		{
 			errors.add(le.getMessage());
 			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
+			return;
 		}
 		
 		// if we're only returning one map, don't return an array

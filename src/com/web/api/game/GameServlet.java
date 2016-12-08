@@ -13,7 +13,7 @@ import com.models.Map;
 import com.models.User;
 import com.models.api.APIErrorMessage;
 import com.models.api.APIGame;
-import com.models.enums.EndpointsWithIds;
+import com.models.constants.EndpointsWithIds;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthHttpServlet;
 
