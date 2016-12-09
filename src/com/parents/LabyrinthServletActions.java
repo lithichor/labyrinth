@@ -72,7 +72,6 @@ public class LabyrinthServletActions
 			// this exception is expected for the case when the user has not
 			// included credentials
 			throw new LabyrinthException(messages.getMessage("user.no_authorization"));
-			
 		}
 
 		if(authorization != null && authorization[0].contains("Basic"))
@@ -90,7 +89,7 @@ public class LabyrinthServletActions
 			catch(LabyrinthException le)
 			{
 				u = null;
-				throw new LabyrinthException(messages.getMessage("unknown.unknown_error"));
+				throw le;
 			}
 		}
 		return u;
