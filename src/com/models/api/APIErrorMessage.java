@@ -17,8 +17,15 @@ public class APIErrorMessage extends LabyrinthAPIModel
 	}
 	public APIErrorMessage(ArrayList<String> messages)
 	{
-		this.messages = new ArrayList<String>();
-		this.messages = messages;
+		if(messages.size() == 1)
+		{
+			this.message = messages.get(0);
+		}
+		else
+		{
+			this.messages = new ArrayList<String>();
+			this.messages = messages;
+		}
 	}
 
 	public void addMessage(String message)
