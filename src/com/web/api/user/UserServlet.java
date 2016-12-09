@@ -282,6 +282,10 @@ public class UserServlet extends LabyrinthHttpServlet
 					errors.add(messages.getMessage("unknown.horribly_wrong"));
 				}
 			}
+			else
+			{
+				errors.add(messages.getMessage("user.no_data"));
+			}
 		}
 
 		if(errors.size() > 0)
