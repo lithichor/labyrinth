@@ -27,25 +27,25 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 	{
 		errors.clear();
 		errors.add(messages.getMessage("method.no_get"));
-		response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
+		apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 	}
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
 		errors.add(messages.getMessage("method.no_post"));
-		response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
+		apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 	}
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
 		errors.add(messages.getMessage("method.no_delete"));
-		response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
+		apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 	}
 	public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
 		errors.add(messages.getMessage("method.no_put"));
-		response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
+		apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 	}
 	// HEAD is valid for all endpoints, because it doesn't
 	// return a body; it returns metadata only
@@ -57,7 +57,7 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 	{
 		errors.clear();
 		errors.add(messages.getMessage("method.no_options"));
-		response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
+		apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 	}
 	// Tomcat seems to disallow this method; not sure if
 	// that would happen with other web containers or not
@@ -65,7 +65,7 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 	{
 		errors.clear();
 		errors.add(messages.getMessage("method.no_trace"));
-		response.getWriter().write(gson.toJson(new APIErrorMessage(errors)));
+		apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 	}
 
 	protected void forward(HttpServletRequest request, HttpServletResponse response, String url) throws ServletException, IOException
