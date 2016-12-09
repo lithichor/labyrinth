@@ -110,6 +110,8 @@ public class MapServlet extends LabyrinthHttpServlet
 		catch(LabyrinthException le)
 		{
 			errors.add(le.getMessage());
+			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
+			return;
 		}
 		
 		// if authentication fails, return immediately
