@@ -45,6 +45,7 @@ public class MapValidationHelper extends LabyrinthValidationHelper
 			catch(NumberFormatException | IllegalStateException  | UnsupportedOperationException ex)
 			{
 				errors.add(messages.getMessage("map.gameId_not_integer"));
+				return null;
 			}
 		}
 		else

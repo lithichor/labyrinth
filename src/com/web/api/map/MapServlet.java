@@ -160,8 +160,6 @@ public class MapServlet extends LabyrinthHttpServlet
 				}
 				else
 				{
-					// replace this with map.generateMap();
-//					map.save();
 					map.generateMap();
 				}
 			}
