@@ -3,3 +3,4 @@
 .settings/
 build/
 src/error.html
+src/labyrinth*.sql
