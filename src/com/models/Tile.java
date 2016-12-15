@@ -1,8 +1,10 @@
 package com.models;
 
 import java.awt.Point;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
@@ -10,6 +12,7 @@ import com.parents.LabyrinthModel;
 public class Tile extends LabyrinthModel
 {
 	private static final long serialVersionUID = -3695485086454469425L;
+	private Integer id;
 	private boolean hasMonster;
 	private boolean visited;
 	private Integer mapId;
@@ -43,6 +46,8 @@ public class Tile extends LabyrinthModel
 		west = Boundary.OPENING;
 	}
 	
+	public Integer getId() { return this.id; }
+	public void setId(Integer id) { this.id = id; }
 	public Point getCoords() { return this.coords; }
 	public void setCoords(Point p) { this.coords = p; }
 	public void setCoords(int x, int y) { this.coords = new Point(x, y); }
@@ -88,6 +93,88 @@ public class Tile extends LabyrinthModel
 		System.out.println(sql);
 		
 		return success;
+	}
+	
+	public ArrayList<Tile> load(Integer mapId, Integer tileId, Integer userId) throws LabyrinthException
+	{
+		ArrayList<Tile> tiles = new ArrayList<>();
+		ArrayList<Object> params = new ArrayList<>();
+		ResultSet results = null;
+		String sql = "SELECT t.id, x, y, map_id, has_monster, visited, "
+				+ "north, south, east, west, t.created_at, t.updated_at "
+				+ "FROM tiles t\n\t"
+				+ "LEFT JOIN maps m ON m.id = t.map_id\n\t"
+				+ "LEFT JOIN games g on g.id = m.game_id\n\t"
+				+ "WHERE ";
+		if(mapId > 0)
+		{
+			sql += "map_id = ? ";
+			params.add(mapId);
+		}
+		else if(tileId > 0)
+		{
+			sql += "t.id = ? ";
+			params.add(tileId);
+		}
+		else
+		{
+			throw new LabyrinthException(messages.getMessage("tile.no_ids"));
+		}
+		sql += "\n\tAND user_id = ?\n\tAND t.deleted_at IS NULL";
+		params.add(userId);
+		
+		try
+		{
+			results = dbh.executeQuery(sql, params);
+			while(results.next())
+			{
+				int x = results.getInt("x");
+				int y = results.getInt("y");
+				Integer map = results.getInt("map_id");
+				
+				Tile t = new Tile(x, y, map);
+				
+				t.setId(results.getInt("id"));
+				
+				t.setNorth(getBoundary(results.getString("north")));
+				t.setSouth(getBoundary(results.getString("south")));
+				t.setEast(getBoundary(results.getString("east")));
+				t.setWest(getBoundary(results.getString("west")));
+				
+				t.setHasMonster(results.getInt("has_monster") == 1);
+				t.setVisited(results.getInt("visited") == 1);
+				t.setCreatedAt(new Date(results.getTimestamp("created_at").getTime()));
+				t.setUpdatedAt(new Date(results.getTimestamp("updated_at").getTime()));
+				
+				tiles.add(t);
+			}
+		}
+		catch(SQLException sqle)
+		{
+			sqle.printStackTrace();
+			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
+		}
+		
+		if(tiles.size() == 0)
+		{
+			throw new LabyrinthException(messages.getMessage("tile.no_tiles_for_map"));
+		}
+		
+		return tiles;
+	}
+	
+	private Boundary getBoundary(String bound)
+	{
+		switch(bound)
+		{
+		case "WALL":
+			return Boundary.WALL;
+		case "DOOR":
+			return Boundary.DOOR;
+		case "OPENING":
+			return Boundary.OPENING;
+		}
+		return null;
 	}
 	
 	public static void main(String[] args) throws LabyrinthException

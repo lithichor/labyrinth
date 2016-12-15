@@ -66,7 +66,6 @@ public class MapServlet extends LabyrinthHttpServlet
 
 			if(user != null)
 			{
-
 				maps = new Map().load(gameId, mapId);
 				for(Map m: maps)
 				{
