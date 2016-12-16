@@ -93,7 +93,7 @@ public class Hero extends LabyrinthModel
 				+ " FROM heros WHERE game_id = ? AND deleted_at IS NULL";
 		params.add(gameId);
 		
-		if(heroId != 0)
+		if(heroId > 0)
 		{
 			sql += " AND id = ?";
 			params.add(heroId);
