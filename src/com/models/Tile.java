@@ -163,6 +163,60 @@ public class Tile extends LabyrinthModel
 		return tiles;
 	}
 	
+	/**
+	 * This deletes the Tiles associated with a game. It must be called
+	 * before the Maps for the Game are deleted.
+	 * 
+	 * @param gameId
+	 * @throws LabyrinthException 
+	 */
+	public void deleteTiles(Integer gameId) throws LabyrinthException
+	{
+		// get the IDs of the maps belonging to the game
+		String sql = "SELECT id FROM maps WHERE game_id = ? AND deleted_at IS NULL";
+		ArrayList<Object> params = new ArrayList<>();
+		params.add(gameId);
+		ResultSet results = null;
+		ArrayList<Integer> mapIds = new ArrayList<>();
+		
+		try
+		{
+			results = dbh.executeQuery(sql, params);
+			while(results.next())
+			{
+				mapIds.add(results.getInt("id"));
+			}
+			// if we don't find any Maps, throw an exception
+			if(mapIds.size() == 0)
+			{
+				throw new LabyrinthException(messages.getMessage("map.no_maps_for_game"));
+			}
+			
+			// now delete the Tiles
+			sql = "UPDATE tiles SET deleted_at = now() where map_id in (";
+			params.clear();
+			for(int x = 0; x < mapIds.size(); x++)
+			{
+				if(x == 0)
+				{
+					sql += "?";
+				}
+				else
+				{
+					sql += ", ?";
+				}
+				params.add(mapIds.get(x));
+			}
+			sql += ")";
+			dbh.execute(sql, params);
+		}
+		catch(SQLException sqle)
+		{
+			sqle.printStackTrace();
+			throw new LabyrinthException(sqle);
+		}
+	}
+	
 	private Boundary getBoundary(String bound)
 	{
 		switch(bound)

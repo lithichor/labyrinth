@@ -93,8 +93,17 @@ public class Map extends LabyrinthModel
 		return maps;
 	}
 	
+	/**
+	 * Delete the Maps belonging to a Game.
+	 * 
+	 * @param gameId
+	 * @throws LabyrinthException
+	 */
 	public void deleteMaps(Integer gameId) throws LabyrinthException
 	{
+		// delete the tiles of the maps we're going to delete
+		new Tile(0, 0, null).deleteTiles(gameId);
+		
 		String sql = "UPDATE maps SET deleted_at = now() WHERE game_id = ?";
 		ArrayList<Object> params = new ArrayList<Object>();
 		params.add(gameId);
