@@ -185,6 +185,14 @@ public class MapServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		
+		// do not allow this endpoint for now
+		boolean valid = true;
+		if(valid)
+		{
+			apiOut(gson.toJson(new APIErrorMessage(messages.getMessage("method.no_put"))), response);
+			return;
+		}
+		
 		MapServletActions actions = new MapServletActions();
 		User user = null;
 		JsonObject data = null;
