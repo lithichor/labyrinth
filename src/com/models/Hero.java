@@ -70,6 +70,19 @@ public class Hero extends LabyrinthModel
 	}
 	
 	/**
+	 * A convenience method to get the hero for a game. There is only one
+	 * hero per game, but the hero belongs to the game, not the other way
+	 * around
+	 * @param gameId
+	 * @return the hero associated with the game
+	 */
+	public Hero load(Integer gameId) throws LabyrinthException
+	{
+		ArrayList<Hero> heros = this.load(gameId, 0);
+		return heros.get(heros.size() - 1);
+	}
+	
+	/**
 	 * Load a list of games based on the id of the authenticated (or active) user
 	 * @param gameId - the game reference for the hero (a hero can only
 	 * belong to one game)
@@ -128,17 +141,47 @@ public class Hero extends LabyrinthModel
 		return heros;
 	}
 	
-	/**
-	 * A convenience method to get the hero for a game. There is only one
-	 * hero per game, but the hero belongs to the game, not the other way
-	 * around
-	 * @param gameId
-	 * @return the hero associated with the game
-	 */
-	public Hero load(Integer gameId) throws LabyrinthException
+	public ArrayList<Hero> loadByUser(Integer userId) throws LabyrinthException
 	{
-		ArrayList<Hero> heros = this.load(gameId, 0);
-		return heros.get(heros.size() - 1);
+		ArrayList<Hero> heros = new ArrayList<>();
+		String sql = "SELECT h.id, game_id, "
+				+ "strength, magic, attack, defense, "
+				+ "h.created_at, h.updated_at "
+				+ "FROM heros h\n\t"
+				+ "LEFT JOIN games g on g.id = h.game_id\n\t"
+				+ "WHERE user_id = ? AND g.deleted_at IS NULL";
+		ArrayList<Object> params = new ArrayList<>();
+		params.add(userId);
+		ResultSet results = null;
+		
+		if(userId <= 0)
+		{
+			throw new LabyrinthException(messages.getMessage("hero.no_user_id"));
+		}
+		
+		try
+		{
+			results = dbh.executeQuery(sql, params);
+			while(results.next())
+			{
+				Hero hero = new Hero();
+				hero.setId(results.getInt("h.id"));
+				hero.setGameId(results.getInt("game_id"));
+				hero.setCreatedAt(new Date(results.getTimestamp("h.created_at").getTime()));
+				hero.setUpdatedAt(new Date(results.getTimestamp("h.updated_at").getTime()));
+				hero.setStrength(results.getInt("strength"));
+				hero.setMagic(results.getInt("magic"));
+				hero.setAttack(results.getInt("attack"));
+				hero.setDefense(results.getInt("defense"));
+				heros.add(hero);
+			}
+		}
+		catch(SQLException sqle)
+		{
+			sqle.printStackTrace();
+			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
+		}
+		return heros;
 	}
 	
 	public boolean update() throws LabyrinthException

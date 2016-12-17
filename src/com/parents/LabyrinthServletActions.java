@@ -2,7 +2,6 @@ package com.parents;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +12,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.helpers.Encryptor;
 import com.labels.LabyrinthMessages;
-import com.models.Game;
 import com.models.User;
 
 public class LabyrinthServletActions
@@ -110,12 +108,6 @@ public class LabyrinthServletActions
 			{
 				throw new LabyrinthException(messages.getMessage("map.gameId_not_integer"));
 			}
-		}
-		else
-		{
-			// otherwise load the last active game for the user
-			ArrayList<Game> games = new Game().load(user.getId(), 0);
-			gameId = games.get(games.size() - 1).getId();
 		}
 		
 		return gameId;

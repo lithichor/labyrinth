@@ -1,6 +1,7 @@
 package com.web.api.hero;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +33,7 @@ public class HeroServlet extends LabyrinthHttpServlet
 		User user;
 		JsonObject data;
 		int gameId = 0;
+		ArrayList<Hero> heros = new ArrayList<>();
 		
 		try
 		{
@@ -41,8 +43,33 @@ public class HeroServlet extends LabyrinthHttpServlet
 
 			gameId = actions.getGameId(user, data);
 			
-			hero = new Hero().load(gameId);
-			apiOut(gson.toJson(new APIHero(hero)), response);
+			// if we have a gameId, load a single Hero with it
+			if(gameId > 0)
+			{
+				hero = new Hero().load(gameId);
+				apiOut(gson.toJson(new APIHero(hero)), response);
+			}
+			// otherwise, load an array of Heros with the userId
+			else
+			{
+				heros = new Hero().loadByUser(user.getId());
+				
+				// if only one Hero found, do not return an array list
+				if(heros.size() == 1)
+				{
+					apiOut(gson.toJson(new APIHero(heros.get(0))), response);
+				}
+				else
+				{
+					// make array list of apiHeros and output it
+					ArrayList<APIHero> apiHeros = new ArrayList<APIHero>();
+					for(Hero h: heros)
+					{
+						apiHeros.add(new APIHero(h));
+					}
+					apiOut(gson.toJson(apiHeros), response);
+				}
+			}
 		}
 		catch(LabyrinthException le)
 		{
