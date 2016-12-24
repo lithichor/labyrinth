@@ -14,9 +14,6 @@ public class Hero extends LabyrinthModel
 
 	private Integer id;
 	private Integer gameId;
-	private Date createdAt;
-	private Date updatedAt;
-	private Date deletedAt;
 	
 	private Integer strength = 0;
 	private Integer magic = 0;
@@ -27,12 +24,6 @@ public class Hero extends LabyrinthModel
 	public void setId(Integer id) { this.id = id; }
 	public Integer getGameId() { return gameId; }
 	public void setGameId(Integer gameId) { this.gameId = gameId; }
-	public Date getCreatedAt() { return createdAt; }
-	public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
-	public Date getUpdatedAt() { return updatedAt; }
-	public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
-	public Date getDeletedAt() { return deletedAt; }
-	public void setDeletedAt(Date deletedAt) { this.deletedAt = deletedAt; }
 	public Integer getStrength() { return strength; }
 	public void setStrength(Integer strength) { this.strength = strength; }
 	public Integer getMagic() { return magic; }

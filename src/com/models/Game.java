@@ -14,35 +14,20 @@ public class Game extends LabyrinthModel
 	private static final long serialVersionUID = -8019526580596155206L;
 	private Integer id;
 	private Integer userId;
-	private Date createdAt;
-	private Date updatedAt;
-	private Date deletedAt;
-
-	public Game()
-	{
-		this.setCreatedAt(new Date());
-		this.setUpdatedAt(new Date());
-	}
 
 	public Integer getId() { return id; }
 	public void setId(Integer id) { this.id = id; }
 	public Integer getUserId() { return userId; }
 	public void setUserId(Integer userId) { this.userId = userId; }
-	public Date getCreatedAt() { return createdAt; }
-	public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
-	public Date getUpdatedAt() { return updatedAt; }
-	public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
-	public Date getDeletedAt() { return deletedAt; }
-	public void setDeletedAt(Date deletedAt) { this.deletedAt = deletedAt; }
 	
-/**
- * Load a list of games based on the id of the authenticated user
- * @param userId - the id of the authenticated user
- * @param gameId - the id of the game to load. If gameId is zero, return
- * 				   all active games for the user
- * @return a list of active games for the authenticate user
- * @throws LabyrinthException
- */
+	/**
+	 * Load a list of games based on the id of the authenticated user
+	 * @param userId - the id of the authenticated user
+	 * @param gameId - the id of the game to load. If gameId is zero, return
+	 * 				   all active games for the user
+	 * @return a list of active games for the authenticate user
+	 * @throws LabyrinthException
+	 */
 	public ArrayList<Game> load(Integer userId, Integer gameId) throws LabyrinthException
 	{
 		ArrayList<Game> games = new ArrayList<>();
@@ -50,13 +35,13 @@ public class Game extends LabyrinthModel
 		ArrayList<Object> params = new ArrayList<>();
 		ResultSet results = null;
 		params.add(userId);
-		
+
 		if(gameId > 0)
 		{
 			sql += " AND id = ?";
 			params.add(gameId);
 		}
-		
+
 		sql += " ORDER BY ID ASC";
 
 		try

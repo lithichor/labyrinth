@@ -16,21 +16,12 @@ public class Map extends LabyrinthModel
 
 	private Integer id;
 	private Integer gameId;
-	private Date createdAt;
-	private Date updatedAt;
-	private Date deletedAt;
 	private ArrayList<ArrayList<Tile>> grid = new ArrayList<>();
 
 	public Integer getId() { return id; }
 	public void setId(Integer id) { this.id = id; }
 	public Integer getGameId() { return gameId; }
 	public void setGameId(Integer gameId) { this.gameId = gameId; }
-	public Date getCreatedAt() { return createdAt; }
-	public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
-	public Date getUpdatedAt() { return updatedAt; }
-	public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
-	public Date getDeletedAt() { return deletedAt; }
-	public void setDeletedAt(Date deletedAt) { this.deletedAt = deletedAt; }
 	public ArrayList<ArrayList<Tile>> getGrid() { return this.grid; }
 	public void setGrid(ArrayList<ArrayList<Tile>> grid) { this.grid = grid; }
 	
