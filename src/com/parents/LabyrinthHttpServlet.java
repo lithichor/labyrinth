@@ -2,7 +2,6 @@ package com.parents;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,9 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-import com.helpers.Encryptor;
 import com.labels.LabyrinthMessages;
-import com.models.User;
 import com.models.api.APIErrorMessage;
 
 public abstract class LabyrinthHttpServlet extends HttpServlet
