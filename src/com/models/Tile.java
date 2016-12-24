@@ -157,7 +157,15 @@ public class Tile extends LabyrinthModel
 		
 		if(tiles.size() == 0)
 		{
-			throw new LabyrinthException(messages.getMessage("tile.no_tiles_for_map"));
+			// different error message depending on which ID was used
+			if(mapId > 0)
+			{
+				throw new LabyrinthException(messages.getMessage("tile.no_tiles_for_map"));
+			}
+			if(tileId > 0)
+			{
+				throw new LabyrinthException(messages.getMessage("tile.no_tiles_found"));
+			}
 		}
 		
 		return tiles;
