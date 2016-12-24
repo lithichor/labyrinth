@@ -29,9 +29,7 @@ public class HeroServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		
-		HeroServletActions actions = new HeroServletActions();
 		User user;
-		JsonObject data;
 		int gameId = 0;
 		ArrayList<Hero> heros = new ArrayList<>();
 		
@@ -39,11 +37,10 @@ public class HeroServlet extends LabyrinthHttpServlet
 		{
 			// might still need a check here
 			user = this.authenticateUser(request, response);
-			data = actions.getData(request);
-
-			gameId = actions.getGameId(user, data);
 			
 			// if we have a gameId, load a single Hero with it
+			// TODO: there will no longer be a game ID; this will
+			// take a hero ID instead (Labyrinth #139)
 			if(gameId > 0)
 			{
 				hero = new Hero().load(gameId);
