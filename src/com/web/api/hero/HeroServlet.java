@@ -12,6 +12,7 @@ import com.models.Hero;
 import com.models.User;
 import com.models.api.APIErrorMessage;
 import com.models.api.APIHero;
+import com.models.constants.EndpointsWithIds;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthHttpServlet;
 
@@ -30,24 +31,39 @@ public class HeroServlet extends LabyrinthHttpServlet
 		errors.clear();
 		
 		User user;
-		int gameId = 0;
+		int heroId = 0;
 		ArrayList<Hero> heros = new ArrayList<>();
 		HeroServletActions actions = new HeroServletActions();
 		
+		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.HEROS);
+		
+		// if there is a string after the endpoint
+		if(idStr.length() > 0)
+		{
+			heroId = parseIdFromString(idStr);
+		}
+
 		try
 		{
-			// might still need a check here
+			// might still need a check for null here
 			user = actions.authenticateUser(request);
 			
-			// if we have a gameId, load a single Hero with it
-			// TODO: there will no longer be a game ID; this will
-			// take a hero ID instead (Labyrinth #139)
-			if(gameId > 0)
+			// if we have a hero ID, load a single Hero with it
+			if(heroId > 0)
 			{
-				hero = new Hero().load(gameId);
-				apiOut(gson.toJson(new APIHero(hero)), response);
+				heros = new Hero().load(0, heroId);
+				// return the hero if the list has an element in it
+				if(heros.size() > 0)
+				{
+					apiOut(gson.toJson(new APIHero(heros.get(0))), response);
+				}
+				else
+				{
+					errors.add(messages.getMessage("hero.no_heros"));
+				}
 			}
 			// otherwise, load an array of Heros with the userId
+			// (i.e., load all heros for this user)
 			else
 			{
 				heros = new Hero().loadByUser(user.getId());

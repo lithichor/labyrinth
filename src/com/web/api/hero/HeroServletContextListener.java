@@ -12,7 +12,7 @@ public class HeroServletContextListener extends LabyrinthServletContextListener
 	public void contextInitialized(ServletContextEvent event)
 	{
 		ServletContext context = event.getServletContext();
-		context.addServlet("heroServlet", new HeroServlet(new Hero())).addMapping("/api/heros");
+		context.addServlet("heroServlet", new HeroServlet(new Hero())).addMapping("/api/heros/*");
 		context.addServlet("heroGameServlet", new HerosGameServlet()).addMapping("/api/heros/game/*");
 	}
 }

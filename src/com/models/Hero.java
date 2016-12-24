@@ -103,13 +103,17 @@ public class Hero extends LabyrinthModel
 				+ " magic,"
 				+ " attack,"
 				+ " defense"
-				+ " FROM heros WHERE game_id = ? AND deleted_at IS NULL";
-		params.add(gameId);
+				+ " FROM heros WHERE deleted_at IS NULL";
 		
 		if(heroId > 0)
 		{
 			sql += " AND id = ?";
 			params.add(heroId);
+		}
+		if(gameId > 0)
+		{
+			sql += " AND game_id = ?";
+			params.add(gameId);
 		}
 		
 		sql += " ORDER BY id DESC";
