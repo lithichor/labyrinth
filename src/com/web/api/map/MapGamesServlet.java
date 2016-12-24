@@ -48,7 +48,7 @@ public class MapGamesServlet extends LabyrinthHttpServlet
 
 		try
 		{
-			user = actions.authenticateUser(request, response);
+			user = actions.authenticateUser(request);
 
 			// if no gameId is provided, get the most recent
 			// gameId for the user as the default action

@@ -43,6 +43,7 @@ public class MapServlet extends LabyrinthHttpServlet
 		int mapId = 0;
 		int gameId = 0;
 		ArrayList<APIMap> apiMaps = new ArrayList<APIMap>();
+		MapServletActions actions = new MapServletActions();
 		
 		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.MAPS);
 		
@@ -54,7 +55,7 @@ public class MapServlet extends LabyrinthHttpServlet
 
 		try
 		{
-			user = this.authenticateUser(request, response);
+			user = actions.authenticateUser(request);
 			
 			// if no id is provided, we need to get the most recent
 			// gameId for the user and load with that
@@ -104,7 +105,7 @@ public class MapServlet extends LabyrinthHttpServlet
 		
 		try
 		{
-			user = authenticateUser(request, response);
+			user = actions.authenticateUser(request);
 		}
 		catch(LabyrinthException le)
 		{
@@ -210,7 +211,7 @@ public class MapServlet extends LabyrinthHttpServlet
 		// load the maps array
 		try
 		{
-			user = this.authenticateUser(request, response);
+			user = actions.authenticateUser(request);
 			data = actions.getData(request);
 			
 			gameId = actions.getGameId(user, data);

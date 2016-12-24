@@ -77,61 +77,6 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 		rd.forward(request, response);
 	}
 
-	protected User authenticateUser(HttpServletRequest request, HttpServletResponse response) throws LabyrinthException
-	{
-		boolean debug = false;
-		
-		Encryptor e = Encryptor.getInstance();
-		String[] authorization = null;
-		User u = null;
-		
-		if(debug)
-		{
-			Enumeration<String>requestHeaders = request.getHeaderNames();
-			while(requestHeaders.hasMoreElements())
-			{
-				String element = requestHeaders.nextElement();
-				String header = request.getHeader(element);
-				System.out.println(element + ": " + header);
-			}
-		}
-
-		try
-		{
-			authorization = request.getHeader("authorization").split(" ");
-		}
-		catch(NullPointerException npe)
-		{
-			// this exception is expected for the case when the user has not
-			// included credentials
-			throw new LabyrinthException(messages.getMessage("user.no_authorization"));
-			
-		}
-
-		if(authorization != null && authorization[0].contains("Basic"))
-		{
-			String auth = e.decrypt(authorization[1]);
-			String email = auth.split(":")[0];
-			String password = auth.split(":")[1];
-			if(email == null || "".equals(email) || password == null || "".equals(password))
-			{
-				throw new LabyrinthException(messages.getMessage("user.partial_authorization"));
-			}
-			u = new User();
-			u.setEmail(email);
-			u.setPassword(e.encrypt(password));
-			try
-			{
-				u = u.login();
-			}
-			catch(LabyrinthException le)
-			{
-				throw le;
-			}
-		}
-		return u;
-	}
-	
 	public void apiOut(String output, HttpServletResponse response) throws IOException
 	{
 		response.getWriter().println(output);

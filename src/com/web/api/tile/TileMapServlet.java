@@ -49,7 +49,7 @@ public class TileMapServlet extends LabyrinthHttpServlet
 		
 		try
 		{
-			user = actions.authenticateUser(request, response);
+			user = actions.authenticateUser(request);
 			
 			// if authentication fails, return immediately
 			if(user == null || errors.size() > 0)

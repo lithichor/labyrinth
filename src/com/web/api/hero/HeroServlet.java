@@ -32,11 +32,12 @@ public class HeroServlet extends LabyrinthHttpServlet
 		User user;
 		int gameId = 0;
 		ArrayList<Hero> heros = new ArrayList<>();
+		HeroServletActions actions = new HeroServletActions();
 		
 		try
 		{
 			// might still need a check here
-			user = this.authenticateUser(request, response);
+			user = actions.authenticateUser(request);
 			
 			// if we have a gameId, load a single Hero with it
 			// TODO: there will no longer be a game ID; this will
@@ -95,7 +96,7 @@ public class HeroServlet extends LabyrinthHttpServlet
 
 		try
 		{
-			user = this.authenticateUser(request, response);
+			user = actions.authenticateUser(request);
 			data = actions.getData(request);
 			
 			gameId = actions.getGameId(user, data);

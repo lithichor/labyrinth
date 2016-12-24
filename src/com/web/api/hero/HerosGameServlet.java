@@ -25,6 +25,7 @@ public class HerosGameServlet extends LabyrinthHttpServlet
 		int gameId = 0;
 		ArrayList<Hero> heros = new ArrayList<>();
 		ArrayList<APIHero> apiHeros = new ArrayList<>();
+		HeroServletActions actions = new HeroServletActions();
 		
 		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.HEROS_GAMES);
 		
@@ -36,7 +37,7 @@ public class HerosGameServlet extends LabyrinthHttpServlet
 
 		try
 		{
-			this.authenticateUser(request, response);
+			actions.authenticateUser(request);
 			
 			// if we have a gameId, load the Heros with it
 			if(gameId > 0)

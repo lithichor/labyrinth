@@ -45,6 +45,7 @@ public class GameServlet extends LabyrinthHttpServlet
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
+		GameServletActions actions = new GameServletActions();
 		
 		// this will get the id from the end of the url
 		int id = 0;
@@ -61,7 +62,7 @@ public class GameServlet extends LabyrinthHttpServlet
 		
 		try
 		{
-			user = this.authenticateUser(request, response);
+			user = actions.authenticateUser(request);
 		}
 		catch(LabyrinthException le)
 		{
@@ -178,12 +179,13 @@ public class GameServlet extends LabyrinthHttpServlet
 		
 		int numberOfGames = 0;
 		APIGame g = null;
+		GameServletActions actions = new GameServletActions();
 		
 		user = null;
 		
 		try
 		{
-			user = this.authenticateUser(request, response);
+			user = actions.authenticateUser(request);
 		}
 		catch(LabyrinthException le)
 		{
@@ -258,12 +260,12 @@ public class GameServlet extends LabyrinthHttpServlet
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-		
 		user = null;
+		GameServletActions actions = new GameServletActions();
 		
 		try
 		{
-			user = this.authenticateUser(request, response);
+			user = actions.authenticateUser(request);
 		}
 		catch(LabyrinthException le)
 		{

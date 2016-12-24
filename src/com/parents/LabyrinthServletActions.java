@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -42,7 +41,7 @@ public class LabyrinthServletActions
 		return data;
 	}
 
-	public User authenticateUser(HttpServletRequest request, HttpServletResponse response) throws LabyrinthException
+	public User authenticateUser(HttpServletRequest request) throws LabyrinthException
 	{
 		boolean debug = false;
 		

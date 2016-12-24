@@ -38,6 +38,7 @@ public class UserServlet extends LabyrinthHttpServlet
 		errors.clear();
 
 		boolean debug = false;
+		UserServletActions actions = new UserServletActions();
 
 		if(debug)
 		{
@@ -54,7 +55,7 @@ public class UserServlet extends LabyrinthHttpServlet
 
 		try
 		{
-			user = this.authenticateUser(request, response);
+			user = actions.authenticateUser(request);
 		}
 		catch(LabyrinthException le)
 		{
@@ -203,7 +204,7 @@ public class UserServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 
-		UserServletPutActions actions = new UserServletPutActions();
+		UserServletActions actions = new UserServletActions();
 
 		// use reader to get data
 		JsonObject data = null;
@@ -213,7 +214,7 @@ public class UserServlet extends LabyrinthHttpServlet
 
 		try
 		{
-			user = actions.authenticateUser(request, response);
+			user = actions.authenticateUser(request);
 		}
 		catch(LabyrinthException le)
 		{
@@ -303,12 +304,12 @@ public class UserServlet extends LabyrinthHttpServlet
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-
 		user = null;
+		UserServletActions actions = new UserServletActions();
 
 		try
 		{
-			user = this.authenticateUser(request, response);
+			user = actions.authenticateUser(request);
 		}
 		catch(LabyrinthException le)
 		{
