@@ -4,8 +4,6 @@ import com.parents.LabyrinthModel;
 
 public class Monster extends LabyrinthModel
 {
-	private static final long serialVersionUID = 6151896040337303266L;
-
 	private Integer id;
 	private Integer health;
 	private Integer attack;

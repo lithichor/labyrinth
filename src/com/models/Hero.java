@@ -10,8 +10,6 @@ import com.parents.LabyrinthModel;
 
 public class Hero extends LabyrinthModel
 {
-	private static final long serialVersionUID = 3345291415215532854L;
-
 	private Integer id;
 	private Integer gameId;
 	

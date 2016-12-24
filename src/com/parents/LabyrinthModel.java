@@ -1,15 +1,12 @@
 package com.parents;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import com.database.DatabaseHelper;
 import com.labels.LabyrinthMessages;
 
-public abstract class LabyrinthModel implements Serializable
+public abstract class LabyrinthModel
 {
-	private static final long serialVersionUID = 1L;
-	
 	protected DatabaseHelper dbh;
 	protected LabyrinthMessages messages = new LabyrinthMessages();
 	

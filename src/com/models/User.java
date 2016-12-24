@@ -1,6 +1,5 @@
 package com.models;
 
-import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,9 +8,8 @@ import java.util.Date;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
 
-public class User extends LabyrinthModel implements Serializable
+public class User extends LabyrinthModel
 {
-	private static final long serialVersionUID = 7786071431298988718L;
 	private Integer id;
 	private String firstName;
 	private String lastName;

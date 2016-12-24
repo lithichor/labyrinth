@@ -11,7 +11,6 @@ import com.parents.LabyrinthModel;
 
 public class Game extends LabyrinthModel
 {
-	private static final long serialVersionUID = -8019526580596155206L;
 	private Integer id;
 	private Integer userId;
 

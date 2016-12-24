@@ -11,7 +11,6 @@ import com.parents.LabyrinthModel;
 
 public class Tile extends LabyrinthModel
 {
-	private static final long serialVersionUID = -3695485086454469425L;
 	private Integer id;
 	private boolean hasMonster;
 	private boolean visited;

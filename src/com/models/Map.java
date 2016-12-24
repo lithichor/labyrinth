@@ -12,8 +12,6 @@ import com.parents.LabyrinthModel;
 
 public class Map extends LabyrinthModel
 {
-	private static final long serialVersionUID = 8887895302650203935L;
-
 	private Integer id;
 	private Integer gameId;
 	private ArrayList<ArrayList<Tile>> grid = new ArrayList<>();
