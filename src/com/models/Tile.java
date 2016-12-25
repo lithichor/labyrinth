@@ -89,8 +89,6 @@ public class Tile extends LabyrinthModel
 			throw new LabyrinthException(sqle);
 		}
 		
-		System.out.println(sql);
-		
 		return success;
 	}
 	

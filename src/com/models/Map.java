@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Random;
 
 import com.models.Tile.Boundary;
+import com.models.constants.GeneralConstants;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
 
@@ -170,10 +171,10 @@ public class Map extends LabyrinthModel
 		boolean success = save();
 		
 		// then generate the grid of Tiles (need the Map's ID)
-		for(int x = 0; x < 10; x++)
+		for(int x = 0; x < GeneralConstants.GRID_SIZE; x++)
 		{
 			ArrayList<Tile> column = new ArrayList<>();
-			for(int y = 0; y < 10; y++)
+			for(int y = 0; y < GeneralConstants.GRID_SIZE; y++)
 			{
 				Tile t = new Tile(x, y, this.id);
 				column.add(t);
