@@ -187,8 +187,8 @@ public class MapServlet extends LabyrinthHttpServlet
 		errors.clear();
 		
 		// do not allow this endpoint for now
-		boolean valid = true;
-		if(valid)
+		boolean invalid = true;
+		if(invalid)
 		{
 			apiOut(gson.toJson(new APIErrorMessage(messages.getMessage("method.no_put"))), response);
 			return;
@@ -237,6 +237,47 @@ public class MapServlet extends LabyrinthHttpServlet
 				new APIMap(m);
 				// finish me
 			}
+		}
+	}
+	
+	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
+	{
+		errors.clear();
+		MapServletActions actions = new MapServletActions();
+		int mapId = 0;
+		
+		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.MAPS);
+		
+		// if there is a string after the endpoint
+		if(idStr.length() > 0)
+		{
+			mapId = parseIdFromString(idStr);
+		}
+		// don't continue if there's no ID
+		if(mapId == 0)
+		{
+			errors.add(messages.getMessage("map.need_id_to_delete"));
+		}
+		else
+		{
+			try
+			{
+				actions.authenticateUser(request);
+				maps = new Map().load(0, mapId);
+				if(maps.size() == 0)
+				{
+					errors.add(messages.getMessage("map.no_maps"));
+				}
+				maps.get(0).delete();
+			}
+			catch(LabyrinthException le)
+			{
+				errors.add(le.getMessage());
+			}
+		}
+		if(errors.size() > 0)
+		{
+			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 		}
 	}
 }

@@ -108,6 +108,27 @@ public class Map extends LabyrinthModel
 		}
 	}
 	
+	/**
+	 * Delete this Map
+	 * @throws LabyrinthException
+	 */
+	public void delete() throws LabyrinthException
+	{
+		String sql = "UPDATE maps SET deleted_at = now(), updated_at = now()"
+				+ "WHERE id = ?";
+		ArrayList<Object> params = new ArrayList<>();
+		params.add(this.id);
+		
+		try
+		{
+			dbh.execute(sql, params);
+		}
+		catch(SQLException sqle)
+		{
+			throw new LabyrinthException(sqle);
+		}
+	}
+	
 	public boolean save() throws LabyrinthException
 	{
 		boolean success = false;
