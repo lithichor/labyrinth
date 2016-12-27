@@ -13,11 +13,14 @@ public class Hero extends LabyrinthModel
 	private Integer id;
 	private Integer gameId;
 	
+	private Integer health = 0;
 	private Integer strength = 0;
 	private Integer magic = 0;
 	private Integer attack = 0;
 	private Integer defense = 0;
 
+	public Integer getHealth() { return this.health; }
+	public void setHealth(Integer health) { this.health = health; }
 	public Integer getId() { return id; }
 	public void setId(Integer id) { this.id = id; }
 	public Integer getGameId() { return gameId; }
@@ -34,10 +37,11 @@ public class Hero extends LabyrinthModel
 	public boolean save() throws LabyrinthException
 	{
 		boolean success = false;
-		String sql = "INSERT INTO heros (game_id, strength, magic, attack, defense, created_at, updated_at) "
-				+ "VALUES(?, ?, ?, ?, ?, now(), now())";
+		String sql = "INSERT INTO heros (game_id, health, strength, magic, attack, defense, created_at, updated_at) "
+				+ "VALUES(?, ?, ?, ?, ?, ?, now(), now())";
 		ArrayList<Object> params = new ArrayList<Object>();
 		params.add(this.gameId);
+		params.add(this.health);
 		params.add(this.strength);
 		params.add(this.magic);
 		params.add(this.attack);
@@ -88,6 +92,7 @@ public class Hero extends LabyrinthModel
 				+ " game_id,"
 				+ " created_at,"
 				+ " updated_at,"
+				+ " health,"
 				+ " strength,"
 				+ " magic,"
 				+ " attack,"
@@ -118,6 +123,7 @@ public class Hero extends LabyrinthModel
 				hero.setGameId(results.getInt("game_id"));
 				hero.setCreatedAt(new Date(results.getTimestamp("created_at").getTime()));
 				hero.setUpdatedAt(new Date(results.getTimestamp("updated_at").getTime()));
+				hero.setHealth(results.getInt("health"));
 				hero.setStrength(results.getInt("strength"));
 				hero.setMagic(results.getInt("magic"));
 				hero.setAttack(results.getInt("attack"));
@@ -138,7 +144,7 @@ public class Hero extends LabyrinthModel
 	{
 		ArrayList<Hero> heros = new ArrayList<>();
 		String sql = "SELECT h.id, game_id, "
-				+ "strength, magic, attack, defense, "
+				+ "health, strength, magic, attack, defense, "
 				+ "h.created_at, h.updated_at "
 				+ "FROM heros h\n\t"
 				+ "LEFT JOIN games g on g.id = h.game_id\n\t"
@@ -162,6 +168,7 @@ public class Hero extends LabyrinthModel
 				hero.setGameId(results.getInt("game_id"));
 				hero.setCreatedAt(new Date(results.getTimestamp("h.created_at").getTime()));
 				hero.setUpdatedAt(new Date(results.getTimestamp("h.updated_at").getTime()));
+				hero.setHealth(results.getInt("health"));
 				hero.setStrength(results.getInt("strength"));
 				hero.setMagic(results.getInt("magic"));
 				hero.setAttack(results.getInt("attack"));
@@ -184,11 +191,23 @@ public class Hero extends LabyrinthModel
 		String sql = "UPDATE heros SET ";
 		ArrayList<Object> params = new ArrayList<Object>();
 		
+		
+		if(this.getHealth() != null && !(this.getHealth() == 0))
+		{
+			sql += "health = ? ";
+			params.add(this.getHealth());
+			first = false;
+		}
 		if(this.getStrength() != null && !(this.getStrength() == 0))
 		{
+			if(!first)
+			{
+				sql += ", ";
+				first = false;
+			}
 			sql += "strength = ? ";
-			params.add(this.getStrength());
 			first = false;
+			params.add(this.getStrength());
 		}
 		if(this.getMagic() != null && !(this.getMagic() == 0))
 		{
@@ -198,6 +217,7 @@ public class Hero extends LabyrinthModel
 				first = false;
 			}
 			sql += "magic = ? ";
+			first = false;
 			params.add(this.getMagic());
 		}
 		if(this.getAttack() != null && !(this.getAttack() == 0))
@@ -208,6 +228,7 @@ public class Hero extends LabyrinthModel
 				first = false;
 			}
 			sql += "attack = ? ";
+			first = false;
 			params.add(this.getAttack());
 		}
 		if(this.getDefense() != null && !(this.getDefense() == 0))
@@ -218,6 +239,7 @@ public class Hero extends LabyrinthModel
 				first = false;
 			}
 			sql += "defense = ? ";
+			first = false;
 			params.add(this.getDefense());
 		}
 		
@@ -275,6 +297,10 @@ public class Hero extends LabyrinthModel
 		if(this.gameId == null || this.gameId == 0)
 		{
 			this.gameId = other.getGameId();
+		}
+		if(other.getHealth() != null && other.getHealth() != 0)
+		{
+			this.health = other.getHealth();
 		}
 		if(other.getStrength() != null && other.getStrength() != 0)
 		{

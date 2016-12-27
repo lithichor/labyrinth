@@ -65,6 +65,17 @@ public class HeroValidationHelper extends LabyrinthValidationHelper
 			throw new LabyrinthException(messages.getMessage("hero.hero_needs_id"));
 		}
 		
+		if(data.has("health"))
+		{
+			try
+			{
+				hero.setHealth(data.get("health").getAsInt());
+			}
+			catch(NumberFormatException | IllegalStateException  | UnsupportedOperationException ex)
+			{
+				errors.add(messages.getMessage("hero.strength_is_not_a_number"));
+			}
+		}
 		if(data.has("strength"))
 		{
 			try

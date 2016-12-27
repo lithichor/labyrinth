@@ -106,18 +106,29 @@ public class HeroServlet extends LabyrinthHttpServlet
 		
 		HeroValidationHelper validation = new HeroValidationHelper();
 		HeroServletActions actions = new HeroServletActions();
-		User user;
 		JsonObject data = null;
-		int gameId = 0;
+		int heroId = 0;
+
+		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.HEROS);
+		
+		// if there is a string after the endpoint
+		if(idStr.length() > 0)
+		{
+			heroId = parseIdFromString(idStr);
+		}
+		if(heroId == 0)
+		{
+			errors.add(messages.getMessage("hero.hero_needs_id"));
+			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
+			return;
+		}
 
 		try
 		{
-			user = actions.authenticateUser(request);
+			actions.authenticateUser(request);
 			data = actions.getData(request);
 			
-			gameId = actions.getGameId(user, data);
-
-			hero = new Hero().load(gameId);
+			hero = (new Hero().load(0, heroId)).get(0);
 		}
 		catch(LabyrinthException le)
 		{
