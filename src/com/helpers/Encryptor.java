@@ -1,13 +1,13 @@
 package com.helpers;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
-
-import sun.misc.BASE64Encoder;
+import org.jboss.security.Base64Encoder;
 
 public class Encryptor
 {
@@ -35,7 +35,16 @@ public class Encryptor
 		}
 		
 		byte raw[] = md.digest();
-		String hash = (new BASE64Encoder()).encode(raw);
+		String hash = null;
+		try
+		{
+			hash = Base64Encoder.encode(raw);
+		}
+		catch(IOException ioe)
+		{
+			System.out.println("Error encoding the String: " + ioe.getMessage());
+			ioe.printStackTrace();
+		}
 		
 		return hash;
 	}

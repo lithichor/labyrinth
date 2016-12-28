@@ -4,3 +4,4 @@
 build/
 src/error.html
 src/labyrinth*.sql
+*.DS_Store
