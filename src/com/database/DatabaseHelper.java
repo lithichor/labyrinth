@@ -113,7 +113,11 @@ public class DatabaseHelper implements Serializable
 	 * record rather than query for it using other  fields.
 	 * 
 	 * This may be more efficient than making two queries, so it might be
-	 * useful to research this as the main way of saving objects.
+	 * useful to research this as the main way of saving objects, as opposed
+	 * to executing the query then making another query to get the IDs.
+	 * 
+	 * This method does not work on update statements; it will only return
+	 * the IDs when used as an insert statement.
 	 * 
 	 * Found this technique on StackOverflow:
 	 * http://stackoverflow.com/questions/1915166/how-to-get-the-insert-id-in-jdbc

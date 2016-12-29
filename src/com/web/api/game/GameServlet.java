@@ -309,9 +309,10 @@ public class GameServlet extends LabyrinthHttpServlet
 				catch(LabyrinthException le)
 				{
 					// if there's no game, return that message
-					if(le.getMessage().contains(messages.getMessage("game.no_games")))
+					if(le.getMessage().contains(messages.getMessage("game.no_games")) ||
+							le.getMessage().contains(messages.getMessage("game.no_game_with_that_id")))
 					{
-						errors.add(messages.getMessage("no_game_with_that_id"));
+						errors.add(messages.getMessage("game.no_game_with_that_id"));
 					}
 					// otherwise, there's a problem that needs to be fixed
 					else

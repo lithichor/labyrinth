@@ -86,7 +86,7 @@ public class Tile extends LabyrinthModel
 			results = dbh.executeAndReturnKeys(sql, params);
 			while(results.next())
 			{
-				tileId = results.getInt("id");
+				tileId = results.getInt(1);
 			}
 		}
 		catch(SQLException sqle)
@@ -97,7 +97,7 @@ public class Tile extends LabyrinthModel
 		
 		if(tileId > 0)
 		{
-			this.setId(id);
+			this.setId(tileId);
 			success = true;
 		}
 		
@@ -195,6 +195,7 @@ public class Tile extends LabyrinthModel
 		params.add(gameId);
 		ResultSet results = null;
 		ArrayList<Integer> mapIds = new ArrayList<>();
+		ArrayList<Integer> tileIds = new ArrayList<>();
 		
 		try
 		{
@@ -226,12 +227,43 @@ public class Tile extends LabyrinthModel
 			}
 			sql += ")";
 			dbh.execute(sql, params);
+			
+			// now get the ids for the deleted tiles
+			sql = "SELECT id FROM tiles WHERE map_id in (";
+			params.clear();
+			for(int x = 0; x < mapIds.size(); x++)
+			{
+				if(x == 0)
+				{
+					sql += "?";
+				}
+				else
+				{
+					sql += ", ?";
+				}
+				params.add(mapIds.get(x));
+			}
+			sql += ")";
+			
+			results = dbh.executeQuery(sql, params);
+			while(results.next())
+			{
+				tileIds.add(results.getInt("id"));
+			}
+			// again, throw an exception if we have an empty list
+			if(tileIds.size() == 0)
+			{
+				throw new LabyrinthException(messages.getMessage("tile.no_tiles_for_map"));
+			}
 		}
 		catch(SQLException sqle)
 		{
 			sqle.printStackTrace();
 			throw new LabyrinthException(sqle);
 		}
+		
+		// delete any monsters on this Tile
+		new Monster().delete(tileIds);
 	}
 	
 	private Boundary getBoundary(String bound)

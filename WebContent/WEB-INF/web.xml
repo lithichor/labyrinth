@@ -43,6 +43,12 @@
   
   <listener>
   	<listener-class>
+  		com.web.api.monster.MonsterServletContextListener
+  	</listener-class>
+  </listener>
+  
+  <listener>
+  	<listener-class>
   		com.web.api.constants.ConstantsServletContextListener
   	</listener-class>
   </listener>
@@ -54,15 +60,6 @@
   <servlet-mapping>
     <servlet-name>Turn</servlet-name>
     <url-pattern>/api/turns</url-pattern>
-  </servlet-mapping>
-  
-  <servlet>
-    <servlet-name>Monster</servlet-name>
-    <servlet-class>com.web.api.MonsterServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Monster</servlet-name>
-    <url-pattern>/api/monsters</url-pattern>
   </servlet-mapping>
   
 </web-app>

@@ -177,12 +177,17 @@ public class Map extends LabyrinthModel
 			for(int y = 0; y < GeneralConstants.GRID_SIZE; y++)
 			{
 				Tile t = new Tile(x, y, this.id);
+				if(x == 0 && y == 0)
+				{
+					t.setHasMonster(true);
+				}
 				column.add(t);
 			}
 			grid.add(column);
 		}
 		
 		// finally, go through the grid, creating walls
+		// and adding monsters
 		Random rand = new Random();
 		for(int x = 0; x < grid.size(); x++)
 		{
@@ -236,6 +241,15 @@ public class Map extends LabyrinthModel
 				}
 				// save the tile
 				t.save();
+				
+				// add a monster (just one for now)
+				// must add monster after tile is saved (need tileId)
+				if(t.hasMonster())
+				{
+					Monster m = new Monster();
+					m.setTileId(t.getId());
+					m.save();
+				}
 			}
 		}
 		System.out.println(toString());

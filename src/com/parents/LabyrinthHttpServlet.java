@@ -108,4 +108,19 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 		
 		return id;
 	}
+
+	protected int getIdFromUrl(HttpServletRequest request, String endpoint)
+	{
+		int id = 0;
+		
+		String idStr = splitUrl(request.getRequestURI(), endpoint);
+		
+		// if there is a string after the endpoint
+		if(idStr.length() > 0)
+		{
+			id = parseIdFromString(idStr);
+		}
+		
+		return id;
+	}
 }

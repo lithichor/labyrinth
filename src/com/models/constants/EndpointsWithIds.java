@@ -9,4 +9,5 @@ public class EndpointsWithIds
 	public static final String HEROS = "heros";
 	public static final String HEROS_GAMES = "heros/game";
 	public static final String GAMES = "games";
+	public static final String MONSTERS = "monsters";
 }
