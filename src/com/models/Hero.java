@@ -54,7 +54,7 @@ public class Hero extends LabyrinthModel
 		catch(SQLException sqle)
 		{
 			sqle.printStackTrace();
-			throw new LabyrinthException(sqle);
+			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
 		}
 		
 		this.id = this.retrieveId();
