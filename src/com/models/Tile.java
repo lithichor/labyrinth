@@ -69,7 +69,9 @@ public class Tile extends LabyrinthModel
 	
 	public boolean save() throws LabyrinthException
 	{
-		boolean success = true;
+		boolean success = false;
+		int tileId = 0;
+		ResultSet results = null;
 		String sql = "INSERT INTO tiles "
 				+ "(x, y, has_monster, visited, "
 				+ "map_id, north, south, east, west, "
@@ -81,12 +83,22 @@ public class Tile extends LabyrinthModel
 
 		try
 		{
-			dbh.executeAndReturnKeys(sql, params);
+			results = dbh.executeAndReturnKeys(sql, params);
+			while(results.next())
+			{
+				tileId = results.getInt("id");
+			}
 		}
 		catch(SQLException sqle)
 		{
 			sqle.printStackTrace();
 			throw new LabyrinthException(sqle);
+		}
+		
+		if(tileId > 0)
+		{
+			this.setId(id);
+			success = true;
 		}
 		
 		return success;
