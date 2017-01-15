@@ -86,6 +86,7 @@ public class Monster extends LabyrinthModel
 		if(tileId > 0)
 		{
 			sql += " AND tile_id = ?";
+			params.add(tileId);
 		}
 		if(tileId <= 0 && monsterId <= 0)
 		{
