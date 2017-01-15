@@ -200,10 +200,11 @@ public class Map extends LabyrinthModel
 				{
 					t.setNorth(Boundary.WALL);
 				}
-				else if(x == 9)
+				else if(x == GeneralConstants.GRID_SIZE - 1)
 				{
 					t.setSouth(Boundary.WALL);
 				}
+				// this is 30% ( the 10 does not refer to grid size)
 				else if(rand.nextInt(10) < 3)
 				{
 					t.setNorth(Boundary.WALL);
@@ -222,10 +223,11 @@ public class Map extends LabyrinthModel
 				{
 					t.setWest(Boundary.WALL);
 				}
-				else if(y == 9)
+				else if(y == GeneralConstants.GRID_SIZE - 1)
 				{
 					t.setEast(Boundary.WALL);
 				}
+				// this is 30% ( the 10 does not refer to grid size)
 				else if(rand.nextInt(10) < 3)
 				{
 					t.setWest(Boundary.WALL);
