@@ -10,5 +10,6 @@ public class MonsterServletContextListener extends LabyrinthServletContextListen
 	public void contextInitialized(ServletContextEvent event)
 	{
 		event.getServletContext().addServlet("monsterServlet", new MonsterServlet()).addMapping("/api/monsters/*");
+		event.getServletContext().addServlet("monsterTileServlet", new MonsterTileServlet()).addMapping("/api/monsters/tile/*");
 	}
 }
