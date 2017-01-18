@@ -7,7 +7,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.models.Game;
 import com.models.Hero;
+import com.models.User;
 import com.models.api.APIErrorMessage;
 import com.models.api.APIHero;
 import com.models.constants.EndpointsWithIds;
@@ -37,8 +39,10 @@ public class HerosGameServlet extends LabyrinthHttpServlet
 
 		try
 		{
-			actions.authenticateUser(request);
-			
+			User user = actions.authenticateUser(request);
+			// throws exception if user doesn't own the game
+			new Game().load(user.getId(), gameId);
+
 			// if we have a gameId, load the Heros with it
 			if(gameId > 0)
 			{
@@ -64,11 +68,17 @@ public class HerosGameServlet extends LabyrinthHttpServlet
 			{
 				errors.add(messages.getMessage("hero.hero_needs_game_id"));
 			}
-			
 		}
 		catch(LabyrinthException le)
 		{
-			errors.add(le.getMessage());
+			if(le.getMessage().contains("This Player does not have an active Game with that ID"))
+			{
+				errors.add(messages.getMessage("hero.no_user_auth"));
+			}
+			else
+			{
+				errors.add(le.getMessage());
+			}
 		}
 		
 		if(errors.size() > 0)
