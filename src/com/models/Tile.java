@@ -204,10 +204,10 @@ public class Tile extends LabyrinthModel
 			{
 				mapIds.add(results.getInt("id"));
 			}
-			// if we don't find any Maps, throw an exception
+			// if we don't find any Maps, return, because there are no Tiles
 			if(mapIds.size() == 0)
 			{
-				throw new LabyrinthException(messages.getMessage("map.no_maps_for_game"));
+				return;
 			}
 			
 			// now delete the Tiles
