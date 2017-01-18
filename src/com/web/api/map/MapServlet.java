@@ -245,6 +245,7 @@ public class MapServlet extends LabyrinthHttpServlet
 		errors.clear();
 		MapServletActions actions = new MapServletActions();
 		int mapId = 0;
+		Map map = null;
 		
 		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.MAPS);
 		
@@ -262,13 +263,16 @@ public class MapServlet extends LabyrinthHttpServlet
 		{
 			try
 			{
-				actions.authenticateUser(request);
-				maps = new Map().load(0, mapId);
-				if(maps.size() == 0)
+				User user = actions.authenticateUser(request);
+				map = new Map().loadOneMapByUser(user.getId(),  mapId);
+				if(map == null)
 				{
-					errors.add(messages.getMessage("map.no_maps"));
+					errors.add(messages.getMessage("map.no_match_for_id_user"));
 				}
-				maps.get(0).delete();
+				else
+				{
+					map.delete();
+				}
 			}
 			catch(LabyrinthException le)
 			{
