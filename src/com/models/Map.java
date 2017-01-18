@@ -84,6 +84,72 @@ public class Map extends LabyrinthModel
 	}
 	
 	/**
+	 * Load all Maps for the User, then return the Map with the
+	 * desired Map ID
+	 * 
+	 * @param userId
+	 * @param mapId
+	 * @return
+	 * @throws LabyrinthException
+	 */
+	public Map loadOneMapByUser(Integer userId, Integer mapId) throws LabyrinthException
+	{
+		ArrayList<Map> maps = loadByUser(userId);
+		
+		for(Map m: maps)
+		{
+			if(m.getId().equals(mapId))
+			{
+				return m;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Load all Maps for the User
+	 * 
+	 * @param userId
+	 * @return
+	 * @throws LabyrinthException
+	 */
+	public ArrayList<Map> loadByUser(Integer userId) throws LabyrinthException
+	{
+		ArrayList<Map> maps = new ArrayList<>();
+		ArrayList<Object> params = new ArrayList<>();
+		ResultSet results = null;
+		String sql = "SELECT m.* FROM maps m "
+				+ "LEFT JOIN games g ON g.id = m.game_id "
+				+ "WHERE user_id = ? "
+				+ "AND g.deleted_at IS NULL "
+				+ "AND m.deleted_at IS NULL";
+		params.add(userId);
+		
+		try
+		{
+			results = dbh.executeQuery(sql, params);
+			
+			while(results.next())
+			{
+				Map map = new Map();
+				map.setCreatedAt(new Date(results.getTimestamp("created_at").getTime()));
+				map.setUpdatedAt(new Date(results.getTimestamp("updated_at").getTime()));
+				map.setGameId(results.getInt("game_id"));
+				map.setId(results.getInt("id"));
+				
+				maps.add(map);
+			}
+		}
+		catch(SQLException sqle)
+		{
+			sqle.printStackTrace();
+			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
+		}
+		
+		return maps;
+	}
+	
+	/**
 	 * Delete the Maps belonging to a Game.
 	 * 
 	 * @param gameId
