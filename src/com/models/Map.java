@@ -181,6 +181,9 @@ public class Map extends LabyrinthModel
 	 */
 	public void delete() throws LabyrinthException
 	{
+		// delete the tiles of the maps we're going to delete
+		new Tile(0, 0, null).deleteTiles(gameId);
+		
 		String sql = "UPDATE maps SET deleted_at = now(), updated_at = now()"
 				+ "WHERE id = ?";
 		ArrayList<Object> params = new ArrayList<>();
