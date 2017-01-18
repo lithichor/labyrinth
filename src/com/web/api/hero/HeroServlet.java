@@ -48,32 +48,20 @@ public class HeroServlet extends LabyrinthHttpServlet
 			// might still need a check for null here
 			user = actions.authenticateUser(request);
 			
-			// if we have a hero ID, load a single Hero with it
-			if(heroId > 0)
+			heros = new Hero().loadByUser(user.getId());
+			if(heros.size() == 0)
 			{
-				heros = new Hero().load(0, heroId);
-				// return the hero if the list has an element in it
-				if(heros.size() > 0)
-				{
-					apiOut(gson.toJson(new APIHero(heros.get(0))), response);
-				}
-				else
-				{
-					errors.add(messages.getMessage("hero.no_heros"));
-				}
+				errors.add(messages.getMessage("hero.no_user_auth"));
 			}
-			// otherwise, load an array of Heros with the userId
-			// (i.e., load all heros for this user)
 			else
 			{
-				heros = new Hero().loadByUser(user.getId());
-				
-				// if only one Hero found, do not return an array list
-				if(heros.size() == 1)
+				// if there is no heroId and only one hero in the list
+				if((heroId == 0) && (heros.size() == 1))
 				{
 					apiOut(gson.toJson(new APIHero(heros.get(0))), response);
 				}
-				else
+				// if there is no heroId and multiple heros in list
+				else if((heroId == 0) && (heros.size() > 1))
 				{
 					// make array list of apiHeros and output it
 					ArrayList<APIHero> apiHeros = new ArrayList<APIHero>();
@@ -82,6 +70,28 @@ public class HeroServlet extends LabyrinthHttpServlet
 						apiHeros.add(new APIHero(h));
 					}
 					apiOut(gson.toJson(apiHeros), response);
+				}
+				// if there is a heroId
+				else
+				{
+					boolean heroLoaded = false;
+					// check list of heros for the heroId
+					for(Hero h: heros)
+					{
+						if(h.getId() == heroId)
+						{
+							hero = h;
+							heroLoaded = true;
+						}
+					}
+					if(heroLoaded)
+					{
+						apiOut(gson.toJson(new APIHero(hero)), response);
+					}
+					else
+					{
+						errors.add(messages.getMessage("hero.no_user_auth"));
+					}
 				}
 			}
 		}
@@ -95,7 +105,7 @@ public class HeroServlet extends LabyrinthHttpServlet
 			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 		}
 	}
-
+	
 	/**
 	 * Heros are generally only updated in the context of a game. This allows for
 	 * non-play upgrades to a Hero
