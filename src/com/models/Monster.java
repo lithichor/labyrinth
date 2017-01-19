@@ -63,6 +63,77 @@ public class Monster extends LabyrinthModel
 
 		return success;
 	}
+	
+	public ArrayList<Monster> loadMonstersByUserAndTile(Integer userId, Integer tileId) throws LabyrinthException
+	{
+		return loadMonstersByUser(userId, tileId, 0);
+	}
+
+	public ArrayList<Monster> loadMonstersByUserAndMonster(Integer userId, Integer monsterId) throws LabyrinthException
+	{
+		return loadMonstersByUser(userId, 0, monsterId);
+	}
+
+	public ArrayList<Monster> loadMonstersByUser(Integer userId, Integer tileId, Integer monsterId) throws LabyrinthException
+	{
+		ArrayList<Monster> monsters = new ArrayList<>();
+		ArrayList<Object> params = new ArrayList<>();
+		ResultSet results = null;
+		String sql = "SELECT m.id, "
+				+ "tile_id, "
+				+ "health, "
+				+ "attack, "
+				+ "defense, "
+				+ "m.created_at, "
+				+ "m.updated_at "
+				+ "FROM monsters m "
+				+ "LEFT JOIN tiles t ON t.id = m.tile_id "
+				+ "LEFT JOIN maps ma ON ma.id = t.map_id "
+				+ "LEFT JOIN games g ON g.id = ma.game_id "
+				+ "WHERE g.deleted_at IS NULL "
+				+ "AND m.deleted_at IS NULL "
+				+ "AND t.deleted_at IS NULL "
+				+ "AND ma.deleted_at IS NULL "
+				+ "AND user_id = ? ";
+		params.add(userId);
+		if(monsterId > 0)
+		{
+			sql += "AND m.id = ? ";
+			params.add(monsterId);
+		}
+		if(tileId > 0)
+		{
+			sql += "AND t.id = ? ";
+			params.add(tileId);
+		}
+		
+		try
+		{
+			results = dbh.executeQuery(sql, params);
+			
+			while(results.next())
+			{
+				Monster m = new Monster();
+				
+				m.setId(results.getInt("m.id"));
+				m.setTileId(results.getInt("tile_id"));
+				m.setHealth(results.getInt("health"));
+				m.setAttack(results.getInt("attack"));
+				m.setDefense(results.getInt("defense"));
+				m.setCreatedAt(new Date(results.getTimestamp("m.created_at").getTime()));
+				m.setUpdatedAt(new Date(results.getTimestamp("m.updated_at").getTime()));
+				
+				monsters.add(m);
+			}
+		}
+		catch(SQLException sqle)
+		{
+			sqle.printStackTrace();
+			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
+		}
+		
+		return monsters;
+	}
 
 	public ArrayList<Monster> load(Integer tileId, Integer monsterId) throws LabyrinthException
 	{
