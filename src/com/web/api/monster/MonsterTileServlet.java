@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.models.Monster;
+import com.models.User;
 import com.models.api.APIErrorMessage;
 import com.models.api.APIMonster;
 import com.models.constants.EndpointsWithIds;
@@ -28,7 +29,7 @@ public class MonsterTileServlet extends LabyrinthHttpServlet
 		
 		try
 		{
-			actions.authenticateUser(request);
+			User user = actions.authenticateUser(request);
 
 			if(tileId == 0)
 			{
@@ -36,10 +37,10 @@ public class MonsterTileServlet extends LabyrinthHttpServlet
 			}
 			else
 			{
-				monsters = new Monster().load(tileId, 0);
+				monsters = new Monster().loadMonstersByUserAndTile(user.getId(), tileId);
 				if(monsters.size() == 0)
 				{
-					errors.add(messages.getMessage("monster.no_monster_found"));
+					errors.add(messages.getMessage("monster.no_monster_with_tile_id"));
 				}
 			}
 		}
