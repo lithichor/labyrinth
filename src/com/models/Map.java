@@ -236,6 +236,7 @@ public class Map extends LabyrinthModel
 	 */
 	public boolean generateMap() throws LabyrinthException
 	{
+		Random rand = new Random();
 		// first save the map; this creates an ID for it.
 		boolean success = save();
 		
@@ -246,7 +247,8 @@ public class Map extends LabyrinthModel
 			for(int y = 0; y < GeneralConstants.GRID_SIZE; y++)
 			{
 				Tile t = new Tile(x, y, this.id);
-				if(x == 0 && y == 0)
+				// 15% chance of having a monster on a Tile
+				if(rand.nextInt(20) < 3)
 				{
 					t.setHasMonster(true);
 				}
@@ -257,7 +259,6 @@ public class Map extends LabyrinthModel
 		
 		// finally, go through the grid, creating walls
 		// and adding monsters
-		Random rand = new Random();
 		for(int x = 0; x < grid.size(); x++)
 		{
 			ArrayList<Tile> column = grid.get(x);
@@ -273,7 +274,7 @@ public class Map extends LabyrinthModel
 				{
 					t.setSouth(Boundary.WALL);
 				}
-				// this is 30% ( the 10 does not refer to grid size)
+				// this is 30% (the 10 does not refer to grid size)
 				else if(rand.nextInt(10) < 3)
 				{
 					t.setNorth(Boundary.WALL);
@@ -296,7 +297,7 @@ public class Map extends LabyrinthModel
 				{
 					t.setEast(Boundary.WALL);
 				}
-				// this is 30% ( the 10 does not refer to grid size)
+				// this is 30% (the 10 does not refer to grid size)
 				else if(rand.nextInt(10) < 3)
 				{
 					t.setWest(Boundary.WALL);
@@ -313,7 +314,6 @@ public class Map extends LabyrinthModel
 				// save the tile
 				t.save();
 				
-				// add a monster (just one for now)
 				// must add monster after tile is saved (need tileId)
 				if(t.hasMonster())
 				{
