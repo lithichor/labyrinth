@@ -15,7 +15,7 @@ import org.junit.Test;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import com.models.User;
+import com.web.api.user.User;
 import com.web.api.user.UserServlet;
 import com.web.api.user.UserValidationHelper;
 

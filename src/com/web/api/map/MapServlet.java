@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.JsonObject;
 import com.models.Game;
 import com.models.Map;
-import com.models.User;
 import com.models.api.APIErrorMessage;
 import com.models.api.APIMap;
 import com.models.constants.EndpointsWithIds;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthHttpServlet;
+import com.web.api.user.User;
 
 public class MapServlet extends LabyrinthHttpServlet
 {

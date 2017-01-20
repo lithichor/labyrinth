@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 
 import com.google.gson.JsonObject;
 import com.helpers.Encryptor;
-import com.models.User;
 import com.parents.LabyrinthValidationHelper;
 
 public class UserValidationHelper extends LabyrinthValidationHelper
