@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 import com.models.Game;
 import com.models.Hero;
 import com.models.Map;
-import com.models.User;
 import com.models.api.APIErrorMessage;
 import com.models.api.APIGame;
 import com.models.constants.EndpointsWithIds;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthHttpServlet;
+import com.web.api.user.User;
 
 public class GameServlet extends LabyrinthHttpServlet
 {

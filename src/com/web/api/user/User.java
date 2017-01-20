@@ -1,4 +1,4 @@
-package com.models;
+package com.web.api.user;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -6,8 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.models.User;
 import com.parents.LabyrinthHttpServlet;
+import com.web.api.user.User;
 
 public class MapTilesServlet extends LabyrinthHttpServlet
 {

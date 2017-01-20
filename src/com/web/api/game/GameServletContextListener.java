@@ -5,8 +5,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
 
 import com.models.Game;
-import com.models.User;
 import com.parents.LabyrinthServletContextListener;
+import com.web.api.user.User;
 
 @WebListener
 public class GameServletContextListener extends LabyrinthServletContextListener

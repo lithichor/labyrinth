@@ -11,7 +11,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.helpers.Encryptor;
 import com.labels.LabyrinthMessages;
-import com.models.User;
+import com.web.api.user.User;
 
 public class LabyrinthServletActions
 {

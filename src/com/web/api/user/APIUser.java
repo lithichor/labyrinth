@@ -1,8 +1,7 @@
-package com.models.api;
+package com.web.api.user;
 
 import java.util.ArrayList;
 
-import com.models.User;
 import com.parents.LabyrinthAPIModel;
 
 

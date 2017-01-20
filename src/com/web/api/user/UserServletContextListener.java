@@ -4,7 +4,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
 
-import com.models.User;
 import com.parents.LabyrinthServletContextListener;
 
 @WebListener
