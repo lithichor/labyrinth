@@ -247,24 +247,6 @@ public class Map extends LabyrinthModel
 			for(int y = 0; y < GeneralConstants.GRID_SIZE; y++)
 			{
 				Tile t = new Tile(x, y, this.id);
-				// 15% chance of having a monster on a Tile
-				if(rand.nextInt(20) < 3)
-				{
-					t.setHasMonster(true);
-				}
-				column.add(t);
-			}
-			grid.add(column);
-		}
-		
-		// finally, go through the grid, creating walls
-		// and adding monsters
-		for(int x = 0; x < grid.size(); x++)
-		{
-			ArrayList<Tile> column = grid.get(x);
-			for(int y = 0; y < column.size(); y++)
-			{
-				Tile t = column.get(y);
 				//north-south
 				if(x == 0)
 				{
@@ -274,7 +256,7 @@ public class Map extends LabyrinthModel
 				{
 					t.setSouth(Boundary.WALL);
 				}
-				// this is 30% (the 10 does not refer to grid size)
+				
 				else if(rand.nextInt(10) < 3)
 				{
 					t.setNorth(Boundary.WALL);
@@ -314,15 +296,20 @@ public class Map extends LabyrinthModel
 				// save the tile
 				t.save();
 				
-				// must add monster after tile is saved (need tileId)
-				if(t.hasMonster())
+				// 15% chance of having a monster on a Tile
+				if(rand.nextInt(20) < 3)
 				{
+					t.setHasMonster(true);
 					Monster m = new Monster();
 					m.setTileId(t.getId());
 					m.save();
 				}
+				
+				column.add(t);
 			}
+			grid.add(column);
 		}
+		
 		System.out.println(toString());
 		return success;
 	}
@@ -331,6 +318,7 @@ public class Map extends LabyrinthModel
 	{
 		String southWalls = "";
 		String eastWalls = "";
+		String monsters = "";
 		
 		for(int x = 0; x < grid.size(); x++)
 		{
@@ -346,9 +334,13 @@ public class Map extends LabyrinthModel
 				{
 					eastWalls += "(" + x + ", " + y + "), ";
 				}
+				if(t.hasMonster())
+				{
+					monsters += "(" + x + ", " + y + "), ";
+				}
 			}
 		}
 		
-		return "SOUTH: " + southWalls + "\nEAST: " + eastWalls;
+		return "SOUTH: " + southWalls + "\nEAST: " + eastWalls + "\nMONSTERS: " + monsters;
 	}
 }
