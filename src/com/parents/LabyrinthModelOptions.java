@@ -3,11 +3,11 @@ package com.parents;
 import java.util.HashMap;
 
 /**
+ * Some of the ideas for using the Options verb were taken from
+ * http://zacstewart.com/2012/04/14/http-options-method.html
  * 
- * @author spiralgyre
- *
  */
-public class ModelOptions
+public class LabyrinthModelOptions
 {
 	protected String basics;
 	protected HashMap<String, String> get = new HashMap<>();
