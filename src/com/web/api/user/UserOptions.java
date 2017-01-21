@@ -1,8 +1,8 @@
 package com.web.api.user;
 
-import com.parents.LabyrinthModelOptions;
+import com.parents.LabyrinthOptions;
 
-public class UserOptions extends LabyrinthModelOptions
+public class UserOptions extends LabyrinthOptions
 {
 	public UserOptions()
 	{

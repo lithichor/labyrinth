@@ -11,4 +11,6 @@ public class EndpointsWithIds
 	public static final String GAMES = "games";
 	public static final String MONSTERS = "monsters";
 	public static final String MONSTERS_TILES = "monsters/tile";
+	public static final String TURNS = "turns";
+	public static final String TURNS_GAMES = "turns/game";
 }
