@@ -53,13 +53,10 @@
   	</listener-class>
   </listener>
   
-  <servlet>
-    <servlet-name>Turn</servlet-name>
-    <servlet-class>com.web.api.TurnServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Turn</servlet-name>
-    <url-pattern>/api/turns</url-pattern>
-  </servlet-mapping>
+  <listener>
+  	<listener-class>
+  		com.web.api.turn.TurnServletContextListener
+  	</listener-class>
+  </listener>
   
 </web-app>

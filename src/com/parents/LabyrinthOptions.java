@@ -7,7 +7,7 @@ import java.util.HashMap;
  * http://zacstewart.com/2012/04/14/http-options-method.html
  * 
  */
-public class LabyrinthModelOptions
+public class LabyrinthOptions
 {
 	protected String basics;
 	protected HashMap<String, String> get = new HashMap<>();

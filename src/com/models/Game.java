@@ -1,6 +1,7 @@
 package com.models;
 
 import java.util.Date;
+import java.awt.Point;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import com.models.api.APIGame;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
+import com.web.api.turn.Turn;
 
 public class Game extends LabyrinthModel
 {
@@ -118,6 +120,13 @@ public class Game extends LabyrinthModel
 
 			hero.save();
 			map.generateMap();
+			
+			Turn turn = new Turn();
+			turn.setGameId(this.getId());
+			turn.setUserId(this.getUserId());
+			turn.setMapId(map.getId());
+			turn.setCoords(new Point(0, 0));
+			turn.save();
 
 			g = new APIGame(game);
 			g.setHeroId(hero.getId());
@@ -182,6 +191,7 @@ public class Game extends LabyrinthModel
 		{
 			new Hero().deleteHero(this.getId());
 			new Map().deleteMaps(this.getId());
+			new Turn().delete(this.getUserId());
 		}
 		catch (LabyrinthException le)
 		{
