@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
@@ -11,6 +12,7 @@ import com.parents.LabyrinthModel;
 public class Turn extends LabyrinthModel
 {
 	private Integer id;
+	private Integer iteration;
 	private Integer userId;
 	private Integer gameId;
 	private Integer mapId;
@@ -18,6 +20,8 @@ public class Turn extends LabyrinthModel
 	
 	public Integer getId() { return id; }
 	public void setId(Integer id) { this.id = id; }
+	public Integer getIteration() { return iteration; }
+	public void setIteration(Integer iteration) { this.iteration = iteration; }
 	public Integer getUserId() { return userId; }
 	public void setUserId(Integer userId) { this.userId = userId; }
 	public Integer getGameId() { return gameId; }
@@ -31,8 +35,8 @@ public class Turn extends LabyrinthModel
 	{
 		Turn turn = null;
 		ResultSet results = null;
-		String sql = "SELECT id, user_id, game_id, map_id, x, y, created_at, updated_at "
-				+ "FROM turns WHERE id = ? AND user_id = ?";
+		String sql = "SELECT id, iteration, user_id, game_id, map_id, x, y, created_at, updated_at "
+				+ "FROM turns WHERE id = ? AND user_id = ? AND deleted_at IS NULL";
 		ArrayList<Object> params = new ArrayList<>();
 		params.add(turnId);
 		params.add(userId);
@@ -46,10 +50,13 @@ public class Turn extends LabyrinthModel
 				turn = new Turn();
 				
 				turn.setId(results.getInt("id"));
+				turn.setIteration(results.getInt("iteration"));
 				turn.setUserId(results.getInt("user_id"));
 				turn.setGameId(results.getInt("game_id"));
 				turn.setMapId(results.getInt("map_id"));
 				turn.setCoords(new Point(results.getInt("x"), results.getInt("y")));
+				turn.setCreatedAt(new Date(results.getTimestamp("created_at").getTime()));
+				turn.setUpdatedAt(new Date(results.getTimestamp("updated_at").getTime()));
 			}
 		}
 		catch(SQLException sqle)
@@ -67,11 +74,12 @@ public class Turn extends LabyrinthModel
 		ArrayList<Object> params = new ArrayList<>();
 		ResultSet results = null;
 		String sql = "SELECT id, "
+				+ "iteration, "
 				+ "user_id, "
 				+ "game_id, "
 				+ "map_id, "
 				+ "x, y, "
-				+ "created_at,"
+				+ "created_at, "
 				+ "updated_at "
 				+ "FROM turns "
 				+ "WHERE deleted_at IS NULL ";
@@ -100,10 +108,13 @@ public class Turn extends LabyrinthModel
 				turn = new Turn();
 				
 				turn.setId(results.getInt("id"));
+				turn.setIteration(results.getInt("iteration"));
 				turn.setUserId(results.getInt("user_id"));
 				turn.setGameId(results.getInt("game_id"));
 				turn.setMapId(results.getInt("map_id"));
 				turn.setCoords(new Point(results.getInt("x"), results.getInt("y")));
+				turn.setCreatedAt(new Date(results.getTimestamp("created_at").getTime()));
+				turn.setUpdatedAt(new Date(results.getTimestamp("updated_at").getTime()));
 			}
 		}
 		catch (SQLException sqle)
@@ -121,8 +132,8 @@ public class Turn extends LabyrinthModel
 		int turnId = 0;
 		ResultSet results = null;
 		String sql = "INSERT INTO turns "
-				+ "(user_id, game_id, map_id, x, y, created_at, updated_at) "
-				+ "VALUES(?, ?, ?, ?, ?, now(), now())";
+				+ "(iteration, user_id, game_id, map_id, x, y, created_at, updated_at) "
+				+ "VALUES(0, ?, ?, ?, ?, ?, now(), now())";
 		ArrayList<Object> params = new ArrayList<>();
 		params.add(this.userId);
 		params.add(this.gameId);
@@ -173,5 +184,40 @@ public class Turn extends LabyrinthModel
 			sqle.printStackTrace();
 			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
 		}
+	}
+	
+	/**
+	 * update a Turn after a PUT
+	 * Mutable attributes are map_id, coords, iteration, updated_at, and deleted_at
+	 * 
+	 * @return
+	 */
+	public boolean update() throws LabyrinthException
+	{
+		boolean success = true;
+		String sql = "UPDATE turns SET "
+				+ "map_id = ?, "
+				+ "x = ?, "
+				+ "y = ?, "
+				+ "iteration = ?, "
+				+ "updated_at = now() "
+				+ "WHERE id = ?";
+		ArrayList<Object> params = new ArrayList<>();
+		params.add(this.mapId);
+		params.add(this.coords.x);
+		params.add(this.coords.y);
+		params.add(this.iteration);
+		params.add(this.id);
+		
+		try
+		{
+			success = dbh.execute(sql, params);
+		}
+		catch(SQLException sqle)
+		{
+			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
+		}
+		
+		return success;
 	}
 }

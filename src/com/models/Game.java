@@ -122,8 +122,8 @@ public class Game extends LabyrinthModel
 			map.generateMap();
 			
 			Turn turn = new Turn();
-			turn.setGameId(this.getId());
-			turn.setUserId(this.getUserId());
+			turn.setGameId(game.getId());
+			turn.setUserId(game.getUserId());
 			turn.setMapId(map.getId());
 			turn.setCoords(new Point(0, 0));
 			turn.save();
