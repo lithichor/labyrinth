@@ -329,6 +329,14 @@ public class Map extends LabyrinthModel
 						throw new ArrayIndexOutOfBoundsException();
 					}
 				}
+				
+				// add a single monster at (0, 0)
+				// this will be replaced by a probability
+				if(x == 0 && y == 0)
+				{
+					t.setHasMonster(true);
+				}
+				
 				// save the tile
 				t.save();
 				
