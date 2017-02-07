@@ -1,5 +1,6 @@
 package com.models;
 
+import java.awt.Point;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -226,6 +227,25 @@ public class Map extends LabyrinthModel
 		return success;
 	}
 	
+	public Tile getTileByCoords(Point p, Integer userId) throws LabyrinthException
+	{
+		return getTileByCoords(p.x, p.y, userId);
+	}
+	
+	public Tile getTileByCoords(int x, int y, Integer userId) throws LabyrinthException
+	{
+		ArrayList<Tile> tiles = new Tile(0, 0, null).load(this.getId(), 0, userId);
+		for(Tile t: tiles)
+		{
+			if(t.getCoords().x == x && t.getCoords().y == y)
+			{
+				return t;
+			}
+		}
+		
+		return null;
+	}
+	
 	/**
 	 * This is the first method to generate a map. Later
 	 * efforts will be more complex. The idea is to have
@@ -237,57 +257,73 @@ public class Map extends LabyrinthModel
 	public boolean generateMap() throws LabyrinthException
 	{
 		Random rand = new Random();
-		// first save the map; this creates an ID for it.
-		boolean success = save();
+		// the ID is used when making the Tiles
+		boolean success = this.save();
 		
-		// then generate the grid of Tiles (need the Map's ID)
+		// we have to create the grid first, because we
+		// reference things out of order when setting the walls
 		for(int x = 0; x < GeneralConstants.GRID_SIZE; x++)
 		{
 			ArrayList<Tile> column = new ArrayList<>();
+			
 			for(int y = 0; y < GeneralConstants.GRID_SIZE; y++)
 			{
 				Tile t = new Tile(x, y, this.id);
-				//north-south
+				column.add(t);
+			}
+			grid.add(column);
+		}
+		
+		// now add the walls and monsters
+		for(ArrayList<Tile> column: grid)
+		{
+			for(Tile t: column)
+			{
+				int x = t.getCoords().x;
+				int y = t.getCoords().y;
+				
+				// set east-west walls on the perimeter
 				if(x == 0)
 				{
-					t.setNorth(Boundary.WALL);
+					t.setWest(Boundary.WALL);
 				}
 				else if(x == GeneralConstants.GRID_SIZE - 1)
 				{
-					t.setSouth(Boundary.WALL);
+					t.setEast(Boundary.WALL);
 				}
-				
-				else if(rand.nextInt(10) < 3)
+				// set walls randomly inside the maze
+				if(x < GeneralConstants.GRID_SIZE - 1 && rand.nextInt(10) < 3)
 				{
-					t.setNorth(Boundary.WALL);
+					t.setEast(Boundary.WALL);
 					try
 					{
-						grid.get(x - 1).get(y).setSouth(Boundary.WALL);
+						grid.get(x + 1).get(y).setWest(Boundary.WALL);
 					}
-					catch(ArrayIndexOutOfBoundsException aioob)
+					catch(ArrayIndexOutOfBoundsException oobe)
 					{
-						System.out.println("\n\nERROR:\nX: " + x + "\nY: " + y);
+						System.out.println("\n\nWoah! Error, Dude:\nX: " + x + "\nY: " + y);
 						throw new ArrayIndexOutOfBoundsException();
 					}
 				}
-				//east-west
+				
+				// set south-north walls on perimeter
 				if(y == 0)
 				{
-					t.setWest(Boundary.WALL);
+					t.setNorth(Boundary.WALL);
 				}
 				else if(y == GeneralConstants.GRID_SIZE - 1)
 				{
-					t.setEast(Boundary.WALL);
+					t.setSouth(Boundary.WALL);
 				}
-				// this is 30% (the 10 does not refer to grid size)
-				else if(rand.nextInt(10) < 3)
+				// set walls randomly inside the maze
+				if(y < GeneralConstants.GRID_SIZE - 1 && rand.nextInt(10) < 3)
 				{
-					t.setWest(Boundary.WALL);
+					t.setSouth(Boundary.WALL);
 					try
 					{
-						column.get(y - 1).setEast(Boundary.WALL);
+						grid.get(x).get(y + 1).setSouth(Boundary.WALL);
 					}
-					catch(ArrayIndexOutOfBoundsException aioob)
+					catch(ArrayIndexOutOfBoundsException oobe)
 					{
 						System.out.println("\n\nERROR:\nX: " + x + "\nY: " + y);
 						throw new ArrayIndexOutOfBoundsException();
@@ -296,18 +332,15 @@ public class Map extends LabyrinthModel
 				// save the tile
 				t.save();
 				
-				// 15% chance of having a monster on a Tile
-				if(rand.nextInt(20) < 3)
+				// add a monster (just one for now)
+				// must add monster after tile is saved (need tileId)
+				if(t.hasMonster())
 				{
-					t.setHasMonster(true);
 					Monster m = new Monster();
 					m.setTileId(t.getId());
 					m.save();
 				}
-				
-				column.add(t);
 			}
-			grid.add(column);
 		}
 		
 		System.out.println(toString());
@@ -318,6 +351,8 @@ public class Map extends LabyrinthModel
 	{
 		String southWalls = "";
 		String eastWalls = "";
+		String northWalls = "";
+		String westWalls = "";
 		String monsters = "";
 		
 		for(int x = 0; x < grid.size(); x++)
@@ -334,6 +369,14 @@ public class Map extends LabyrinthModel
 				{
 					eastWalls += "(" + x + ", " + y + "), ";
 				}
+				if(t.getNorth() == Boundary.WALL)
+				{
+					northWalls += "(" + x + ", " + y + "), ";
+				}
+				if(t.getWest() == Boundary.WALL)
+				{
+					westWalls += "(" + x + ", " + y + "), ";
+				}
 				if(t.hasMonster())
 				{
 					monsters += "(" + x + ", " + y + "), ";
@@ -341,6 +384,10 @@ public class Map extends LabyrinthModel
 			}
 		}
 		
-		return "SOUTH: " + southWalls + "\nEAST: " + eastWalls + "\nMONSTERS: " + monsters;
+		return "SOUTH: " + southWalls +
+				"\nNORTH: " + northWalls +
+				"\nEAST: " + eastWalls +
+				"\nWEST: " + westWalls +
+				"\nMONSTERS: " + monsters;
 	}
 }

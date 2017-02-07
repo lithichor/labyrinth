@@ -7,6 +7,7 @@ import com.parents.LabyrinthAPIModel;
 public class APITurn extends LabyrinthAPIModel
 {
 	private Integer id;
+	private Integer iteration;
 	private Integer userId;
 	private Integer gameId;
 	private Integer mapId;
@@ -15,6 +16,7 @@ public class APITurn extends LabyrinthAPIModel
 	public APITurn(Turn turn)
 	{
 		this.id = turn.getId();
+		this.iteration = turn.getIteration();
 		this.userId = turn.getUserId();
 		this.gameId = turn.getGameId();
 		this.mapId = turn.getMapId();
@@ -23,6 +25,8 @@ public class APITurn extends LabyrinthAPIModel
 
 	public Integer getId() { return id; }
 	public void setId(Integer id) { this.id = id; }
+	public Integer getIteration() { return iteration; }
+	public void setIteration(Integer iteration) { this.iteration = iteration; }
 	public Integer getUserId() { return userId; }
 	public void setUserId(Integer userId) { this.userId = userId; }
 	public Integer getGameId() { return gameId; }

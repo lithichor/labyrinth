@@ -129,6 +129,11 @@ public class Tile extends LabyrinthModel
 		{
 			throw new LabyrinthException(messages.getMessage("tile.no_ids"));
 		}
+		
+		if(userId == 0)
+		{
+			throw new LabyrinthException(messages.getMessage("tile.no_user_id"));
+		}
 		sql += "\n\tAND user_id = ?\n\tAND t.deleted_at IS NULL";
 		params.add(userId);
 		
