@@ -66,7 +66,7 @@ public class InstructionsServlet extends LabyrinthHttpServlet
 		String file = "";
 		
 		// split the name using uppercase letters and remove the unwanted part
-		String[] ff = fileName.replace("/Servlet.class", "").split("(?=\\p{Upper})");
+		String[] ff = fileName.replace("Servlet.class", "").split("(?=\\p{Upper})");
 		
 		// reassemble the class name by inserting slashes between words
 		for(int x = 0; x < ff.length; x++)
