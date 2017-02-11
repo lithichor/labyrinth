@@ -10,8 +10,9 @@ import java.util.HashMap;
 public class LabyrinthOptions
 {
 	protected String basics;
-	protected HashMap<String, String> get = new HashMap<>();
 	protected HashMap<String, String> delete = new HashMap<>();
+	protected HashMap<String, String> fields = new HashMap<>();
+	protected HashMap<String, String> get = new HashMap<>();
 	protected HashMap<String, String> post = new HashMap<>();
 	protected HashMap<String, String> put = new HashMap<>();
 	

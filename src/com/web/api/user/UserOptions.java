@@ -11,6 +11,12 @@ public class UserOptions extends LabyrinthOptions
 
 		delete.put("general", "A Delete verb performs a soft delete on the authenticated user. It "
 				+ "does not require the userId.");
+		delete.put("url", "/api/user");
+		
+		fields.put("firstName", "String");
+		fields.put("lastName", "String");
+		fields.put("email", "String");
+		fields.put("password", "String (never returned in a response)");
 		
 		get.put("general",  "A Get verb returns the authenticated User. A User cannot access the "
 				+ "information of other Users.");
