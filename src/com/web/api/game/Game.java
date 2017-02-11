@@ -1,4 +1,4 @@
-package com.models;
+package com.web.api.game;
 
 import java.util.Date;
 import java.awt.Point;
@@ -6,7 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.models.api.APIGame;
+import com.models.Hero;
+import com.models.Map;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
 import com.web.api.turn.Turn;

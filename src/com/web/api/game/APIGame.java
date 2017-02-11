@@ -1,8 +1,7 @@
-package com.models.api;
+package com.web.api.game;
 
 import java.util.ArrayList;
 
-import com.models.Game;
 import com.parents.LabyrinthAPIModel;
 
 public class APIGame extends LabyrinthAPIModel

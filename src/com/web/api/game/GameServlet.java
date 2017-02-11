@@ -7,11 +7,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.models.Game;
 import com.models.Hero;
 import com.models.Map;
 import com.models.api.APIErrorMessage;
-import com.models.api.APIGame;
 import com.models.constants.EndpointsWithIds;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthHttpServlet;
@@ -332,5 +330,13 @@ public class GameServlet extends LabyrinthHttpServlet
 		{
 			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 		}
+	}
+	
+	public void doOptions(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
+	{
+		errors.clear();
+		
+		GamesOptions options = new GamesOptions();
+		apiOut(gson.toJson(options), response);
 	}
 }
