@@ -1,4 +1,4 @@
-package com.models;
+package com.web.api.map;
 
 import java.awt.Point;
 import java.sql.ResultSet;
@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
+import com.models.Monster;
+import com.models.Tile;
 import com.models.Tile.Boundary;
 import com.models.constants.GeneralConstants;
 import com.parents.LabyrinthException;

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
-import com.models.Map;
 import com.parents.LabyrinthServletContextListener;
 
 public class MapServletContextListener extends LabyrinthServletContextListener

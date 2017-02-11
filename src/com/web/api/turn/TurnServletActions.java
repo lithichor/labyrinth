@@ -2,11 +2,11 @@ package com.web.api.turn;
 
 import java.awt.Point;
 
-import com.models.Map;
 import com.models.Tile;
 import com.models.Tile.Boundary;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthServletActions;
+import com.web.api.map.Map;
 
 public class TurnServletActions extends LabyrinthServletActions
 {
