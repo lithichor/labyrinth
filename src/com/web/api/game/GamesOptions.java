@@ -11,7 +11,7 @@ public class GamesOptions extends LabyrinthOptions
 				+ " fifth Game can be created one of the others has to be deleted.";
 		
 		delete.put("general", "Deleting a Game does a soft-delete, but there is "
-				+ "no mechanism available to retrieve deleted Games. The Game's "
+				+ "no mechanism available to retrieve deleted Games. The Game "
 				+ "ID is required to delete it.");
 		delete.put("url", "/api/games/:id");
 		
@@ -28,6 +28,7 @@ public class GamesOptions extends LabyrinthOptions
 		post.put("general", "The Post verb creates a new Game. No data is required. The "
 				+ "response is the Game object just created.");
 		
-		put.put("general", "The put verb is not supported got the Games endpoint.");
+		put = null;
+		seeAlso = null;
 	}
 }

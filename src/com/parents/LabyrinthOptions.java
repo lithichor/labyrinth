@@ -15,6 +15,7 @@ public class LabyrinthOptions
 	protected HashMap<String, String> get = new HashMap<>();
 	protected HashMap<String, String> post = new HashMap<>();
 	protected HashMap<String, String> put = new HashMap<>();
+	protected HashMap<String, String> seeAlso = new HashMap<>();
 	
 	public String getBasics() { return this.basics; }
 	public HashMap<String, String> getDelete() { return this.delete; }

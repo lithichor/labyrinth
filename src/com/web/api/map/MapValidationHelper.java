@@ -3,7 +3,6 @@ package com.web.api.map;
 import java.util.HashMap;
 
 import com.google.gson.JsonObject;
-import com.models.Map;
 import com.parents.LabyrinthValidationHelper;
 
 public class MapValidationHelper extends LabyrinthValidationHelper

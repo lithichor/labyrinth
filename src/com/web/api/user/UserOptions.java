@@ -33,5 +33,7 @@ public class UserOptions extends LabyrinthOptions
 				+ "works on the authenticated user; the userId is not necessary.");
 		put.put("data example",  "{firstName: Morland, lastName: Holmes, password: 12345} (None of the "
 				+ "fields are required)");
+		
+		seeAlso = null;
 	}
 }

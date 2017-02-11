@@ -1,6 +1,5 @@
-package com.models.api;
+package com.web.api.map;
 
-import com.models.Map;
 import com.parents.LabyrinthAPIModel;
 
 public class APIMap extends LabyrinthAPIModel
