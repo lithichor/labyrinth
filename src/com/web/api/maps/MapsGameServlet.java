@@ -36,7 +36,7 @@ public class MapsGameServlet extends LabyrinthHttpServlet
 		MapsServletActions actions = new MapsServletActions();
 		User user;
 		int gameId = 0;
-		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.MAPS_GAMES);
+		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.MAPS_GAME);
 		ArrayList<APIMap> apiMaps = new ArrayList<APIMap>();
 		
 		if(idStr.length() > 0)
