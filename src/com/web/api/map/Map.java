@@ -8,11 +8,11 @@ import java.util.Date;
 import java.util.Random;
 
 import com.models.Monster;
-import com.models.Tile;
-import com.models.Tile.Boundary;
 import com.models.constants.GeneralConstants;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
+import com.web.api.tile.Tile;
+import com.web.api.tile.Tile.Boundary;
 
 public class Map extends LabyrinthModel
 {

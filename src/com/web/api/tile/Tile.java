@@ -1,4 +1,4 @@
-package com.models;
+package com.web.api.tile;
 
 import java.awt.Point;
 import java.sql.ResultSet;
@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.models.Monster;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
 
