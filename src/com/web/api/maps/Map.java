@@ -1,4 +1,4 @@
-package com.web.api.map;
+package com.web.api.maps;
 
 import java.awt.Point;
 import java.sql.ResultSet;

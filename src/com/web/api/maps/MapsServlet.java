@@ -1,4 +1,4 @@
-package com.web.api.map;
+package com.web.api.maps;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,12 +15,12 @@ import com.parents.LabyrinthHttpServlet;
 import com.web.api.game.Game;
 import com.web.api.user.User;
 
-public class MapServlet extends LabyrinthHttpServlet
+public class MapsServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = -4940820141991252197L;
 	private ArrayList<Map> maps;
 	
-	public MapServlet(ArrayList<Map> map)
+	public MapsServlet(ArrayList<Map> map)
 	{
 		this.maps = map;
 	}
@@ -41,7 +41,7 @@ public class MapServlet extends LabyrinthHttpServlet
 		int mapId = 0;
 		int gameId = 0;
 		ArrayList<APIMap> apiMaps = new ArrayList<APIMap>();
-		MapServletActions actions = new MapServletActions();
+		MapsServletActions actions = new MapsServletActions();
 		
 		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.MAPS);
 		
@@ -98,7 +98,7 @@ public class MapServlet extends LabyrinthHttpServlet
 		User user = null;
 		Map map = null;
 		JsonObject data = null;
-		MapServletActions actions = new MapServletActions();
+		MapsServletActions actions = new MapsServletActions();
 		MapValidationHelper validation = new MapValidationHelper();
 		
 		try
@@ -192,7 +192,7 @@ public class MapServlet extends LabyrinthHttpServlet
 			return;
 		}
 		
-		MapServletActions actions = new MapServletActions();
+		MapsServletActions actions = new MapsServletActions();
 		User user = null;
 		JsonObject data = null;
 		int gameId = 0;
@@ -241,7 +241,7 @@ public class MapServlet extends LabyrinthHttpServlet
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
 	{
 		errors.clear();
-		MapServletActions actions = new MapServletActions();
+		MapsServletActions actions = new MapsServletActions();
 		int mapId = 0;
 		Map map = null;
 		

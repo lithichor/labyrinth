@@ -4,7 +4,7 @@ import java.awt.Point;
 
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthServletActions;
-import com.web.api.map.Map;
+import com.web.api.maps.Map;
 import com.web.api.tile.Tile;
 import com.web.api.tile.Tile.Boundary;
 
