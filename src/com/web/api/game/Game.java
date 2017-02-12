@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
 import com.web.api.hero.Hero;
-import com.web.api.map.Map;
+import com.web.api.maps.Map;
 import com.web.api.turn.Turn;
 
 public class Game extends LabyrinthModel

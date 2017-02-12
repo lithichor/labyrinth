@@ -12,7 +12,7 @@ import com.models.constants.EndpointsWithIds;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthHttpServlet;
 import com.web.api.hero.Hero;
-import com.web.api.map.Map;
+import com.web.api.maps.Map;
 import com.web.api.user.User;
 
 public class GameServlet extends LabyrinthHttpServlet

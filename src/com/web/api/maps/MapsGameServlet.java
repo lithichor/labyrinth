@@ -1,4 +1,4 @@
-package com.web.api.map;
+package com.web.api.maps;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,12 +14,12 @@ import com.parents.LabyrinthHttpServlet;
 import com.web.api.game.Game;
 import com.web.api.user.User;
 
-public class MapGamesServlet extends LabyrinthHttpServlet
+public class MapsGameServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = 3158009229795172043L;
 	ArrayList<Map> maps;
 
-	public MapGamesServlet(ArrayList<Map> map)
+	public MapsGameServlet(ArrayList<Map> map)
 	{
 		this.maps = map;
 	}
@@ -33,7 +33,7 @@ public class MapGamesServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		
-		MapServletActions actions = new MapServletActions();
+		MapsServletActions actions = new MapsServletActions();
 		User user;
 		int gameId = 0;
 		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.MAPS_GAMES);

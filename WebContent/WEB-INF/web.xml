@@ -31,7 +31,7 @@
   
   <listener>
   	<listener-class>
-  		com.web.api.map.MapServletContextListener
+  		com.web.api.maps.MapsServletContextListener
   	</listener-class>
   </listener>
   
