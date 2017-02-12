@@ -7,11 +7,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.models.Hero;
 import com.models.api.APIErrorMessage;
 import com.models.constants.EndpointsWithIds;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthHttpServlet;
+import com.web.api.hero.Hero;
 import com.web.api.map.Map;
 import com.web.api.user.User;
 

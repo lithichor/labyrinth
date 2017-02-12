@@ -6,9 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.models.Hero;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
+import com.web.api.hero.Hero;
 import com.web.api.map.Map;
 import com.web.api.turn.Turn;
 
