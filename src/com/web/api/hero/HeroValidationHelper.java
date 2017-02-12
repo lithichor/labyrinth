@@ -3,7 +3,6 @@ package com.web.api.hero;
 import java.util.HashMap;
 
 import com.google.gson.JsonObject;
-import com.models.Hero;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthValidationHelper;
 

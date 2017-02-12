@@ -1,6 +1,5 @@
-package com.models.api;
+package com.web.api.hero;
 
-import com.models.Hero;
 import com.parents.LabyrinthAPIModel;
 
 public class APIHero extends LabyrinthAPIModel
