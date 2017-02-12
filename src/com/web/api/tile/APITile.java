@@ -1,10 +1,9 @@
-package com.models.api;
+package com.web.api.tile;
 
 import java.awt.Point;
 
-import com.models.Tile;
-import com.models.Tile.Boundary;
 import com.parents.LabyrinthAPIModel;
+import com.web.api.tile.Tile.Boundary;
 
 public class APITile extends LabyrinthAPIModel
 {

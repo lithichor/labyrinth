@@ -7,9 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.models.Tile;
 import com.models.api.APIErrorMessage;
-import com.models.api.APITile;
 import com.models.constants.EndpointsWithIds;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthHttpServlet;
@@ -90,5 +88,13 @@ public class TileMapServlet extends LabyrinthHttpServlet
 			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 			return;
 		}
+	}
+	
+	public void doOptions(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
+	{
+		errors.clear();
+		
+		TilesMapOptions options = new TilesMapOptions();
+		apiOut(gson.toJson(options), response);
 	}
 }
