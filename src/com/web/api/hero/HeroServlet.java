@@ -54,7 +54,7 @@ public class HeroServlet extends LabyrinthHttpServlet
 			else
 			{
 				// if there is no heroId and only one hero in the list
-				if((heroId == 0) && (heros.size() == 1))
+				if((heroId <= 0) && (heros.size() == 1))
 				{
 					apiOut(gson.toJson(new APIHero(heros.get(0))), response);
 				}

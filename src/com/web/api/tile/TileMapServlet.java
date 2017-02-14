@@ -38,7 +38,7 @@ public class TileMapServlet extends LabyrinthHttpServlet
 		}
 		
 		// return an error if there is no map ID
-		if(mapId == 0)
+		if(mapId <= 0)
 		{
 			errors.add(messages.getMessage("tile.no_map_id"));
 			apiOut(gson.toJson(new APIErrorMessage(errors)), response);

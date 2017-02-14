@@ -31,7 +31,7 @@ public class MonsterTileServlet extends LabyrinthHttpServlet
 		{
 			User user = actions.authenticateUser(request);
 
-			if(tileId == 0)
+			if(tileId <= 0)
 			{
 				errors.add(messages.getMessage("monster.no_tile_id"));
 			}
