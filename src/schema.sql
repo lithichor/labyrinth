@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.11)
 # Database: labyrinth
-# Generation Time: 2016-12-12 11:47:08 +0000
+# Generation Time: 2017-02-14 11:36:26 +0000
 # ************************************************************
 
 
@@ -40,6 +40,7 @@ CREATE TABLE `games` (
 CREATE TABLE `heros` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `game_id` int(11) NOT NULL,
+  `health` int(11) NOT NULL,
   `strength` int(11) NOT NULL DEFAULT '0',
   `magic` int(11) NOT NULL DEFAULT '0',
   `attack` int(11) NOT NULL DEFAULT '0',
@@ -66,6 +67,23 @@ CREATE TABLE `maps` (
 
 
 
+# Dump of table monsters
+# ------------------------------------------------------------
+
+CREATE TABLE `monsters` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `tile_id` int(11) NOT NULL,
+  `health` int(11) NOT NULL,
+  `attack` int(11) NOT NULL,
+  `defense` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
 # Dump of table tiles
 # ------------------------------------------------------------
 
@@ -82,6 +100,25 @@ CREATE TABLE `tiles` (
   `west` varchar(10) NOT NULL DEFAULT '',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table turns
+# ------------------------------------------------------------
+
+CREATE TABLE `turns` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `iteration` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `game_id` int(11) NOT NULL,
+  `map_id` int(11) NOT NULL,
+  `x` int(11) NOT NULL,
+  `y` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
