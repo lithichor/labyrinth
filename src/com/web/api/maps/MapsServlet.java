@@ -57,7 +57,7 @@ public class MapsServlet extends LabyrinthHttpServlet
 			
 			// if no id is provided, we need to get the most recent
 			// gameId for the user and load with that
-			if(mapId == 0)
+			if(mapId <= 0)
 			{
 				ArrayList<Game> games = new Game().load(user.getId(), 0);
 				gameId = games.get(games.size() - 1).getId();

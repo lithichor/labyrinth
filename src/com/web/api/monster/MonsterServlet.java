@@ -39,7 +39,7 @@ public class MonsterServlet extends LabyrinthHttpServlet
 			User user = actions.authenticateUser(request);
 			
 			// no ID means no monsters
-			if(monsterId == 0)
+			if(monsterId <= 0)
 			{
 				errors.add(messages.getMessage("monster.no_monster_id"));
 			}

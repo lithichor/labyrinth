@@ -41,7 +41,7 @@ public class TileServlet extends LabyrinthHttpServlet
 		// if no id is provided, return an error - we do not
 		// return all tiles for the user, and there's no way to
 		// know or guess which map is being referenced
-		if(tileId == 0)
+		if(tileId <= 0)
 		{
 			errors.add(messages.getMessage("tile.need_id"));
 			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
