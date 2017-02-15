@@ -19,6 +19,8 @@ public class Map extends LabyrinthModel
 	private Integer id;
 	private Integer gameId;
 	private ArrayList<ArrayList<Tile>> grid = new ArrayList<>();
+	private Integer gridSize;
+	private Integer firstTileId;
 
 	public Integer getId() { return id; }
 	public void setId(Integer id) { this.id = id; }
@@ -26,6 +28,10 @@ public class Map extends LabyrinthModel
 	public void setGameId(Integer gameId) { this.gameId = gameId; }
 	public ArrayList<ArrayList<Tile>> getGrid() { return this.grid; }
 	public void setGrid(ArrayList<ArrayList<Tile>> grid) { this.grid = grid; }
+	public Integer getGridSize() { return this.gridSize; }
+	public void setGridSize(Integer gridSize) { this.gridSize = gridSize; }
+	public Integer getFirstTileId() { return this.firstTileId; }
+	public void setFirstTileId(Integer firstTileId) { this.firstTileId = firstTileId; }
 	
 	public ArrayList<Map> load(Integer gameId, Integer mapId) throws LabyrinthException
 	{
@@ -35,7 +41,8 @@ public class Map extends LabyrinthModel
 		String sql = "SELECT id, "
 				+ "game_id, "
 				+ "created_at, "
-				+ "updated_at "
+				+ "updated_at, "
+				+ "grid_size "
 				+ "FROM maps ";
 		// if a gameId is provided (also if both ids are provided - which
 		// should never happen, but it might)
@@ -68,6 +75,10 @@ public class Map extends LabyrinthModel
 				map.setUpdatedAt(new Date(results.getTimestamp("updated_at").getTime()));
 				map.setGameId(results.getInt("game_id"));
 				map.setId(results.getInt("id"));
+				int gridSize = results.getInt("grid_size") == 0 ?
+						GeneralConstants.GRID_SIZE :results.getInt("grid_size");
+				map.setGridSize(gridSize);
+				map.setFirstTileId(getFirstTile(map.getId()));
 				
 				maps.add(map);
 			}
@@ -139,6 +150,10 @@ public class Map extends LabyrinthModel
 				map.setUpdatedAt(new Date(results.getTimestamp("updated_at").getTime()));
 				map.setGameId(results.getInt("game_id"));
 				map.setId(results.getInt("id"));
+				int gridSize = results.getInt("grid_size") == 0 ?
+						GeneralConstants.GRID_SIZE : results.getInt("grid_size");
+				map.setGridSize(gridSize);
+				map.setFirstTileId(getFirstTile(map.getId()));
 				
 				maps.add(map);
 			}
@@ -205,10 +220,11 @@ public class Map extends LabyrinthModel
 	public boolean save() throws LabyrinthException
 	{
 		boolean success = false;
-		String sql = "INSERT INTO maps (game_id, created_at, updated_at) "
-				+ "VALUES(?, now(), now())";
+		String sql = "INSERT INTO maps (game_id, grid_size, created_at, updated_at) "
+				+ "VALUES(?, ?, now(), now())";
 		ArrayList<Object> params = new ArrayList<Object>();
 		params.add(this.gameId);
+		params.add(GeneralConstants.GRID_SIZE);
 		ResultSet keys = null;
 		
 		try
@@ -355,6 +371,29 @@ public class Map extends LabyrinthModel
 		
 		System.out.println(toString());
 		return success;
+	}
+	
+	private Integer getFirstTile(Integer mapId) throws LabyrinthException
+	{
+		String sql = "SELECT id FROM tiles WHERE map_id = ? ORDER BY ID ASC LIMIT 1";
+		ArrayList<Object> params = new ArrayList<>();
+		params.add(mapId);
+		ResultSet results = null;
+		int tileId = 0;
+		
+		try
+		{
+			results = dbh.executeQuery(sql, params);
+			while(results.next())
+			{
+				tileId = results.getInt("id");
+			}
+		}
+		catch(SQLException sqle)
+		{
+			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
+		}
+		return tileId;
 	}
 	
 	public String toString()
