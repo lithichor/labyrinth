@@ -6,3 +6,4 @@ src/error.html
 src/labyrinth*.sql
 *.DS_Store
 src/prototype
+bin/

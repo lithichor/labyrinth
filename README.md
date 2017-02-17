@@ -3,6 +3,7 @@ The Labyrinth
 An online single player roguelike game with a REST API interface.
 
 A few caveats:
+
 1. This is a work in progress; I will remove this caveat when the project is ready for prime time.
 
 2. I don't plan to host this project. Instead, I'm offering it as open source so other people can host it.
