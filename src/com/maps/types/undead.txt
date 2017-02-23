@@ -1,0 +1,6 @@
+Anubis
+Ushabti
+Skeleton
+Zombie
+Wraith
+Geist

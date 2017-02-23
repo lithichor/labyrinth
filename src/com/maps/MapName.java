@@ -17,7 +17,7 @@ public class MapName
 	 * @return
 	 * @throws LabyrinthException
 	 */
-	public static String getMapName() throws LabyrinthException
+	public static String[] getMapName() throws LabyrinthException
 	{
 		Random rand = new Random();
 		URL nouns = ClassLoader.getSystemResource("com/maps/nouns.txt");
@@ -44,6 +44,7 @@ public class MapName
 		String n = nounAL.get(rand.nextInt(nounAL.size()));
 		String a = adjAL.get(rand.nextInt(adjAL.size()));
 		
-		return a + " " + n;
+		String[] mapName = {a, n};
+		return mapName;
 	}
 }
