@@ -26,11 +26,18 @@ public class MapName
 		String nounStr = "";
 		String adjStr = "";
 
-		try
+		try(Scanner scan = new Scanner(new File(nouns.getFile())))
 		{
-			nounStr = new Scanner(new File(nouns.getFile())).useDelimiter("\\Z").next();
-			adjStr = new Scanner(new File(adjectives.getFile())).useDelimiter("\\Z").next();
-			
+			nounStr = scan.useDelimiter("\\Z").next();
+		}
+		catch(FileNotFoundException fnfe)
+		{
+			fnfe.printStackTrace();
+			throw new LabyrinthException("Error finding the map name files: " + fnfe.getMessage());
+		}
+		try(Scanner scan = new Scanner(new File(adjectives.getFile())))
+		{
+			adjStr = scan.useDelimiter("\\Z").next();
 		}
 		catch(FileNotFoundException fnfe)
 		{
