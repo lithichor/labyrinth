@@ -234,9 +234,9 @@ public class User extends LabyrinthModel
 		{
 			this.lastName = other.getLastName();
 		}
-		if(other.email != null && !"".equals(other.email))
+		if(other.password != null && !"".equals(other.password))
 		{
-			this.email = other.getEmail();
+			this.password = other.getPassword();
 		}
 	}
 	
