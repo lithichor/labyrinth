@@ -12,7 +12,7 @@ import com.parents.LabyrinthException;
 import com.parents.LabyrinthHttpServlet;
 import com.web.api.user.User;
 
-public class TurnGameServlet extends LabyrinthHttpServlet
+public class TurnsGameServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = -5314489077659984779L;
 
@@ -23,7 +23,7 @@ public class TurnGameServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		Turn turn = null;
-		TurnServletActions actions = new TurnServletActions();
+		TurnsServletActions actions = new TurnsServletActions();
 		Integer gameId = getIdFromUrl(request, EndpointsWithIds.TURNS_GAMES);
 		
 		try

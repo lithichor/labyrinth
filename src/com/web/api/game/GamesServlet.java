@@ -15,13 +15,13 @@ import com.web.api.hero.Hero;
 import com.web.api.maps.Map;
 import com.web.api.user.User;
 
-public class GameServlet extends LabyrinthHttpServlet
+public class GamesServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = 8963309769094254259L;
 	private Game game;
 	private User user;
 	
-	public GameServlet(Game game, User user)
+	public GamesServlet(Game game, User user)
 	{
 		this.game = game;
 		this.user = user;
@@ -43,7 +43,7 @@ public class GameServlet extends LabyrinthHttpServlet
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-		GameServletActions actions = new GameServletActions();
+		GamesServletActions actions = new GamesServletActions();
 		
 		// this will get the id from the end of the url
 		int id = 0;
@@ -177,7 +177,7 @@ public class GameServlet extends LabyrinthHttpServlet
 		
 		int numberOfGames = 0;
 		APIGame g = null;
-		GameServletActions actions = new GameServletActions();
+		GamesServletActions actions = new GamesServletActions();
 		
 		user = null;
 		
@@ -259,7 +259,7 @@ public class GameServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		user = null;
-		GameServletActions actions = new GameServletActions();
+		GamesServletActions actions = new GamesServletActions();
 		
 		try
 		{
