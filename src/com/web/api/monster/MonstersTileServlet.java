@@ -15,40 +15,32 @@ import com.parents.LabyrinthException;
 import com.parents.LabyrinthHttpServlet;
 import com.web.api.user.User;
 
-public class MonsterServlet extends LabyrinthHttpServlet
+public class MonstersTileServlet extends LabyrinthHttpServlet
 {
-	private static final long serialVersionUID = 2502557358566091760L;
+	private static final long serialVersionUID = 2695498520215830537L;
 
-	/**
-	 * api/monsters
-	 * api/monsters/:id
-	 * 
-	 * If an ID is included, that is used to find the monster. If no
-	 * ID in included the server returns an error
-	 */
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
 	{
 		errors.clear();
 		
-		int monsterId = getIdFromUrl(request, EndpointsWithIds.MONSTERS);
-		MonsterServletActions actions = new MonsterServletActions();
+		int tileId = getIdFromUrl(request, EndpointsWithIds.MONSTERS_TILES);
+		MonstersServletActions actions = new MonstersServletActions();
 		ArrayList<Monster> monsters = new ArrayList<>();
 		
 		try
 		{
 			User user = actions.authenticateUser(request);
-			
-			// no ID means no monsters
-			if(monsterId <= 0)
+
+			if(tileId <= 0)
 			{
-				errors.add(messages.getMessage("monster.no_monster_id"));
+				errors.add(messages.getMessage("monster.no_tile_id"));
 			}
 			else
 			{
-				monsters = new Monster().loadMonstersByUserAndMonster(user.getId(), monsterId);
+				monsters = new Monster().loadMonstersByUserAndTile(user.getId(), tileId);
 				if(monsters.size() == 0)
 				{
-					errors.add(messages.getMessage("monster.no_monster_found"));
+					errors.add(messages.getMessage("monster.no_monster_with_tile_id"));
 				}
 			}
 		}
@@ -66,5 +58,4 @@ public class MonsterServlet extends LabyrinthHttpServlet
 			apiOut(gson.toJson(new APIMonster(monsters.get(0))), response);
 		}
 	}
-	
 }

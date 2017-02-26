@@ -14,12 +14,12 @@ import com.parents.LabyrinthException;
 import com.parents.LabyrinthHttpServlet;
 import com.web.api.user.User;
 
-public class HeroServlet extends LabyrinthHttpServlet
+public class HerosServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = 2828781477059201765L;
 	private Hero hero;
 	
-	public HeroServlet(Hero hero)
+	public HerosServlet(Hero hero)
 	{
 		this.hero = hero;
 	}
@@ -31,7 +31,7 @@ public class HeroServlet extends LabyrinthHttpServlet
 		User user;
 		int heroId = 0;
 		ArrayList<Hero> heros = new ArrayList<>();
-		HeroServletActions actions = new HeroServletActions();
+		HerosServletActions actions = new HerosServletActions();
 		
 		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.HEROS);
 		
@@ -113,7 +113,7 @@ public class HeroServlet extends LabyrinthHttpServlet
 		errors.clear();
 		
 		HeroValidationHelper validation = new HeroValidationHelper();
-		HeroServletActions actions = new HeroServletActions();
+		HerosServletActions actions = new HerosServletActions();
 		JsonObject data = null;
 		int heroId = 0;
 

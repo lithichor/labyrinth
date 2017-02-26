@@ -13,7 +13,7 @@ import com.parents.LabyrinthException;
 import com.parents.LabyrinthHttpServlet;
 import com.web.api.user.User;
 
-public class TurnServlet extends LabyrinthHttpServlet
+public class TurnsServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = 4222322558201838792L;
 
@@ -25,7 +25,7 @@ public class TurnServlet extends LabyrinthHttpServlet
 		errors.clear();
 		Turn turn = new Turn();
 		APITurn apiTurn = null;
-		TurnServletActions actions = new TurnServletActions();
+		TurnsServletActions actions = new TurnsServletActions();
 		Integer turnId = getIdFromUrl(request, EndpointsWithIds.TURNS);
 		
 		try
@@ -64,7 +64,7 @@ public class TurnServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		Turn turn = new Turn();
-		TurnServletActions actions = new TurnServletActions();
+		TurnsServletActions actions = new TurnsServletActions();
 		Integer turnId = getIdFromUrl(request, EndpointsWithIds.TURNS);
 		JsonObject data = null;
 		String direction = "";

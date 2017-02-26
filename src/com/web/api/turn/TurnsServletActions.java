@@ -8,7 +8,7 @@ import com.web.api.maps.Map;
 import com.web.api.tile.Tile;
 import com.web.api.tile.Tile.Boundary;
 
-public class TurnServletActions extends LabyrinthServletActions
+public class TurnsServletActions extends LabyrinthServletActions
 {
 	public Turn makeMove(String direction, Turn turn) throws LabyrinthException
 	{

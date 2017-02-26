@@ -19,13 +19,13 @@
   
   <listener>
   	<listener-class>
-  		com.web.api.game.GameServletContextListener
+  		com.web.api.game.GamesServletContextListener
   	</listener-class>
   </listener>
   
   <listener>
   	<listener-class>
-  		com.web.api.hero.HeroServletContextListener
+  		com.web.api.hero.HerosServletContextListener
   	</listener-class>
   </listener>
   
@@ -37,13 +37,13 @@
   
   <listener>
   	<listener-class>
-  		com.web.api.tile.TileServletContextListener
+  		com.web.api.tile.TilesServletContextListener
   	</listener-class>
   </listener>
   
   <listener>
   	<listener-class>
-  		com.web.api.monster.MonsterServletContextListener
+  		com.web.api.monster.MonstersServletContextListener
   	</listener-class>
   </listener>
   
@@ -55,7 +55,7 @@
   
   <listener>
   	<listener-class>
-  		com.web.api.turn.TurnServletContextListener
+  		com.web.api.turn.TurnsServletContextListener
   	</listener-class>
   </listener>
   

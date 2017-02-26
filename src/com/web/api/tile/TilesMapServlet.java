@@ -13,37 +13,34 @@ import com.parents.LabyrinthException;
 import com.parents.LabyrinthHttpServlet;
 import com.web.api.user.User;
 
-public class TileServlet extends LabyrinthHttpServlet
+public class TilesMapServlet extends LabyrinthHttpServlet
 {
-	private static final long serialVersionUID = -1333490555879202438L;
-	
+	private static final long serialVersionUID = 6416254265624381493L;
+
 	/**
-	 * GET a specific Tile, identified by the tileId
+	 * GET all the tiles for a specific Map
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
 	{
 		errors.clear();
 		
 		User user;
-		int tileId = 0;
-		TileServletActions actions = new TileServletActions();
+		int mapId = 0;
+		TilesServletActions actions = new TilesServletActions();
 		ArrayList<Tile> tiles = new ArrayList<>();
 		ArrayList<APITile> apiTiles = new ArrayList<>();
 		
-		String urlStr = splitUrl(request.getRequestURI(), EndpointsWithIds.TILES);
+		String urlStr = splitUrl(request.getRequestURI(), EndpointsWithIds.TILES_MAPS);
 		
-		// this means an ID was included in the URL
 		if(urlStr.length() > 0)
 		{
-			tileId = parseIdFromString(urlStr);
+			mapId = parseIdFromString(urlStr);
 		}
 		
-		// if no id is provided, return an error - we do not
-		// return all tiles for the user, and there's no way to
-		// know or guess which map is being referenced
-		if(tileId <= 0)
+		// return an error if there is no map ID
+		if(mapId <= 0)
 		{
-			errors.add(messages.getMessage("tile.need_id"));
+			errors.add(messages.getMessage("tile.no_map_id"));
 			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 			return;
 		}
@@ -64,16 +61,15 @@ public class TileServlet extends LabyrinthHttpServlet
 			}
 
 			// load tiles and add to array list of API tiles
-			// provide userId to prevent cross tenant bug
-			tiles = new Tile(0, 0, null).load(0, tileId, user.getId());
+			tiles = new Tile(0, 0, null).load(mapId, 0, user.getId());
 			for(Tile t: tiles)
 			{
 				apiTiles.add(new APITile(t));
 			}
-			
+
 			if(tiles.size() == 0)
 			{
-				errors.add(messages.getMessage("tile.no_tiles_found"));
+				errors.add(messages.getMessage("tile.no_tiles_for_map"));
 				apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 				return;
 			}
@@ -98,7 +94,7 @@ public class TileServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		
-		TilesOptions options = new TilesOptions();
+		TilesMapOptions options = new TilesMapOptions();
 		apiOut(gson.toJson(options), response);
 	}
 }

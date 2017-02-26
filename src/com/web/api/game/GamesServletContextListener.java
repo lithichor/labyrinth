@@ -8,13 +8,13 @@ import com.parents.LabyrinthServletContextListener;
 import com.web.api.user.User;
 
 @WebListener
-public class GameServletContextListener extends LabyrinthServletContextListener
+public class GamesServletContextListener extends LabyrinthServletContextListener
 {
 	@Override
 	public void contextInitialized(ServletContextEvent event)
 	{
 		ServletContext context = event.getServletContext();
-		context.addServlet("gameServlet", new GameServlet(new Game(), new User())).addMapping("/api/games/*");
+		context.addServlet("gameServlet", new GamesServlet(new Game(), new User())).addMapping("/api/games/*");
 	}
 
 }
