@@ -6,9 +6,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.models.Monster;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
+import com.web.api.monster.Monster;
 
 public class Tile extends LabyrinthModel
 {

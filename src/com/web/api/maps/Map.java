@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
-import com.models.Monster;
 import com.models.constants.GeneralConstants;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
+import com.web.api.monster.Monster;
 import com.web.api.tile.Tile;
 import com.web.api.tile.Tile.Boundary;
 
