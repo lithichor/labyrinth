@@ -7,9 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.models.Monster;
 import com.models.api.APIErrorMessage;
-import com.models.api.APIMonster;
 import com.models.constants.EndpointsWithIds;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthHttpServlet;
@@ -57,5 +55,13 @@ public class MonstersTileServlet extends LabyrinthHttpServlet
 			// there's only going to be one monster with the given ID
 			apiOut(gson.toJson(new APIMonster(monsters.get(0))), response);
 		}
+	}
+	
+	public void doOptions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		errors.clear();
+		
+		MonstersTileOptions options = new MonstersTileOptions();
+		apiOut(gson.toJson(options), response);
 	}
 }

@@ -1,6 +1,5 @@
-package com.models.api;
+package com.web.api.monster;
 
-import com.models.Monster;
 import com.parents.LabyrinthAPIModel;
 
 public class APIMonster extends LabyrinthAPIModel

@@ -1,4 +1,4 @@
-package com.models;
+package com.web.api.monster;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
