@@ -9,7 +9,7 @@ public class MonstersServletContextListener extends LabyrinthServletContextListe
 	@Override
 	public void contextInitialized(ServletContextEvent event)
 	{
-		event.getServletContext().addServlet("monsterServlet", new MonstersServlet()).addMapping("/api/monsters/*");
-		event.getServletContext().addServlet("monsterTileServlet", new MonstersTileServlet()).addMapping("/api/monsters/tile/*");
+		event.getServletContext().addServlet("monstersServlet", new MonstersServlet()).addMapping("/api/monsters/*");
+		event.getServletContext().addServlet("monstersTileServlet", new MonstersTileServlet()).addMapping("/api/monsters/tile/*");
 	}
 }
