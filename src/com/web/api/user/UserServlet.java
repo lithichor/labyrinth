@@ -219,6 +219,10 @@ public class UserServlet extends LabyrinthHttpServlet
 			{
 				errors.add(messages.getMessage("user.no_authorization"));
 			}
+			else if(le.getMessage().contains(messages.getMessage("user.no_such_player")))
+			{
+				errors.add(messages.getMessage("user.no_such_player"));
+			}
 			else
 			{
 				le.printStackTrace();
@@ -247,7 +251,16 @@ public class UserServlet extends LabyrinthHttpServlet
 			if(data != null)
 			{
 				User newUser = validator.validateApiPut(data);
-				user.merge(newUser);
+				if(newUser != null)
+				{
+					user.merge(newUser);
+				}
+				else
+				{
+					errors.addAll(validator.getErrors());
+					apiOut(gson.toJson(new APIErrorMessage(errors)), response);
+					return;
+				}
 				
 				try
 				{

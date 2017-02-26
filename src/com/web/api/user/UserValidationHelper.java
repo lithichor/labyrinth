@@ -204,16 +204,41 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 		
 		if(data.has("firstName"))
 		{
-			user.setFirstName(data.get("firstName").getAsString());
+			try
+			{
+				user.setFirstName(data.get("firstName").getAsString());
+			}
+			catch(UnsupportedOperationException | IllegalStateException ex)
+			{
+				errors.add(messages.getMessage("user.first_name_not_a_string"));
+				user = null;
+			}
 		}
 		if(data.has("lastName"))
 		{
-			user.setLastName(data.get("lastName").getAsString());
+			try
+			{
+				user.setLastName(data.get("lastName").getAsString());
+			}
+			catch(UnsupportedOperationException | IllegalStateException ex)
+			{
+				errors.add(messages.getMessage("user.last_name_not_a_string"));
+				user = null;
+			}
 		}
 		if(data.has("password"))
 		{
-			String password = data.get("password").getAsString();
-			user.setPassword(encryptor.encrypt(password));
+			String password = null;
+			try
+			{
+				password = data.get("password").getAsString();
+				user.setPassword(encryptor.encrypt(password));
+			}
+			catch(UnsupportedOperationException | IllegalStateException ex)
+			{
+				errors.add(messages.getMessage("user.password_not_a_string"));
+				user = null;
+			}
 		}
 		
 		return user;
