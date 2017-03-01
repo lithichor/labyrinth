@@ -17,6 +17,7 @@ public class ConstantsServlet extends LabyrinthHttpServlet
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
 	{
+		errors.clear();
 		// this has its own gson because static modifiers 
 		// are excluded from JSON by default
 		Gson gson = new GsonBuilder()
@@ -26,5 +27,13 @@ public class ConstantsServlet extends LabyrinthHttpServlet
 		GeneralConstants constants = new GeneralConstants();
 		System.out.println(constants.toString());
 		apiOut(gson.toJson(constants), response);
+	}
+	
+	public void doOptions(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
+	{
+		errors.clear();
+		
+		ConstantsOptions options = new ConstantsOptions();
+		apiOut(gson.toJson(options), response);
 	}
 }
