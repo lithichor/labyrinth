@@ -61,6 +61,14 @@ public class InstructionsServlet extends LabyrinthHttpServlet
 		apiOut(gson.toJson(info), response);
 	}
 	
+	public void doOptions(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
+	{
+		errors.clear();
+		
+		InstructionsOptions options = new InstructionsOptions();
+		apiOut(gson.toJson(options), response);
+	}
+
 	private String formatFileNames(String fileName)
 	{
 		String file = "";
