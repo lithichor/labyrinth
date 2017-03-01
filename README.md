@@ -1,8 +1,8 @@
-The Labyrinth
+# The Labyrinth
 
 An online single player roguelike game with a REST API interface.
 
-A few caveats:
+Before we start, a few caveats:
 
 1. This is a work in progress; I will remove this caveat when the project is ready for prime time.
 
@@ -20,3 +20,12 @@ The Labyrinth a better game.
 
 4. I'm a test engineer, not a developer. My primary goal is to build a test framework; the game is
 secondary, really. So you may want to change some things before hosting the server.
+
+
+# Getting Started
+This API is supposed to be self-documenting. The first call you should make is to the instructions
+endpoint; that will give you a list of endpoints you can call.
+
+When you want to start working with an endpoint, the first thing you should do is call the OPTIONS
+method; that will give you some basic information about the endpoint such as which methods are supported,
+what the data should look like, and what related endpoints exist.
