@@ -50,4 +50,12 @@ public class TurnsGameServlet extends LabyrinthHttpServlet
 			apiOut(gson.toJson(new APITurn(turn)), response);
 		}
 	}
+
+	public void doOptions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		errors.clear();
+		
+		TurnsGameOptions options = new TurnsGameOptions();
+		apiOut(gson.toJson(options), response);
+	}
 }
