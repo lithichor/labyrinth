@@ -111,4 +111,11 @@ public class TurnsServlet extends LabyrinthHttpServlet
 		}
 	}
 
+	public void doOptions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		errors.clear();
+		
+		TurnsOptions options = new TurnsOptions();
+		apiOut(gson.toJson(options), response);
+	}
 }
