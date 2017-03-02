@@ -320,7 +320,7 @@ public class Map extends LabyrinthModel
 					catch(ArrayIndexOutOfBoundsException oobe)
 					{
 						System.out.println("\n\nWoah! Error, Dude:\nX: " + x + "\nY: " + y);
-						throw new ArrayIndexOutOfBoundsException();
+						throw oobe;
 					}
 				}
 				
@@ -339,12 +339,12 @@ public class Map extends LabyrinthModel
 					t.setSouth(Boundary.WALL);
 					try
 					{
-						grid.get(x).get(y + 1).setSouth(Boundary.WALL);
+						grid.get(x).get(y + 1).setNorth(Boundary.WALL);
 					}
 					catch(ArrayIndexOutOfBoundsException oobe)
 					{
 						System.out.println("\n\nERROR:\nX: " + x + "\nY: " + y);
-						throw new ArrayIndexOutOfBoundsException();
+						throw oobe;
 					}
 				}
 				
