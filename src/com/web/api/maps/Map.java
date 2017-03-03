@@ -44,8 +44,7 @@ public class Map extends LabyrinthModel
 				+ "updated_at, "
 				+ "grid_size "
 				+ "FROM maps ";
-		// if a gameId is provided (also if both ids are provided - which
-		// should never happen, but it might)
+		// if a gameId is provided
 		if(gameId > 0)
 		{
 			sql += "WHERE game_id = ? ";
@@ -118,6 +117,22 @@ public class Map extends LabyrinthModel
 			}
 		}
 		return null;
+	}
+	
+	public ArrayList<Map> loadOneMapByUserAndGame(Integer userId, Integer gameId) throws LabyrinthException
+	{
+		ArrayList<Map> maps = loadByUser(userId);
+		ArrayList<Map> mapsOut = new ArrayList<>();
+		
+		for(Map m: maps)
+		{
+			if(m.getGameId().equals(gameId))
+			{
+				mapsOut.add(m);
+			}
+		}
+		
+		return mapsOut;
 	}
 	
 	/**
