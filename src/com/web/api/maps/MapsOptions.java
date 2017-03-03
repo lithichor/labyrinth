@@ -17,7 +17,7 @@ public class MapsOptions extends LabyrinthOptions
 		fields.put("gameId", "Integer");
 		
 		get.put("general", "The Get verb returns a particular Map, or all the Maps for "
-				+ "the current Game.");
+				+ "the last Game created.");
 		get.put("url - one Map", "/api/maps/:id");
 		get.put("url - all Maps for current Game", "/api/maps");
 		
