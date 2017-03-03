@@ -86,7 +86,14 @@ public class TurnsServlet extends LabyrinthHttpServlet
 				}
 				if(data.has("direction"))
 				{
-					direction = data.get("direction").getAsString();
+					try
+					{
+						direction = data.get("direction").getAsString();
+					}
+					catch (UnsupportedOperationException | IllegalStateException uoe_ise)
+					{
+						throw new LabyrinthException(messages.getMessage("turn.direction_not_string"));
+					}
 					turn = actions.makeMove(direction.toLowerCase(), turn);
 					turn.update();
 				}
