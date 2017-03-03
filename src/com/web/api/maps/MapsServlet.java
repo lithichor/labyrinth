@@ -36,6 +36,7 @@ public class MapsServlet extends LabyrinthHttpServlet
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
+		maps = new ArrayList<>();
 		
 		User user;
 		int mapId = 0;
@@ -54,18 +55,26 @@ public class MapsServlet extends LabyrinthHttpServlet
 		try
 		{
 			user = actions.authenticateUser(request);
-			
-			// if no id is provided, we need to get the most recent
-			// gameId for the user and load with that
-			if(mapId <= 0)
-			{
-				ArrayList<Game> games = new Game().load(user.getId(), 0);
-				gameId = games.get(games.size() - 1).getId();
-			}
 
 			if(user != null)
 			{
-				maps = new Map().load(gameId, mapId);
+				// if no id is provided, we need to get the most recent
+				// gameId for the user and load with that
+				if(mapId <= 0)
+				{
+					ArrayList<Game> games = new Game().load(user.getId(), 0);
+					gameId = games.get(games.size() - 1).getId();
+					maps = new Map().load(gameId, mapId);
+				}
+				else
+				{
+					Map map = new Map().loadOneMapByUser(user.getId(), mapId);
+					if(map != null)
+					{
+						maps.add(map);
+					}
+				}
+				
 				for(Map m: maps)
 				{
 					APIMap am = new APIMap(m);
@@ -80,8 +89,14 @@ public class MapsServlet extends LabyrinthHttpServlet
 			return;
 		}
 		
+		// if no maps were found
+		if(apiMaps.size() == 0)
+		{
+			errors.add(messages.getMessage("map.no_match_for_id_user"));
+			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
+		}
 		// if we're only returning one map, don't return an array
-		if(apiMaps.size() == 1)
+		else if(apiMaps.size() == 1)
 		{
 			apiOut(gson.toJson(apiMaps.get(0)), response);
 		}
