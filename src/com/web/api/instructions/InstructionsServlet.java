@@ -56,6 +56,8 @@ public class InstructionsServlet extends LabyrinthHttpServlet
 			return;
 		}
 		
+		info.put("instructions", "If you make an Options request for each of these endpoints "
+				+ "you will get more detailed instructions on how to use the endpoints.");
 		info.put("endpoints", fileNames);
 
 		apiOut(gson.toJson(info), response);
