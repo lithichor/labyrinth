@@ -22,4 +22,6 @@ public abstract class LabyrinthValidationHelper
 	public abstract boolean validate(HashMap<String, String> params);
 	
 	public abstract LabyrinthModel validateApi(JsonObject json);
+	
+	public abstract LabyrinthModel validateApiPut(JsonObject data, Integer id) throws LabyrinthException;
 }

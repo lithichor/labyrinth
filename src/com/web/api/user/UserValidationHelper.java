@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import com.google.gson.JsonObject;
 import com.helpers.Encryptor;
+import com.parents.LabyrinthException;
 import com.parents.LabyrinthValidationHelper;
 
 public class UserValidationHelper extends LabyrinthValidationHelper
@@ -198,7 +199,7 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 		}
 	}
 	
-	public User validateApiPut(JsonObject data)
+	public User validateApiPut(JsonObject data, Integer userId) throws LabyrinthException
 	{
 		User user = new User();
 		
