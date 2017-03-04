@@ -3,6 +3,8 @@ package com.web.api.maps;
 import java.util.HashMap;
 
 import com.google.gson.JsonObject;
+import com.parents.LabyrinthException;
+import com.parents.LabyrinthModel;
 import com.parents.LabyrinthValidationHelper;
 
 public class MapValidationHelper extends LabyrinthValidationHelper
@@ -61,5 +63,10 @@ public class MapValidationHelper extends LabyrinthValidationHelper
 		{
 			return null;
 		}
+	}
+
+	public LabyrinthModel validateApiPut(JsonObject data, Integer id) throws LabyrinthException
+	{
+		return null;
 	}
 }
