@@ -14,6 +14,7 @@ public class Hero extends LabyrinthModel
 	private Integer gameId;
 	
 	private Integer health = 0;
+	private Integer maxHealth = 0;
 	private Integer strength = 0;
 	private Integer magic = 0;
 	private Integer attack = 0;
@@ -21,6 +22,8 @@ public class Hero extends LabyrinthModel
 
 	public Integer getHealth() { return this.health; }
 	public void setHealth(Integer health) { this.health = health; }
+	public Integer getMaxHealth() { return this.maxHealth; }
+	public void setMaxHealth(Integer maxHealth) { this.maxHealth = maxHealth; }
 	public Integer getId() { return id; }
 	public void setId(Integer id) { this.id = id; }
 	public Integer getGameId() { return gameId; }
@@ -37,11 +40,12 @@ public class Hero extends LabyrinthModel
 	public boolean save() throws LabyrinthException
 	{
 		boolean success = false;
-		String sql = "INSERT INTO heros (game_id, health, strength, magic, attack, defense, created_at, updated_at) "
-				+ "VALUES(?, ?, ?, ?, ?, ?, now(), now())";
+		String sql = "INSERT INTO heros (game_id, health, max_health, strength, magic, attack, defense, created_at, updated_at) "
+				+ "VALUES(?, ?, ?, ?, ?, ?, ?, now(), now())";
 		ArrayList<Object> params = new ArrayList<Object>();
 		params.add(this.gameId);
 		params.add(this.health);
+		params.add(this.maxHealth);
 		params.add(this.strength);
 		params.add(this.magic);
 		params.add(this.attack);
@@ -93,6 +97,7 @@ public class Hero extends LabyrinthModel
 				+ " created_at,"
 				+ " updated_at,"
 				+ " health,"
+				+ " max_health,"
 				+ " strength,"
 				+ " magic,"
 				+ " attack,"
@@ -124,6 +129,7 @@ public class Hero extends LabyrinthModel
 				hero.setCreatedAt(new Date(results.getTimestamp("created_at").getTime()));
 				hero.setUpdatedAt(new Date(results.getTimestamp("updated_at").getTime()));
 				hero.setHealth(results.getInt("health"));
+				hero.setMaxHealth(results.getInt("max_health"));
 				hero.setStrength(results.getInt("strength"));
 				hero.setMagic(results.getInt("magic"));
 				hero.setAttack(results.getInt("attack"));
@@ -144,7 +150,7 @@ public class Hero extends LabyrinthModel
 	{
 		ArrayList<Hero> heros = new ArrayList<>();
 		String sql = "SELECT h.id, game_id, "
-				+ "health, strength, magic, attack, defense, "
+				+ "health, max_health, strength, magic, attack, defense, "
 				+ "h.created_at, h.updated_at "
 				+ "FROM heros h\n\t"
 				+ "LEFT JOIN games g on g.id = h.game_id\n\t"
@@ -169,6 +175,7 @@ public class Hero extends LabyrinthModel
 				hero.setCreatedAt(new Date(results.getTimestamp("h.created_at").getTime()));
 				hero.setUpdatedAt(new Date(results.getTimestamp("h.updated_at").getTime()));
 				hero.setHealth(results.getInt("health"));
+				hero.setMaxHealth(results.getInt("max_health"));
 				hero.setStrength(results.getInt("strength"));
 				hero.setMagic(results.getInt("magic"));
 				hero.setAttack(results.getInt("attack"));
@@ -196,6 +203,12 @@ public class Hero extends LabyrinthModel
 		{
 			sql += "health = ? ";
 			params.add(this.getHealth());
+			first = false;
+		}
+		if(this.getMaxHealth() != null && !(this.getMaxHealth() == 0))
+		{
+			sql += "max_health = ? ";
+			params.add(this.getMaxHealth());
 			first = false;
 		}
 		if(this.getStrength() != null && !(this.getStrength() == 0))
@@ -301,6 +314,10 @@ public class Hero extends LabyrinthModel
 		if(other.getHealth() != null && other.getHealth() != 0)
 		{
 			this.health = other.getHealth();
+		}
+		if(other.getMaxHealth() != null && other.getMaxHealth() != 0)
+		{
+			this.maxHealth = other.getMaxHealth();
 		}
 		if(other.getStrength() != null && other.getStrength() != 0)
 		{

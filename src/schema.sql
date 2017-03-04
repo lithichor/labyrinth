@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.11)
 # Database: labyrinth
-# Generation Time: 2017-02-14 11:36:26 +0000
+# Generation Time: 2017-03-04 18:36:51 +0000
 # ************************************************************
 
 
@@ -18,6 +18,22 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+# Dump of table combats
+# ------------------------------------------------------------
+
+CREATE TABLE `combats` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `hero_id` int(11) NOT NULL,
+  `monster_id` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 
 # Dump of table games
@@ -41,6 +57,7 @@ CREATE TABLE `heros` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `game_id` int(11) NOT NULL,
   `health` int(11) NOT NULL,
+  `max_health` int(11) NOT NULL,
   `strength` int(11) NOT NULL DEFAULT '0',
   `magic` int(11) NOT NULL DEFAULT '0',
   `attack` int(11) NOT NULL DEFAULT '0',
@@ -59,6 +76,7 @@ CREATE TABLE `heros` (
 CREATE TABLE `maps` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `game_id` int(11) NOT NULL,
+  `grid_size` int(11) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime DEFAULT NULL,
