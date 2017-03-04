@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.11)
 # Database: labyrinth
-# Generation Time: 2017-03-04 18:36:51 +0000
+# Generation Time: 2017-03-04 22:51:29 +0000
 # ************************************************************
 
 
@@ -62,6 +62,7 @@ CREATE TABLE `heros` (
   `magic` int(11) NOT NULL DEFAULT '0',
   `attack` int(11) NOT NULL DEFAULT '0',
   `defense` int(11) NOT NULL DEFAULT '0',
+  `experience` int(11) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime DEFAULT NULL,

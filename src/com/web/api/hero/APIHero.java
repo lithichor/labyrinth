@@ -12,6 +12,7 @@ public class APIHero extends LabyrinthAPIModel
 	private Integer magic;
 	private Integer attack;
 	private Integer defense;
+	private Integer experience;
 	
 	public APIHero(Hero hero)
 	{
@@ -23,6 +24,7 @@ public class APIHero extends LabyrinthAPIModel
 		this.magic = hero.getMagic();
 		this.attack = hero.getAttack();
 		this.defense = hero.getDefense();
+		this.experience = hero.getExperience();
 	}
 	
 	public Integer getId() { return id; }
@@ -41,4 +43,6 @@ public class APIHero extends LabyrinthAPIModel
 	public void setAttack(Integer attack) { this.attack = attack; }
 	public Integer getDefense() { return defense; }
 	public void setDefense(Integer defense) { this.defense = defense; }
+	public Integer getExperience() { return experience; }
+	public void setExperience(Integer experience) { this.experience = experience; }
 }

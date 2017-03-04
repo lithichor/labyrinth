@@ -19,6 +19,7 @@ public class Hero extends LabyrinthModel
 	private Integer magic = 0;
 	private Integer attack = 0;
 	private Integer defense = 0;
+	private Integer experience = 0;
 
 	public Integer getHealth() { return this.health; }
 	public void setHealth(Integer health) { this.health = health; }
@@ -36,12 +37,15 @@ public class Hero extends LabyrinthModel
 	public void setAttack(Integer attack) { this.attack = attack; }
 	public Integer getDefense() { return defense; }
 	public void setDefense(Integer defense) { this.defense = defense; }
+	public Integer getExperience() { return experience; }
+	public void setExperience(Integer experience) { this.experience = experience; }
 	
 	public boolean save() throws LabyrinthException
 	{
 		boolean success = false;
-		String sql = "INSERT INTO heros (game_id, health, max_health, strength, magic, attack, defense, created_at, updated_at) "
-				+ "VALUES(?, ?, ?, ?, ?, ?, ?, now(), now())";
+		String sql = "INSERT INTO heros (game_id, health, max_health, strength, "
+				+ "magic, attack, defense, experience, created_at, updated_at) "
+				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, now(), now())";
 		ArrayList<Object> params = new ArrayList<Object>();
 		params.add(this.gameId);
 		params.add(this.health);
@@ -50,6 +54,7 @@ public class Hero extends LabyrinthModel
 		params.add(this.magic);
 		params.add(this.attack);
 		params.add(this.defense);
+		params.add(this.experience);
 		
 		try
 		{
@@ -101,7 +106,8 @@ public class Hero extends LabyrinthModel
 				+ " strength,"
 				+ " magic,"
 				+ " attack,"
-				+ " defense"
+				+ " defense,"
+				+ " experience"
 				+ " FROM heros WHERE deleted_at IS NULL";
 		
 		if(heroId > 0)
@@ -134,6 +140,7 @@ public class Hero extends LabyrinthModel
 				hero.setMagic(results.getInt("magic"));
 				hero.setAttack(results.getInt("attack"));
 				hero.setDefense(results.getInt("defense"));
+				hero.setDefense(results.getInt("experience"));
 				heros.add(hero);
 			}
 		}
@@ -150,7 +157,8 @@ public class Hero extends LabyrinthModel
 	{
 		ArrayList<Hero> heros = new ArrayList<>();
 		String sql = "SELECT h.id, game_id, "
-				+ "health, max_health, strength, magic, attack, defense, "
+				+ "health, max_health, strength, "
+				+ "magic, attack, defense, experience, "
 				+ "h.created_at, h.updated_at "
 				+ "FROM heros h\n\t"
 				+ "LEFT JOIN games g on g.id = h.game_id\n\t"
@@ -180,6 +188,7 @@ public class Hero extends LabyrinthModel
 				hero.setMagic(results.getInt("magic"));
 				hero.setAttack(results.getInt("attack"));
 				hero.setDefense(results.getInt("defense"));
+				hero.setDefense(results.getInt("experience"));
 				heros.add(hero);
 			}
 		}
@@ -243,6 +252,17 @@ public class Hero extends LabyrinthModel
 			sql += "attack = ? ";
 			first = false;
 			params.add(this.getAttack());
+		}
+		if(this.getExperience() != null && !(this.getExperience() == 0))
+		{
+			if(!first)
+			{
+				sql += ", ";
+				first = false;
+			}
+			sql += "experience = ? ";
+			first = false;
+			params.add(this.getExperience());
 		}
 		if(this.getDefense() != null && !(this.getDefense() == 0))
 		{
@@ -334,6 +354,10 @@ public class Hero extends LabyrinthModel
 		if(other.getDefense() != null && other.getDefense() != 0)
 		{
 			this.defense = other.getDefense();
+		}
+		if(other.getExperience() != null && other.getExperience() != 0)
+		{
+			this.experience = other.getExperience();
 		}
 	}
 	
