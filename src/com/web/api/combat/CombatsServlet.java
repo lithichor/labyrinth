@@ -158,7 +158,16 @@ public class CombatsServlet extends LabyrinthHttpServlet
 			apiOut(gson.toJson(results), response);
 		}
 	}
+	
+	public void doOptions(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
+	{
+		errors.clear();
+		
+		CombatsOptions options = new CombatsOptions();
+		apiOut(gson.toJson(options), response);
+	}
 
+	// TEMP ONLY - will be removed with #201
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
 	{
 		Combat c = new Combat();
