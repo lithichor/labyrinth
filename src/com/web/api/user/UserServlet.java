@@ -107,8 +107,6 @@ public class UserServlet extends LabyrinthHttpServlet
 
 	/**
 	 * api/user - the POST method creates a new user.
-	 * 
-	 * TODO: GAME #26 - Add requirement that admin authentication is required for signup
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
