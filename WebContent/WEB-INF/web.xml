@@ -71,4 +71,10 @@
   	</listener-class>
   </listener>
   
+  <listener>
+  	<listener-class>
+  		com.jobs.BackgroundJobManager
+  	</listener-class>
+  </listener>
+  
 </web-app>

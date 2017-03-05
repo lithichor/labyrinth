@@ -7,6 +7,7 @@ import java.util.Date;
 
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
+import com.web.api.game.Game;
 
 public class User extends LabyrinthModel
 {
@@ -113,12 +114,35 @@ public class User extends LabyrinthModel
 	
 	public boolean deleteUser() throws LabyrinthException
 	{
+		boolean success = false;
 		String sql = "UPDATE users SET updated_at = now(), deleted_at = now() WHERE id = ?";
-		
 		ArrayList<Object> parameters = new ArrayList<Object>();
 		parameters.add(this.getId());
+		ArrayList<Game> games = null;
 		
-		boolean success = false;
+		// load games for deletion
+		try
+		{
+			games = new Game().load(this.id, 0);
+		}
+		catch(LabyrinthException le)
+		{
+			// if there are no games for the user, create an empty list. If
+			// some other exception occurs, throw it
+			if(le.getMessage().equals(messages.getMessage("game.no_games")))
+			{
+				games = new ArrayList<>();
+			}
+			else
+			{
+				throw le;
+			}
+		}
+		
+		for(Game g: games)
+		{
+			g.deleteGame();
+		}
 		
 		try
 		{
