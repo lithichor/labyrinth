@@ -47,7 +47,6 @@ public class DeleteUnusedUsers implements Runnable
 				le.printStackTrace();
 				System.out.println(le.getMessage());
 			}
-			System.out.println(id);
 		}
 	}
 }
