@@ -1,6 +1,9 @@
 Anubis
-Ushabti
-Skeleton
-Zombie
-Wraith
 Geist
+Lich
+Revenant
+Revenant
+Skeleton
+Ushabti
+Wraith
+Zombie

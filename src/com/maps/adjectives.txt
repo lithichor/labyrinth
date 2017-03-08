@@ -10,8 +10,8 @@ Covered
 Creeping
 Creepy
 Crooked
-Descending
 Deep
+Descending
 Desecrated
 Eastern
 Eerie
@@ -34,8 +34,8 @@ Oblique
 Oblong
 Ominous
 Onomatopoetic
-Original
 Organic
+Original
 Orthogonal
 Otherworldly
 Poisoned
@@ -44,12 +44,12 @@ Polluted
 Primordial
 Quaking
 Rainy
-Shining
 Sacred
 Seminal
 Serene
 Serenity
 Shambolic
+Shining
 Shuddering
 Snowy
 Solid
