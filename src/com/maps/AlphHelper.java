@@ -23,7 +23,6 @@ public class AlphHelper
 	public ArrayList<String> getListOfFiles()
 	{
 		ArrayList<String> fileNames = new ArrayList<>();
-		// put this in a general helper file
 		String mapsFolder = mf + sep + "src" + sep + "com" + sep + "maps";
 		
 		try(Stream<Path> paths = Files.walk(Paths.get(mapsFolder)))
@@ -66,10 +65,6 @@ public class AlphHelper
 		}
 		
 		ArrayList<String> contents = new ArrayList<String>(Arrays.asList(contentStr.split("\n")));
-//		for(String str: contents)
-//		{
-//			str = str.trim();
-//		}
 		
 		Collections.sort(contents, new Comparator<String>()
 		{
