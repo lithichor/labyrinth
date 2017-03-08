@@ -44,8 +44,15 @@ public class Map extends LabyrinthModel
 				+ "updated_at, "
 				+ "grid_size "
 				+ "FROM maps ";
+		// if both are provided
+		if(gameId > 0 && mapId > 0)
+		{
+			sql += "WHERE game_id = ? AND id = ? ";
+			params.add(gameId);
+			params.add(mapId);
+		}
 		// if a gameId is provided
-		if(gameId > 0)
+		else if(gameId > 0)
 		{
 			sql += "WHERE game_id = ? ";
 			params.add(gameId);			
