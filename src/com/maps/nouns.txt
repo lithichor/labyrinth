@@ -60,4 +60,3 @@ Village
 Wetlands
 Woods
 Ziggurat
-

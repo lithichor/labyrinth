@@ -1,9 +1,8 @@
 Aitvaras
-Mu’aqqibah
-Berehynia
 Banshee
-Boggart
+Berehynia
 Bogeyman
+Boggart
 Brownie
 Bwboch
 Cofgod
@@ -19,10 +18,11 @@ Lares
 Lubber
 Lutin
 Monaciello
-Nisse
+Mu’aqqibah
 Nis
+Nisse
 Pukis
 Tomte
 Trasgu
 Urisk
-Zashiki-warishi
+Zashiki Warishi

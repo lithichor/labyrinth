@@ -1,0 +1,27 @@
+Assassin
+Banshee
+Boggart
+Bugbear
+Chupacabra
+Coyote
+Dwarf
+Gargoyle
+Ghost
+Ghoul
+Giant Racoon
+Giant Rat
+Gnoll
+Grue
+Kobold
+Ogre
+Pigeon Flock
+Ratking
+Revenant
+Revenant
+Skeleton
+Thief
+Troll
+Vampire
+Wererat
+Yokai
+Zombie
