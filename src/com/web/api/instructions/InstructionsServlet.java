@@ -1,17 +1,14 @@
 package com.web.api.instructions;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.stream.Stream;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.parents.LabyrinthException;
 import com.parents.LabyrinthHttpServlet;
 
 public class InstructionsServlet extends LabyrinthHttpServlet
@@ -34,25 +31,19 @@ public class InstructionsServlet extends LabyrinthHttpServlet
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
 	{
-		ArrayList<String> fileNames = new ArrayList<>();
+		ArrayList<String> fileNames = null;
 		HashMap<String, Object> info = new HashMap<>();
+		InstructionsActions actions = new InstructionsActions();
 		
-		// get all files ending in Servlet.class (this is searching
-		// the compiled classes, not the java files). We're only
-		// interested in the child servlets, not the parent class.
 		String apiFolder = getServletContext().getRealPath(".");
 		
-		try(Stream<Path> paths = Files.walk(Paths.get(apiFolder)))
+		try
 		{
-			paths.filter(s -> s.toString().contains("Servlet.class"))
-			.filter(s -> !(s.toString().contains("LabyrinthHttpServlet")))
-			.forEach(f -> fileNames.add(formatFileNames(f.getFileName().toString())));
+			fileNames = actions.getFileNames(apiFolder);
 		}
-		catch (IOException ioe)
+		catch(LabyrinthException le)
 		{
-			// this means something terrible happened while scanning the file structure
-			ioe.printStackTrace();
-			apiOut(gson.toJson(messages.getMessage("unknown.horribly_wrong")), response);
+			apiOut(gson.toJson(le.getMessage()), response);
 			return;
 		}
 		
@@ -62,29 +53,12 @@ public class InstructionsServlet extends LabyrinthHttpServlet
 
 		apiOut(gson.toJson(info), response);
 	}
-	
+
 	public void doOptions(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
 	{
 		errors.clear();
 		
 		InstructionsOptions options = new InstructionsOptions();
 		apiOut(gson.toJson(options), response);
-	}
-
-	private String formatFileNames(String fileName)
-	{
-		String file = "";
-		
-		// split the name using uppercase letters and remove the unwanted part
-		String[] ff = fileName.replace("Servlet.class", "").split("(?=\\p{Upper})");
-		
-		// reassemble the class name by inserting slashes between words
-		for(int x = 0; x < ff.length; x++)
-		{
-			file += "/" + ff[x];
-		}
-		
-		// prepend "api" and return it (it's now in URL format)
-		return "api" + file.toLowerCase();
 	}
 }
