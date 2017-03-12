@@ -79,7 +79,7 @@ public class CombatsServletGetTests extends LabyrinthHttpTest
 	public void testDoGetOutputIsApiCombatObj() throws IOException, ServletException, LabyrinthException
 	{
 		User u = new User();
-		u.setId(123);
+		u.setId(rand.nextInt(1000));
 		Combat c = new Combat();
 		c.setId(14);
 		c.setUserId(u.getId());

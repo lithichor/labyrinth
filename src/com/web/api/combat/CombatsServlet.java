@@ -17,8 +17,10 @@ public class CombatsServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = -125705493904670894L;
 	private CombatsServletActions actions;
+	private Combat combat = new Combat();
 	
 	public void setActions(CombatsServletActions actions) { this.actions = actions; }
+	public void setCombat(Combat c) { this.combat = c; }
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
 	{
@@ -69,8 +71,7 @@ public class CombatsServlet extends LabyrinthHttpServlet
 	public void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
 	{
 		errors.clear();
-		Combat combat = null;
-		CombatsServletActions actions = new CombatsServletActions();
+		actions = (actions == null) ? new CombatsServletActions() : actions;
 		Integer combatId = getIdFromUrl(request, EndpointsWithIds.COMBATS);
 		User user = null;
 		JsonObject data = null;
@@ -98,7 +99,7 @@ public class CombatsServlet extends LabyrinthHttpServlet
 			{
 				try
 				{
-					combat = new Combat().load(user.getId(), combatId);
+					combat = combat.load(user.getId(), combatId);
 				}
 				catch(LabyrinthException le)
 				{
