@@ -27,13 +27,7 @@ public class HerosGameServlet extends LabyrinthHttpServlet
 		ArrayList<APIHero> apiHeros = new ArrayList<>();
 		HerosServletActions actions = new HerosServletActions();
 		
-		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.HEROS_GAMES);
-		
-		// if there is a string after the endpoint
-		if(idStr.length() > 0)
-		{
-			gameId = parseIdFromString(idStr);
-		}
+		gameId = actions.getIdFromUrl(request, EndpointsWithIds.HEROS_GAMES);
 
 		try
 		{

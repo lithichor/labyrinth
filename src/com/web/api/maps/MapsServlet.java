@@ -44,13 +44,7 @@ public class MapsServlet extends LabyrinthHttpServlet
 		ArrayList<APIMap> apiMaps = new ArrayList<APIMap>();
 		MapsServletActions actions = new MapsServletActions();
 		
-		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.MAPS);
-		
-		// if there is a string after the endpoint
-		if(idStr.length() > 0)
-		{
-			mapId = parseIdFromString(idStr);
-		}
+		mapId = actions.getIdFromUrl(request, EndpointsWithIds.MAPS);
 
 		try
 		{
@@ -213,13 +207,7 @@ public class MapsServlet extends LabyrinthHttpServlet
 		int gameId = 0;
 		int mapId = 0;
 		
-		// get mapId from url
-		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.MAPS);
-		// if there is a string after the endpoint
-		if(idStr.length() > 0)
-		{
-			mapId = parseIdFromString(idStr);
-		}
+		mapId = actions.getIdFromUrl(request, EndpointsWithIds.MAPS);
 
 		// load the maps array
 		try
@@ -260,13 +248,8 @@ public class MapsServlet extends LabyrinthHttpServlet
 		int mapId = 0;
 		Map map = null;
 		
-		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.MAPS);
+		mapId = actions.getIdFromUrl(request, EndpointsWithIds.MAPS);
 		
-		// if there is a string after the endpoint
-		if(idStr.length() > 0)
-		{
-			mapId = parseIdFromString(idStr);
-		}
 		// don't continue if there's no ID
 		if(mapId == 0)
 		{

@@ -21,8 +21,8 @@ public class MonstersTileServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		
-		int tileId = getIdFromUrl(request, EndpointsWithIds.MONSTERS_TILES);
 		MonstersServletActions actions = new MonstersServletActions();
+		int tileId = actions.getIdFromUrl(request, EndpointsWithIds.MONSTERS_TILES);
 		ArrayList<Monster> monsters = new ArrayList<>();
 		
 		try

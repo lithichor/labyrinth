@@ -30,12 +30,7 @@ public class TilesMapServlet extends LabyrinthHttpServlet
 		ArrayList<Tile> tiles = new ArrayList<>();
 		ArrayList<APITile> apiTiles = new ArrayList<>();
 		
-		String urlStr = splitUrl(request.getRequestURI(), EndpointsWithIds.TILES_MAPS);
-		
-		if(urlStr.length() > 0)
-		{
-			mapId = parseIdFromString(urlStr);
-		}
+		mapId = actions.getIdFromUrl(request, EndpointsWithIds.TILES_MAPS);
 		
 		// return an error if there is no map ID
 		if(mapId <= 0)

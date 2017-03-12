@@ -94,49 +94,4 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 	{
 		response.getWriter().println(output);
 	}
-
-	protected String splitUrl(String url, String endpoint)
-	{
-		String[] parsedUrl = url.split(endpoint + "/");
-		String idString = "";
-		
-		if(parsedUrl.length > 1)
-		{
-			idString = parsedUrl[1];
-		}
-		
-		return idString;
-	}
-	
-	protected int parseIdFromString(String idString)
-	{
-		int id = 0;
-		
-		try
-		{
-			id = Integer.parseInt(idString);
-		}
-		catch(NumberFormatException nfe)
-		{
-			// id was not a valid integer - ignore it
-			id = 0;
-		}
-		
-		return id;
-	}
-
-	protected int getIdFromUrl(HttpServletRequest request, String endpoint)
-	{
-		int id = 0;
-		
-		String idStr = splitUrl(request.getRequestURI(), endpoint);
-		
-		// if there is a string after the endpoint
-		if(idStr.length() > 0)
-		{
-			id = parseIdFromString(idStr);
-		}
-		
-		return id;
-	}
 }
