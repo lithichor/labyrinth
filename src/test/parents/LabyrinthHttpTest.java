@@ -9,16 +9,12 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.labels.LabyrinthMessages;
-import com.parents.LabyrinthServletActions;
 
 public abstract class LabyrinthHttpTest extends LabyrinthJUnitTest
 {
 	protected HttpServletRequest request = mock(HttpServletRequest.class);
 	protected HttpServletResponse response = mock(HttpServletResponse.class);
 	protected HttpSession session;
-	
-	// may not need this
-	protected LabyrinthServletActions actions = mock(LabyrinthServletActions.class);
 	
 	protected Gson gson = new Gson();
 	protected LabyrinthMessages messages = new LabyrinthMessages();
