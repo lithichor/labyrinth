@@ -33,13 +33,7 @@ public class HerosServlet extends LabyrinthHttpServlet
 		ArrayList<Hero> heros = new ArrayList<>();
 		HerosServletActions actions = new HerosServletActions();
 		
-		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.HEROS);
-		
-		// if there is a string after the endpoint
-		if(idStr.length() > 0)
-		{
-			heroId = parseIdFromString(idStr);
-		}
+		heroId = actions.getIdFromUrl(request, EndpointsWithIds.HEROS);
 
 		try
 		{
@@ -117,13 +111,8 @@ public class HerosServlet extends LabyrinthHttpServlet
 		JsonObject data = null;
 		int heroId = 0;
 
-		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.HEROS);
+		heroId = actions.getIdFromUrl(request, EndpointsWithIds.HEROS);
 		
-		// if there is a string after the endpoint
-		if(idStr.length() > 0)
-		{
-			heroId = parseIdFromString(idStr);
-		}
 		if(heroId == 0)
 		{
 			errors.add(messages.getMessage("hero.hero_needs_id"));

@@ -30,13 +30,7 @@ public class TilesServlet extends LabyrinthHttpServlet
 		ArrayList<Tile> tiles = new ArrayList<>();
 		ArrayList<APITile> apiTiles = new ArrayList<>();
 		
-		String urlStr = splitUrl(request.getRequestURI(), EndpointsWithIds.TILES);
-		
-		// this means an ID was included in the URL
-		if(urlStr.length() > 0)
-		{
-			tileId = parseIdFromString(urlStr);
-		}
+		tileId = actions.getIdFromUrl(request, EndpointsWithIds.TILES);
 		
 		// if no id is provided, return an error - we do not
 		// return all tiles for the user, and there's no way to

@@ -24,7 +24,7 @@ public class TurnsGameServlet extends LabyrinthHttpServlet
 		errors.clear();
 		Turn turn = null;
 		TurnsServletActions actions = new TurnsServletActions();
-		Integer gameId = getIdFromUrl(request, EndpointsWithIds.TURNS_GAMES);
+		Integer gameId = actions.getIdFromUrl(request, EndpointsWithIds.TURNS_GAMES);
 		
 		try
 		{

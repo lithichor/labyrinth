@@ -26,7 +26,7 @@ public class TurnsServlet extends LabyrinthHttpServlet
 		Turn turn = new Turn();
 		APITurn apiTurn = null;
 		TurnsServletActions actions = new TurnsServletActions();
-		Integer turnId = getIdFromUrl(request, EndpointsWithIds.TURNS);
+		Integer turnId = actions.getIdFromUrl(request, EndpointsWithIds.TURNS);
 		
 		try
 		{
@@ -65,7 +65,7 @@ public class TurnsServlet extends LabyrinthHttpServlet
 		errors.clear();
 		Turn turn = new Turn();
 		TurnsServletActions actions = new TurnsServletActions();
-		Integer turnId = getIdFromUrl(request, EndpointsWithIds.TURNS);
+		Integer turnId = actions.getIdFromUrl(request, EndpointsWithIds.TURNS);
 		JsonObject data = null;
 		String direction = "";
 		

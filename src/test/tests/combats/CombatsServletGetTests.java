@@ -9,6 +9,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import com.google.gson.JsonObject;
+import com.models.constants.EndpointsWithIds;
 import com.parents.LabyrinthException;
 import com.web.api.combat.APICombat;
 import com.web.api.combat.Combat;
@@ -89,6 +90,7 @@ public class CombatsServletGetTests extends LabyrinthHttpTest
 		
 		when(request.getRequestURI()).thenReturn("api/combats/14");
 		when(response.getWriter()).thenReturn(printer);
+		when(combatActions.getIdFromUrl(request, EndpointsWithIds.COMBATS)).thenReturn(14);
 		when(combatActions.authenticateUser(request)).thenReturn(u);
 		when(combatActions.getApiCombat(u.getId(), 14)).thenReturn(apiCombat);
 		

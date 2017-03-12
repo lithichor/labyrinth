@@ -27,7 +27,7 @@ public class CombatsServlet extends LabyrinthHttpServlet
 		errors.clear();
 		APICombat apiCombat = null;
 		actions = (actions == null) ? new CombatsServletActions() : actions;
-		Integer combatId = getIdFromUrl(request, EndpointsWithIds.COMBATS);
+		Integer combatId = actions.getIdFromUrl(request, EndpointsWithIds.COMBATS);
 		User user = null;
 
 		if(combatId <= 0)
@@ -72,7 +72,7 @@ public class CombatsServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		actions = (actions == null) ? new CombatsServletActions() : actions;
-		Integer combatId = getIdFromUrl(request, EndpointsWithIds.COMBATS);
+		Integer combatId = actions.getIdFromUrl(request, EndpointsWithIds.COMBATS);
 		User user = null;
 		JsonObject data = null;
 		String results = "";

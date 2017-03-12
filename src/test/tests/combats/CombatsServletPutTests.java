@@ -9,6 +9,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import com.google.gson.JsonObject;
+import com.models.constants.EndpointsWithIds;
 import com.parents.LabyrinthException;
 import com.web.api.combat.Combat;
 import com.web.api.combat.CombatsServlet;
@@ -51,6 +52,7 @@ public class CombatsServletPutTests extends LabyrinthHttpTest
 		when(mockedCombat.load(u.getId(), 14)).thenReturn(mockedCombat);
 		when(combatActions.getData(request)).thenReturn(data);
 		when(combatActions.performCombatAction(data)).thenReturn(expected);
+		when(combatActions.getIdFromUrl(request, EndpointsWithIds.COMBATS)).thenReturn(14);
 		
 		combatsServlet.doPut(request, response);
 		
@@ -70,6 +72,7 @@ public class CombatsServletPutTests extends LabyrinthHttpTest
 		when(request.getRequestURI()).thenReturn(endpoint);
 		when(response.getWriter()).thenReturn(printer);
 		when(combatActions.authenticateUser(request)).thenThrow(new LabyrinthException());
+		when(combatActions.getIdFromUrl(request, EndpointsWithIds.COMBATS)).thenReturn(14);
 		
 		combatsServlet.doPut(request, response);
 		
@@ -90,6 +93,7 @@ public class CombatsServletPutTests extends LabyrinthHttpTest
 		when(response.getWriter()).thenReturn(printer);
 		when(combatActions.authenticateUser(request)).thenReturn(u);
 		when(combatActions.getData(request)).thenReturn(null);
+		when(combatActions.getIdFromUrl(request, EndpointsWithIds.COMBATS)).thenReturn(14);
 		when(mockedCombat.load(u.getId(), 14)).thenReturn(mockedCombat);
 		
 		combatsServlet.doPut(request, response);

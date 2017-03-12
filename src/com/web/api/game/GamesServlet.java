@@ -48,13 +48,9 @@ public class GamesServlet extends LabyrinthHttpServlet
 		// this will get the id from the end of the url
 		int id = 0;
 		
-		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.GAMES);
-		
-		// if there is a string after the endpoint
-		if(idStr.length() > 0)
-		{
-			id = parseIdFromString(idStr);
-		}
+		String idStr = actions.splitUrl(request.getRequestURI(), EndpointsWithIds.GAMES);
+//		
+		id = actions.getIdFromUrl(request, EndpointsWithIds.GAMES);
 		
 		user = null;
 		
@@ -282,13 +278,7 @@ public class GamesServlet extends LabyrinthHttpServlet
 		boolean authenticated = (user != null);
 		int id = 0;
 		
-		String idStr = splitUrl(request.getRequestURI(), EndpointsWithIds.GAMES);
-		
-		// if there is a string after the endpoint
-		if(idStr.length() > 0)
-		{
-			id = parseIdFromString(idStr);
-		}
+		id = actions.getIdFromUrl(request, EndpointsWithIds.GAMES);
 
 		if(authenticated)
 		{

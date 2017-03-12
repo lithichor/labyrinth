@@ -28,8 +28,8 @@ public class MonstersServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		
-		int monsterId = getIdFromUrl(request, EndpointsWithIds.MONSTERS);
 		MonstersServletActions actions = new MonstersServletActions();
+		int monsterId = actions.getIdFromUrl(request, EndpointsWithIds.MONSTERS);
 		ArrayList<Monster> monsters = new ArrayList<>();
 		
 		try
