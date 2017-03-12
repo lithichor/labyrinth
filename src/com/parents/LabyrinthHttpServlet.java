@@ -20,6 +20,22 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 	protected Gson gson = new Gson();
 	protected LabyrinthMessages messages = new LabyrinthMessages();
 	
+	public ArrayList<String> getErrors()
+	{
+		return errors;
+	}
+	
+	public String getErrorsAsString()
+	{
+		String errorStr = "\n";
+		
+		for(String error: errors)
+		{
+			errorStr += error + "\n";
+		}
+		return errorStr;
+	}
+
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();

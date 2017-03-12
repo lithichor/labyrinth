@@ -1,4 +1,5 @@
 Backwards
+Benighted
 Bottomless
 Burning
 Calm
@@ -26,6 +27,7 @@ Grand
 Grandiose
 Howling
 Lustrous
+Mammilated
 Mindful
 Monstrous
 Nepenthe
@@ -63,5 +65,3 @@ Trembling
 Unending
 Western
 Winding
-Mammilated
-Benighted

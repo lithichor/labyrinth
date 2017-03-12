@@ -10,7 +10,7 @@ import com.web.api.instructions.InstructionsActions;
 
 import test.parents.LabyrinthJUnitTest;
 
-public class InstructionsJUnitTests extends LabyrinthJUnitTest
+public class InstructionsActionsJUnitTests extends LabyrinthJUnitTest
 {
 	@Test
 	public void testGetFileNames() throws LabyrinthException
