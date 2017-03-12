@@ -16,13 +16,15 @@ import com.web.api.user.User;
 public class CombatsServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = -125705493904670894L;
+	private CombatsServletActions actions;
+	
+	public void setActions(CombatsServletActions actions) { this.actions = actions; }
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
 	{
 		errors.clear();
-		Combat combat = null;
 		APICombat apiCombat = null;
-		CombatsServletActions actions = new CombatsServletActions();
+		actions = (actions == null) ? new CombatsServletActions() : actions;
 		Integer combatId = getIdFromUrl(request, EndpointsWithIds.COMBATS);
 		User user = null;
 
@@ -46,19 +48,11 @@ public class CombatsServlet extends LabyrinthHttpServlet
 		{
 			try
 			{
-				combat = new Combat().load(user.getId(), combatId);
-				if(combat == null)
-				{
-					errors.add(messages.getMessage("combat.no_id_for_user"));
-				}
-				else
-				{
-					apiCombat = new APICombat(combat);
-				}
+				apiCombat = actions.getApiCombat(user.getId(), combatId);
 			}
 			catch(LabyrinthException le)
 			{
-				errors.add(messages.getMessage("unknown.horribly_wrong"));
+				errors.add(le.getMessage());
 			}
 		}
 
