@@ -40,10 +40,12 @@ public class MapsServlet extends LabyrinthHttpServlet
 		
 		User user;
 		int mapId = 0;
+		String idStr = "";
 		int gameId = 0;
 		ArrayList<APIMap> apiMaps = new ArrayList<APIMap>();
 		MapsServletActions actions = new MapsServletActions();
 		
+		idStr = actions.splitUrl(request.getRequestURI(), EndpointsWithIds.MAPS);
 		mapId = actions.getIdFromUrl(request, EndpointsWithIds.MAPS);
 
 		try
@@ -54,13 +56,13 @@ public class MapsServlet extends LabyrinthHttpServlet
 			{
 				// if no id is provided, we need to get the most recent
 				// gameId for the user and load with that
-				if(mapId <= 0)
+				if("".equals(idStr) && mapId == 0)
 				{
 					ArrayList<Game> games = new Game().load(user.getId(), 0);
 					gameId = games.get(games.size() - 1).getId();
 					maps = new Map().load(gameId, mapId);
 				}
-				else
+				else if(mapId > 0)
 				{
 					Map map = new Map().loadOneMapByUser(user.getId(), mapId);
 					if(map != null)
@@ -69,6 +71,7 @@ public class MapsServlet extends LabyrinthHttpServlet
 					}
 				}
 				
+				// if the id is invalid, maps will be empty here
 				for(Map m: maps)
 				{
 					APIMap am = new APIMap(m);
