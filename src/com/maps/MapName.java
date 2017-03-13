@@ -20,8 +20,9 @@ public class MapName
 	public static String[] getMapName() throws LabyrinthException
 	{
 		Random rand = new Random();
-		URL nouns = ClassLoader.getSystemResource("com/maps/nouns.txt");
-		URL adjectives = ClassLoader.getSystemResource("com/maps/adjectives.txt");
+		String sep = System.getProperty("file.separator");
+		URL nouns = ClassLoader.getSystemResource("com" + sep + "maps" + sep + "nouns.txt");
+		URL adjectives = ClassLoader.getSystemResource("com" + sep + "maps" + sep + "adjectives.txt");
 		
 		String nounStr = "";
 		String adjStr = "";

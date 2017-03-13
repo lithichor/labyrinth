@@ -36,6 +36,7 @@ public class InstructionsActions extends LabyrinthServletActions
 	
 	private String formatFileNames(String fileName)
 	{
+		String sep = System.getProperty("file.separator");
 		String file = "";
 		
 		// split the name using uppercase letters and remove the unwanted part
@@ -44,7 +45,7 @@ public class InstructionsActions extends LabyrinthServletActions
 		// reassemble the class name by inserting slashes between words
 		for(int x = 0; x < ff.length; x++)
 		{
-			file += "/" + ff[x];
+			file += sep + ff[x];
 		}
 		
 		// prepend "api" and return it (it's now in URL format)
