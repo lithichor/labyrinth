@@ -299,6 +299,8 @@ public class Map extends LabyrinthModel
 		Random rand = new Random();
 		// the ID is used when making the Tiles
 		boolean success = this.save();
+		// set this Map's grid size
+		this.setGridSize(GeneralConstants.GRID_SIZE);
 		
 		// we have to create the grid first, because we
 		// reference things out of order when setting the walls
@@ -379,6 +381,12 @@ public class Map extends LabyrinthModel
 				
 				// save the tile
 				t.save();
+				
+				// set the first tile ID - (0, 0) is the first tile
+				if(x == 0 && y == 0)
+				{
+					this.setFirstTileId(t.getId());
+				}
 				
 				// add a monster (just one for now)
 				// must add monster after tile is saved (need tileId)
