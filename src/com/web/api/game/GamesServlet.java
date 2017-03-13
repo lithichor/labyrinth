@@ -44,15 +44,14 @@ public class GamesServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		GamesServletActions actions = new GamesServletActions();
-		
-		// this will get the id from the end of the url
-		int id = 0;
-		
-		String idStr = actions.splitUrl(request.getRequestURI(), EndpointsWithIds.GAMES);
-//		
-		id = actions.getIdFromUrl(request, EndpointsWithIds.GAMES);
-		
+		ArrayList<Game> games = new ArrayList<>();
+		ArrayList<APIGame> gs = new ArrayList<>();
+		String idStr = "";
+		int gameId = 0;
 		user = null;
+		
+		idStr = actions.splitUrl(request.getRequestURI(), EndpointsWithIds.GAMES);
+		gameId = actions.parseIdFromString(idStr);
 		
 		try
 		{
@@ -75,8 +74,11 @@ public class GamesServlet extends LabyrinthHttpServlet
 		{
 			try
 			{
-				ArrayList<Game> games = new Game().load(user.getId(), id);
-				ArrayList<APIGame> gs = new ArrayList<APIGame>();
+				// only load the games for the user if there's a valid ID
+				if(gameId > 0 || "".equals(idStr) || "last".equalsIgnoreCase(idStr))
+				{
+					games = new Game().load(user.getId(), gameId);
+				}
 				
 				if("last".equalsIgnoreCase(idStr))
 				{
@@ -114,17 +116,20 @@ public class GamesServlet extends LabyrinthHttpServlet
 					{
 						apiOut(gson.toJson(gs.get(0)), response);
 					}
-					else
+					else if(gs.size() > 1)
 					{
 						apiOut(gson.toJson(gs), response);
 					}
-					
+					else
+					{
+						errors.add(messages.getMessage("game.invalid_id"));
+					}
 				}
 				
 			}
 			catch(LabyrinthException le)
 			{
-				if(le.getMessage().contains(messages.getMessage("game.no_games")) && id == 0)
+				if(le.getMessage().contains(messages.getMessage("game.no_games")) && gameId == 0)
 				{
 					errors.add(messages.getMessage("game.no_games"));
 				}
