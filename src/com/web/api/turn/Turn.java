@@ -33,42 +33,15 @@ public class Turn extends LabyrinthModel
 	
 	public Turn loadByUserAndTurn(Integer userId, Integer turnId) throws LabyrinthException
 	{
-		Turn turn = null;
-		ResultSet results = null;
-		String sql = "SELECT id, iteration, user_id, game_id, map_id, x, y, created_at, updated_at "
-				+ "FROM turns WHERE id = ? AND user_id = ? AND deleted_at IS NULL";
-		ArrayList<Object> params = new ArrayList<>();
-		params.add(turnId);
-		params.add(userId);
-		
-		try
-		{
-			results = dbh.executeQuery(sql, params);
-			
-			while(results.next())
-			{
-				turn = new Turn();
-				
-				turn.setId(results.getInt("id"));
-				turn.setIteration(results.getInt("iteration"));
-				turn.setUserId(results.getInt("user_id"));
-				turn.setGameId(results.getInt("game_id"));
-				turn.setMapId(results.getInt("map_id"));
-				turn.setCoords(new Point(results.getInt("x"), results.getInt("y")));
-				turn.setCreatedAt(new Date(results.getTimestamp("created_at").getTime()));
-				turn.setUpdatedAt(new Date(results.getTimestamp("updated_at").getTime()));
-			}
-		}
-		catch(SQLException sqle)
-		{
-			sqle.printStackTrace();
-			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
-		}
-		
-		return turn;
+		return load(userId, 0, turnId);
 	}
 	
 	public Turn loadByUserAndGame(Integer userId, Integer gameId) throws LabyrinthException
+	{
+		return load(userId, gameId, 0);
+	}
+	
+	private Turn load(Integer userId, Integer gameId, Integer turnId) throws LabyrinthException
 	{
 		Turn turn = null;
 		ArrayList<Object> params = new ArrayList<>();
@@ -83,7 +56,6 @@ public class Turn extends LabyrinthModel
 				+ "updated_at "
 				+ "FROM turns "
 				+ "WHERE deleted_at IS NULL ";
-		
 		if(userId > 0)
 		{
 			sql += "AND user_id = ? ";
@@ -94,9 +66,10 @@ public class Turn extends LabyrinthModel
 			sql += "AND game_id = ? ";
 			params.add(gameId);
 		}
-		if(userId <= 0 && gameId <= 0)
+		if(turnId > 0)
 		{
-			throw new LabyrinthException(messages.getMessage("turn.no_ids"));
+			sql += "AND id = ? ";
+			params.add(turnId);
 		}
 		
 		try
