@@ -72,6 +72,11 @@ public class Turn extends LabyrinthModel
 			params.add(turnId);
 		}
 		
+		if(userId <= 0 && gameId <= 0)
+		{
+			throw new LabyrinthException(messages.getMessage("turn.no_ids"));
+		}
+
 		try
 		{
 			results = dbh.executeQuery(sql, params);
