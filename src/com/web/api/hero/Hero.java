@@ -216,6 +216,11 @@ public class Hero extends LabyrinthModel
 		}
 		if(this.getMaxHealth() != null && !(this.getMaxHealth() == 0))
 		{
+			if(!first)
+			{
+				sql += ", ";
+				first = false;
+			}
 			sql += "max_health = ? ";
 			params.add(this.getMaxHealth());
 			first = false;
