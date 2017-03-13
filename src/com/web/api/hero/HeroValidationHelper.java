@@ -72,7 +72,18 @@ public class HeroValidationHelper extends LabyrinthValidationHelper
 			}
 			catch(NumberFormatException | IllegalStateException  | UnsupportedOperationException ex)
 			{
-				errors.add(messages.getMessage("hero.strength_is_not_a_number"));
+				errors.add(messages.getMessage("hero.health_is_not_a_number"));
+			}
+		}
+		if(data.has("maxHealth"))
+		{
+			try
+			{
+				hero.setMaxHealth(data.get("maxHealth").getAsInt());
+			}
+			catch(NumberFormatException | IllegalStateException  | UnsupportedOperationException ex)
+			{
+				errors.add(messages.getMessage("hero.max_health_is_not_a_number"));
 			}
 		}
 		if(data.has("strength"))
