@@ -1,17 +1,40 @@
+Anubis
 Basilisk
+Bauk
+Cockatrice
+Cyclops
+Dark Elf
+Demon
+Devil
+Dragon
+Dwarf
+Elf
+Geist
 Giant Bat
 Giant Rat
 Giant Spider
+Gnome
 Goblin
 Goleam
+Grootslang
 Hellhound
+Hidebehind
 Homonculus
+Leprechaun
 Lizardman
+Minotaur
 Morlock
 Myrmidon
 Orc
+Psoglav
 Rat King
+Skeleton
 Trogdor
 Troglodyte
+Troll
 Tsuchigumo
 Tsuchinoko
+Ushabti
+Wraith
+Yaoguai
+Zombie

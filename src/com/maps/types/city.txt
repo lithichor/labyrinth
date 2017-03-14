@@ -12,6 +12,7 @@ Giant Racoon
 Giant Rat
 Gnoll
 Grue
+Hidebehind
 Kobold
 Ogre
 Pigeon Flock
