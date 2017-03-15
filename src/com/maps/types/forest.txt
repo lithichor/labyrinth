@@ -45,6 +45,7 @@ Sorcerer
 Sprite
 Treeman
 Troll
+Undine
 Unicorn
 Vampire
 Viradha

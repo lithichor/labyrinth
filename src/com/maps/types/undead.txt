@@ -1,5 +1,6 @@
 Abaasy
 Anubis
+Draugr
 Geist
 Lich
 Revenant
