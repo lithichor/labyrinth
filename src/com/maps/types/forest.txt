@@ -1,3 +1,5 @@
+Abaasy
+Amazon
 Angel
 Avatar
 Baba Yaga
@@ -14,6 +16,7 @@ Dryad
 Dwarf
 Elf
 Enkidu
+Esquilax
 Faerie
 Faun
 Ghoul
@@ -25,6 +28,7 @@ Hatuibwari
 Hidebehind
 Hidimba
 Imp
+Kitsune
 Lacanthrope
 Lamia
 Leprechaun
@@ -45,7 +49,7 @@ Unicorn
 Vampire
 Viradha
 Werebear
+Wererat
 Werewolf
 Witch
 Wolf
-Wererat
