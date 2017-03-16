@@ -5,6 +5,7 @@ Afanc
 Ahuizotl
 Alligator
 Baiji
+Bennu
 Bunyip
 Capricorn
 Crocodile
@@ -47,3 +48,6 @@ Vodnik
 Vodyanoy
 Water Dragon
 Yacuruna
+Bukavac
+Hine Wai
+Vishap

@@ -46,3 +46,5 @@ Ushabti
 Wraith
 Yaoguai
 Zombie
+Karzelek
+Psoglav
