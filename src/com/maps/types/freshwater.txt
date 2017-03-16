@@ -6,6 +6,7 @@ Ahuizotl
 Alligator
 Baiji
 Bennu
+Bukavac
 Bunyip
 Capricorn
 Crocodile
@@ -17,6 +18,7 @@ Giant Leech
 Grindylow
 Hanzaki
 Hastrman
+Hine Wai
 Hippocamp
 Hydra
 Hyosube
@@ -44,10 +46,9 @@ Rusalka
 Shellycoat
 Suhurmas
 Taniwha
+Tardigrade
+Vishap
 Vodnik
 Vodyanoy
 Water Dragon
 Yacuruna
-Bukavac
-Hine Wai
-Vishap

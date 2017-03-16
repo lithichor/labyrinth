@@ -19,6 +19,7 @@ Edifice
 Flats
 Forest
 Gate
+Glade
 Grotto
 Grove
 Hall

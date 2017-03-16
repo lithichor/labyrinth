@@ -8,6 +8,7 @@ Hippocamp
 Ichthyocentaurs
 Jasconius
 Jormungandr
+Kanghui
 Kraken
 Leviathan
 Leviathan
@@ -33,4 +34,3 @@ Triton
 Umibozu
 Undine
 Zaratan
-Kanghui
