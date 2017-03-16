@@ -2,6 +2,7 @@ Aatxe
 Abaasy
 Angel
 Anubis
+Asphalax
 Avatar
 Basilisk
 Bauk
@@ -28,12 +29,15 @@ Grootslang
 Hellhound
 Hidebehind
 Homonculus
+Karzelek
 Leprechaun
 Lizardman
 Minotaur
+Moleman
 Morlock
 Myrmidon
 Orc
+Psoglav
 Psoglav
 Rat King
 Skeleton
@@ -46,5 +50,3 @@ Ushabti
 Wraith
 Yaoguai
 Zombie
-Karzelek
-Psoglav

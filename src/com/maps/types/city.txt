@@ -1,12 +1,15 @@
 Amazon
 Assassin
+Aswang
 Banshee
 Boggart
 Bugbear
+Bunbun
 Caryatid
 Chupacabra
 Coyote
 Dwarf
+Elf
 Gargoyle
 Ghost
 Ghoul
@@ -21,6 +24,7 @@ Kobold
 Komainu
 Ogre
 Pigeon Flock
+Psotnik
 Ratking
 Revenant
 Revenant
@@ -32,5 +36,3 @@ Wererat
 Xiezhi
 Yokai
 Zombie
-Psotnik
-Elf

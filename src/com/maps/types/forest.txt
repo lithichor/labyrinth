@@ -9,6 +9,7 @@ Black Knight
 Brown Bear
 Cat Spirits
 Centaur
+Cikavac
 Demon
 Devil
 Dragon
@@ -20,6 +21,7 @@ Esquilax
 Faerie
 Faun
 Fenghuang
+Gahonga
 Ghoul
 Giant
 Giant Rat
@@ -28,7 +30,9 @@ Hamadryad
 Hatuibwari
 Hidebehind
 Hidimba
+Hvcko Capko
 Imp
+Keresh
 Kitsune
 Lacanthrope
 Lamia
@@ -43,21 +47,17 @@ Satyr
 Sicksa
 Sorcerer
 Sprite
+Tengu
+Tiangou
 Treeman
 Troll
 Undine
 Unicorn
 Vampire
 Viradha
+Wendigo
 Werebear
 Wererat
 Werewolf
 Witch
 Wolf
-Tengu
-Tiangou
-Wendigo
-Keresh
-Cikavac
-Gahonga
-Hvcko Capko

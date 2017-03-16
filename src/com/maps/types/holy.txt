@@ -18,6 +18,7 @@ Garmr
 Hapis
 Hayyoth
 Incubus
+Kachina
 Kitsune
 Kukulkan
 Lamassu
@@ -26,6 +27,7 @@ Ophan
 Paladin
 Pegasus
 Preta
+Psoglav
 Quetzalcoatl
 Rainbow Crow
 Seraph
@@ -37,5 +39,3 @@ Tohil
 Unicorn
 Valkyrie
 Yokai
-Psoglav
-Kachina
