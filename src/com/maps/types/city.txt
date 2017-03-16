@@ -3,6 +3,7 @@ Assassin
 Banshee
 Boggart
 Bugbear
+Caryatid
 Chupacabra
 Coyote
 Dwarf
@@ -13,8 +14,11 @@ Giant Racoon
 Giant Rat
 Gnoll
 Grue
+Haetae
 Hidebehind
+Kaichi
 Kobold
+Komainu
 Ogre
 Pigeon Flock
 Ratking
@@ -25,5 +29,6 @@ Thief
 Troll
 Vampire
 Wererat
+Xiezhi
 Yokai
 Zombie

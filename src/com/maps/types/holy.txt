@@ -21,6 +21,7 @@ Incubus
 Kitsune
 Kukulkan
 Lamassu
+Maenads
 Ophan
 Paladin
 Pegasus
@@ -31,9 +32,8 @@ Seraph
 Shedu
 Succubus
 Tennin
+Thunderbird
 Tohil
 Unicorn
 Valkyrie
 Yokai
-Maenads
-Thunderbird
