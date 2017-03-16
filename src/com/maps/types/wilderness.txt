@@ -1,5 +1,6 @@
 Amazon
 Bennu
+Brown Bear
 Camazotz
 Cikavac
 Draugr
@@ -15,10 +16,17 @@ Griffin
 Hatuibwari
 Hippogryph
 Hvcko Capko
+Hyaenodon
 Keresh
 Kitsune
+Lion
+Machukuna
+Mesonychid
+Phorusrhacid
 Pixie
 Pooka
 Tengu
+Thylacine
 Tiangou
+Yowie
 Zmaj
