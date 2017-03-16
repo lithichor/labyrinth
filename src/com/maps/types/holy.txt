@@ -37,3 +37,5 @@ Tohil
 Unicorn
 Valkyrie
 Yokai
+Psoglav
+Kachina

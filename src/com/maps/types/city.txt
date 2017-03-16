@@ -32,3 +32,5 @@ Wererat
 Xiezhi
 Yokai
 Zombie
+Psotnik
+Elf

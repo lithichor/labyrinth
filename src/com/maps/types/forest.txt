@@ -19,6 +19,7 @@ Enkidu
 Esquilax
 Faerie
 Faun
+Fenghuang
 Ghoul
 Giant
 Giant Rat
@@ -38,7 +39,6 @@ Orc
 Pixie
 Puck
 Sasquatch
-Sasquatch
 Satyr
 Sicksa
 Sorcerer
@@ -54,3 +54,10 @@ Wererat
 Werewolf
 Witch
 Wolf
+Tengu
+Tiangou
+Wendigo
+Keresh
+Cikavac
+Gahonga
+Hvcko Capko

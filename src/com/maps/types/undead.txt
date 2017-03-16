@@ -9,3 +9,5 @@ Skeleton
 Ushabti
 Wraith
 Zombie
+Bogle
+Mummy
