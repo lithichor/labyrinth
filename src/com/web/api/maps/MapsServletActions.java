@@ -26,4 +26,11 @@ public class MapsServletActions extends LabyrinthServletActions
 		
 		return gameId;
 	}
+	
+	public MapType getMapType() throws LabyrinthException
+	{
+		MapType mt = new MapType().load();
+		
+		return mt;
+	}
 }

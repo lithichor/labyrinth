@@ -30,3 +30,4 @@ Thylacine
 Tiangou
 Yowie
 Zmaj
+Warg
