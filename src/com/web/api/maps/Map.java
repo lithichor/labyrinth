@@ -21,6 +21,8 @@ public class Map extends LabyrinthModel
 	private ArrayList<ArrayList<Tile>> grid = new ArrayList<>();
 	private Integer gridSize;
 	private Integer firstTileId;
+	private String name;
+	private String type;
 
 	public Integer getId() { return id; }
 	public void setId(Integer id) { this.id = id; }
@@ -32,6 +34,10 @@ public class Map extends LabyrinthModel
 	public void setGridSize(Integer gridSize) { this.gridSize = gridSize; }
 	public Integer getFirstTileId() { return this.firstTileId; }
 	public void setFirstTileId(Integer firstTileId) { this.firstTileId = firstTileId; }
+	public String getName() { return this.name; }
+	public void setName(String name) { this.name = name; }
+	public String getType() { return this.type; }
+	public void setType(String type) { this.type = type; }
 	
 	public ArrayList<Map> load(Integer gameId, Integer mapId) throws LabyrinthException
 	{
@@ -42,7 +48,9 @@ public class Map extends LabyrinthModel
 				+ "game_id, "
 				+ "created_at, "
 				+ "updated_at, "
-				+ "grid_size "
+				+ "grid_size, "
+				+ "name, "
+				+ "type "
 				+ "FROM maps ";
 		// if both are provided
 		if(gameId > 0 && mapId > 0)
@@ -85,6 +93,8 @@ public class Map extends LabyrinthModel
 						GeneralConstants.GRID_SIZE :results.getInt("grid_size");
 				map.setGridSize(gridSize);
 				map.setFirstTileId(getFirstTile(map.getId()));
+				map.setName(results.getString("name"));
+				map.setType(results.getString("type"));
 				
 				maps.add(map);
 			}
@@ -176,6 +186,8 @@ public class Map extends LabyrinthModel
 						GeneralConstants.GRID_SIZE : results.getInt("grid_size");
 				map.setGridSize(gridSize);
 				map.setFirstTileId(getFirstTile(map.getId()));
+				map.setName(results.getString("name"));
+				map.setType(results.getString("type"));
 				
 				maps.add(map);
 			}
@@ -242,11 +254,14 @@ public class Map extends LabyrinthModel
 	public boolean save() throws LabyrinthException
 	{
 		boolean success = false;
-		String sql = "INSERT INTO maps (game_id, grid_size, created_at, updated_at) "
-				+ "VALUES(?, ?, now(), now())";
+		String sql = "INSERT INTO maps (game_id, grid_size, name, type, first_tile_id, created_at, updated_at) "
+				+ "VALUES(?, ?, ?, ?, ?, now(), now())";
 		ArrayList<Object> params = new ArrayList<Object>();
 		params.add(this.gameId);
 		params.add(GeneralConstants.GRID_SIZE);
+		params.add(this.name);
+		params.add(this.type);
+		params.add(0);
 		ResultSet keys = null;
 		
 		try
@@ -291,14 +306,22 @@ public class Map extends LabyrinthModel
 	 * efforts will be more complex. The idea is to have
 	 * multiple types of Labyrinths that are generated at
 	 * random.
-	 * @return
 	 * @throws LabyrinthException
 	 */
-	public boolean generateMap() throws LabyrinthException
+	public void generateMap() throws LabyrinthException
 	{
+		MapsServletActions mapActions = new MapsServletActions();
+		MapType mapType = mapActions.getMapType();
+		this.setType(mapType.getType());
+		this.setName(mapType.getName());
+
 		Random rand = new Random();
 		// the ID is used when making the Tiles
 		boolean success = this.save();
+		if(!success)
+		{
+			throw new LabyrinthException(messages.getMessage("map.error_creating_map"));
+		}
 		// set this Map's grid size
 		this.setGridSize(GeneralConstants.GRID_SIZE);
 		
@@ -400,7 +423,6 @@ public class Map extends LabyrinthModel
 		}
 		
 		System.out.println(toString());
-		return success;
 	}
 	
 	private Integer getFirstTile(Integer mapId) throws LabyrinthException
