@@ -255,7 +255,14 @@ public class UserServlet extends LabyrinthHttpServlet
 				}
 				catch(LabyrinthException le)
 				{
-					errors.add(messages.getMessage("unknown.unknown_error"));
+					if(le.getMessage().contains(messages.getMessage("signup.password_reqs_not_met")))
+					{
+						errors.add(le.getMessage());
+					}
+					else
+					{
+						errors.add(messages.getMessage("unknown.unknown_error"));
+					}
 				}
 				if(newUser != null)
 				{
