@@ -234,6 +234,10 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 			{
 				password = data.get("password").getAsString();
 				user.setPassword(encryptor.encrypt(password));
+				if(!validatePassword(password))
+				{
+					throw new LabyrinthException(messages.getMessage("signup.password_reqs_not_met"));
+				}
 			}
 			catch(UnsupportedOperationException | IllegalStateException ex)
 			{
