@@ -62,7 +62,8 @@ public class MapName
 		
 		if("nouns".equals(type))
 		{
-			URL nouns = ClassLoader.getSystemResource("com" + sep + "maps" + sep + "nouns.txt");
+//			URL nouns = ClassLoader.getSystemResource("com" + sep + "maps" + sep + "nouns.txt");
+			URL nouns = ClassLoader.getSystemResource("com" + sep + "maps" + sep + "types.txt");
 			String nounStr = "";
 			
 			try(Scanner scan = new Scanner(new File(nouns.getFile())))

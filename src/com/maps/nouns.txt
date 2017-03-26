@@ -7,6 +7,7 @@ Cavern
 Cemetery
 Church
 Cistern
+City
 Columbarium
 Complex
 Cove
@@ -61,4 +62,3 @@ Village
 Wetlands
 Woods
 Ziggurat
-City
