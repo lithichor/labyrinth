@@ -28,6 +28,6 @@ Pooka
 Tengu
 Thylacine
 Tiangou
+Warg
 Yowie
 Zmaj
-Warg

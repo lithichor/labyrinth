@@ -311,7 +311,15 @@ public class Map extends LabyrinthModel
 	public void generateMap() throws LabyrinthException
 	{
 		MapsServletActions mapActions = new MapsServletActions();
-		MapType mapType = mapActions.getMapType();
+		MapType mapType = null;
+		try
+		{
+			mapType = mapActions.getMapType();
+		}
+		catch(LabyrinthException le)
+		{
+			throw le;
+		}
 		this.setType(mapType.getType());
 		this.setName(mapType.getName());
 

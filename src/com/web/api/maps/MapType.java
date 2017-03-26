@@ -63,6 +63,10 @@ public class MapType extends LabyrinthModel
 				{
 					id = results.getInt(1);
 				}
+				if(id == 0)
+				{
+					throw new LabyrinthException(messages.getMessage("map_type.no_id"));
+				}
 
 				// add a random int (based on maxId) to the parameters
 				params.set(0, rand.nextInt(id));

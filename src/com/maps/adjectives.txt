@@ -54,6 +54,7 @@ Shambolic
 Shining
 Shuddering
 Snowy
+Soaked
 Solid
 Soulless
 Southern
@@ -64,6 +65,5 @@ Tranquil
 Trembling
 Unending
 Western
-Winding
 Wet
-Soaked
+Winding
