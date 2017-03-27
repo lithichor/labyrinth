@@ -20,7 +20,7 @@ public class APIUser extends LabyrinthAPIModel
 		this.lastName = u.getLastName();
 		this.email = u.getEmail();
 	}
-	
+
 	public void addGame(Integer gameId)
 	{
 		if(gameIds == null)
