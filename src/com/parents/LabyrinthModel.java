@@ -1,6 +1,7 @@
 package com.parents;
 
 import java.util.Date;
+import java.util.Random;
 
 import com.database.DatabaseHelper;
 import com.labels.LabyrinthMessages;
@@ -10,13 +11,15 @@ public abstract class LabyrinthModel
 	protected DatabaseHelper dbh;
 	protected LabyrinthMessages messages = new LabyrinthMessages();
 	
+	protected Random rand = new Random();
+	
 	protected Date createdAt;
 	protected Date updatedAt;
 	protected Date deletedAt;
 
 	public LabyrinthModel()
 	{
-		dbh = DatabaseHelper.getInstance();		
+		dbh = DatabaseHelper.getInstance();
 	}
 	
 	protected DatabaseHelper getDbh()

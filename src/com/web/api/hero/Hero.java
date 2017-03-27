@@ -13,14 +13,14 @@ public class Hero extends LabyrinthModel
 	private Integer id;
 	private Integer gameId;
 	
-	private Integer health = 0;
-	private Integer maxHealth = 0;
-	private Integer strength = 0;
-	private Integer magic = 0;
-	private Integer attack = 0;
-	private Integer defense = 0;
+	private Integer health = initializeAttributes();
+	private Integer maxHealth = health;
+	private Integer strength = initializeAttributes();
+	private Integer magic = initializeAttributes();
+	private Integer attack = initializeAttributes();
+	private Integer defense = initializeAttributes();
 	private Integer experience = 0;
-
+	
 	public Integer getHealth() { return this.health; }
 	public void setHealth(Integer health) { this.health = health; }
 	public Integer getMaxHealth() { return this.maxHealth; }
@@ -188,7 +188,7 @@ public class Hero extends LabyrinthModel
 				hero.setMagic(results.getInt("magic"));
 				hero.setAttack(results.getInt("attack"));
 				hero.setDefense(results.getInt("defense"));
-				hero.setDefense(results.getInt("experience"));
+				hero.setExperience(results.getInt("experience"));
 				heros.add(hero);
 			}
 		}
@@ -390,5 +390,15 @@ public class Hero extends LabyrinthModel
 		}
 		
 		return heroId;
+	}
+	
+	private Integer initializeAttributes()
+	{
+		int init = 1;
+		for(int x = 0; x < 4; x++)
+		{
+			init += rand.nextInt(5) + 1;
+		}
+		return new Integer(init);
 	}
 }
