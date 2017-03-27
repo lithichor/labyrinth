@@ -20,11 +20,18 @@ public class UserServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = 3194656746956466374L;
 	private User user;
+	private UserServletActions actions = null;
+	private Game setGame = new Game();
 
 	public UserServlet(User user)
 	{
 		this.user = user;
+
+		actions = new UserServletActions();
 	}
+
+	public void setActions(UserServletActions actions) { this.actions = actions; }
+	public void setGame(Game setGame) { this.setGame = setGame; }
 
 	/**
 	 * /api/user - the GET method returns the information for the user whose
@@ -36,7 +43,6 @@ public class UserServlet extends LabyrinthHttpServlet
 		errors.clear();
 
 		boolean debug = false;
-		UserServletActions actions = new UserServletActions();
 
 		if(debug)
 		{
@@ -80,7 +86,7 @@ public class UserServlet extends LabyrinthHttpServlet
 			APIUser u = new APIUser(user);
 			try
 			{
-				ArrayList<Game> games = new Game().load(user.getId(), 0);
+				ArrayList<Game> games = setGame.load(user.getId(), 0);
 				for(Game game: games)
 				{
 					u.addGame(game.getId());
@@ -198,8 +204,6 @@ public class UserServlet extends LabyrinthHttpServlet
 	public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-
-		UserServletActions actions = new UserServletActions();
 
 		// use reader to get data
 		JsonObject data = null;
@@ -328,7 +332,6 @@ public class UserServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		user = null;
-		UserServletActions actions = new UserServletActions();
 
 		try
 		{

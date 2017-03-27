@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({UserServletPostTests.class})
+@SuiteClasses({UserServletPostTests.class, UserServletGetTests.class})
 public class RunAllUserTests
 {
 
