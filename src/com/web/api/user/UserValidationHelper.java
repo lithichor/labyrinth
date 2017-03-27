@@ -236,7 +236,9 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 				user.setPassword(encryptor.encrypt(password));
 				if(!validatePassword(password))
 				{
-					throw new LabyrinthException(messages.getMessage("signup.password_reqs_not_met"));
+					// error has already been recorded (in validatePassword)
+					// so just return null
+					user = null;
 				}
 			}
 			catch(UnsupportedOperationException | IllegalStateException ex)
@@ -266,7 +268,7 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 			errors.add(messages.getMessage("signup.password_too_short"));
 			valid = false;
 		}
-		else if(!match.find())
+		if(!match.find())
 		{
 			errors.add(messages.getMessage("signup.password_reqs_not_met"));
 			valid = false;

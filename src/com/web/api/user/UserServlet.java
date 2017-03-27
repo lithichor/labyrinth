@@ -278,7 +278,7 @@ public class UserServlet extends LabyrinthHttpServlet
 					apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 					return;
 				}
-				
+
 				try
 				{
 					// save the user
