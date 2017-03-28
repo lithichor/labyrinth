@@ -22,6 +22,7 @@ public class UserServlet extends LabyrinthHttpServlet
 	private User user;
 	private UserServletActions actions = null;
 	private Game setGame = new Game();
+	private UserValidationHelper validation;
 
 	public UserServlet(User user)
 	{
@@ -32,6 +33,7 @@ public class UserServlet extends LabyrinthHttpServlet
 
 	public void setActions(UserServletActions actions) { this.actions = actions; }
 	public void setGame(Game setGame) { this.setGame = setGame; }
+	public void setValidation(UserValidationHelper validation) { this.validation = validation; }
 
 	/**
 	 * /api/user - the GET method returns the information for the user whose
@@ -122,7 +124,7 @@ public class UserServlet extends LabyrinthHttpServlet
 		BufferedReader br = request.getReader();
 		String line = "";
 		JsonObject data = null;
-		UserValidationHelper validation = new UserValidationHelper();
+		validation = (validation == null) ? new UserValidationHelper() : validation;
 
 		while(line != null)
 		{
@@ -161,6 +163,10 @@ public class UserServlet extends LabyrinthHttpServlet
 					user = null;
 				}
 			}
+		}
+		else if (errors.contains(messages.getMessage("unknown.malformed_json")))
+		{
+			user = null;
 		}
 		else
 		{

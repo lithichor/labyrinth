@@ -3,19 +3,20 @@ package test.tests.user;
 import static org.junit.Assert.*;
 
 import java.io.BufferedReader;
-import java.io.PrintWriter;
+import java.io.IOException;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
+import com.parents.LabyrinthException;
 import com.web.api.user.User;
 import com.web.api.user.UserServlet;
+import com.web.api.user.UserServletActions;
 import com.web.api.user.UserValidationHelper;
 
 import test.parents.LabyrinthHttpTest;
@@ -23,55 +24,77 @@ import test.utils.RandomStrings;
 
 public class UserServletPostTests extends LabyrinthHttpTest
 {
-	private UserServlet create;
+	private UserServlet servlet;
 	private RandomStrings rand;
 	private User user;
+	private UserServletActions actions;
+	private BufferedReader br;
+	private String line;
+	private UserValidationHelper validation;
 	
 	@Before
-	public void setup()
+	public void setup() throws IOException
 	{
+		br = mock(BufferedReader.class);
 		user = mock(User.class);
-		create = new UserServlet(user);
 		request = mock(HttpServletRequest.class);
 		response = mock(HttpServletResponse.class);
-		session = mock(HttpSession.class);
-		
+		actions = mock(UserServletActions.class);
+		validation = mock(UserValidationHelper.class);
+
+		servlet = new UserServlet(user);
+		servlet.setActions(actions);
+
+		when(response.getWriter()).thenReturn(printer);
+
 		rand = new RandomStrings();
 	}
-	
-	@Test(expected=JsonSyntaxException.class)
-	public void testUserCreationWithBadJson() throws Exception
+
+	@Test
+	public void testCreateUserWithBadJson() throws ServletException, IOException
 	{
 		String firstName = rand.oneWord();
 		String lastName = rand.oneWord();
 		String email = rand.oneWord();
 		String password = rand.oneWord();
-		boolean exceptionThrown = false;
-		
-		// extra comma at the end of the json
-		String data = "{\"firstName\": \"" + firstName + "\","
-				+ "\"lastName\": \"" + lastName + "\","
-				+ "\"email\": \"" + email + "\","
-				+ "\"password\": \"" + password + "\", }";
 
-		UserValidationHelper validation = mock(UserValidationHelper.class);
-		BufferedReader br = mock(BufferedReader.class);
-		PrintWriter pw = mock(PrintWriter.class);
-		
+		String error = messages.getMessage("unknown.malformed_json");
+
+		// extra comma at the end of the json
+		line = "{firstName: " + firstName + ","
+				+ "lastName\": " + lastName + ","
+				+ "email: " + email + ","
+				+ "password: " + password + ", }";
+
 		when(request.getReader()).thenReturn(br);
-		when(br.readLine()).thenReturn(data);
-		when(validation.validateApi(gson.fromJson(data, JsonObject.class))).thenReturn(user);
-		when(response.getWriter()).thenReturn(pw);
-		
-		try
-		{
-			create.doPost(request, response);
-		}
-		catch(JsonSyntaxException jse)
-		{
-			exceptionThrown = true;
-		}
-		
-		assertTrue(exceptionThrown);
+		when(br.readLine()).thenReturn(line).thenReturn(null);
+
+		servlet.doPost(request, response);
+
+		String messageStr = strWriter.getBuffer().toString();
+		JsonObject messageObj = gson.fromJson(messageStr, JsonObject.class);
+
+		assertEquals(error, messageObj.get("message").getAsString());
+	}
+
+	@Test
+	public void testDuplicateEmail() throws LabyrinthException, ServletException, IOException
+	{
+		String error = messages.getMessage("signup.user_exists");
+		line = "{firstName: qwe, lastName: qwe, email: qwe@qwe.corn, password: 1QWEqwe}";
+		JsonObject data = gson.fromJson(line, JsonObject.class);
+
+		when(user.duplicateEmail()).thenReturn(true);
+		when(request.getReader()).thenReturn(br);
+		when(br.readLine()).thenReturn(line).thenReturn(null);
+		when(validation.validateApi(data)).thenReturn(user);
+
+		servlet.setValidation(validation);
+		servlet.doPost(request, response);
+
+		String messageStr = strWriter.getBuffer().toString();
+		JsonObject messageObj = gson.fromJson(messageStr, JsonObject.class);
+
+		assertEquals(error, messageObj.get("message").getAsString());
 	}
 }
