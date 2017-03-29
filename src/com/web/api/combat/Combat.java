@@ -7,12 +7,14 @@ import java.util.Date;
 
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
+import com.web.api.turn.Turn;
 
 public class Combat extends LabyrinthModel
 {
 	private Integer id;
 	private Integer userId;
 	private Integer heroId;
+	private Integer turnId;
 	private Integer monsterId;
 	
 	public Integer getId() { return id; }
@@ -23,11 +25,13 @@ public class Combat extends LabyrinthModel
 	public void setHeroId(Integer heroId) { this.heroId = heroId; }
 	public Integer getMonsterId() { return monsterId; }
 	public void setMonsterId(Integer monsterId) { this.monsterId = monsterId; }
+	public Integer getTurnId() { return turnId; }
+	public void setTurnId(Integer turnId) { this.turnId = turnId; }
 	
 	public Combat load(Integer userId, Integer combatId) throws LabyrinthException
 	{
 		Combat combat = null;
-		String sql = "SELECT c.id, c.user_id, c.hero_id, c.monster_id, c.created_at, c.updated_at "
+		String sql = "SELECT c.id, c.user_id, c.hero_id, c.monster_id, c.turn_id, c.created_at, c.updated_at "
 				+ "FROM combats c "
 				+ "LEFT JOIN games g ON c.user_id = g.user_id "
 				+ "WHERE c.deleted_at IS NULL AND g.deleted_at IS NULL AND g.user_id = ? AND c.id = ? "
@@ -49,6 +53,7 @@ public class Combat extends LabyrinthModel
 				combat.setUserId(results.getInt("c.user_id"));
 				combat.setHeroId(results.getInt("c.hero_id"));
 				combat.setMonsterId(results.getInt("c.monster_id"));
+				combat.setTurnId(results.getInt("c.turn_id"));
 				combat.setCreatedAt(new Date(results.getTimestamp("created_at").getTime()));
 				combat.setUpdatedAt(new Date(results.getTimestamp("updated_at").getTime()));
 			}
@@ -68,12 +73,13 @@ public class Combat extends LabyrinthModel
 		int combatId = 0;
 		ArrayList<Object> params = new ArrayList<>();
 		String sql = "INSERT INTO combats "
-				+ "(user_id, hero_id, monster_id, created_at, updated_at) "
-				+ "VALUES(?, ?, ?, now(), now())";
+				+ "(user_id, hero_id, monster_id, turn_id, created_at, updated_at) "
+				+ "VALUES(?, ?, ?, ?, now(), now())";
 		
 		params.add(this.userId);
 		params.add(this.heroId);
 		params.add(this.monsterId);
+		params.add(this.turnId);
 		
 		try
 		{
@@ -121,12 +127,20 @@ public class Combat extends LabyrinthModel
 		return success;
 	}
 	
+	public void updateTurn() throws LabyrinthException
+	{
+		Turn turn = new Turn().loadByUserAndTurn(this.userId, this.turnId);
+		turn.setInCombat(false);
+		turn.update();
+	}
+	
 	@Override
 	public int hashCode()
 	{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((heroId == null) ? 0 : heroId.hashCode());
+		result = prime * result + ((turnId == null) ? 0 : turnId.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
 				+ ((monsterId == null) ? 0 : monsterId.hashCode());
@@ -150,6 +164,13 @@ public class Combat extends LabyrinthModel
 				return false;
 		}
 		else if(!heroId.equals(other.heroId))
+			return false;
+		if(turnId == null)
+		{
+			if(other.turnId != null)
+				return false;
+		}
+		else if(!turnId.equals(other.turnId))
 			return false;
 		if(id == null)
 		{

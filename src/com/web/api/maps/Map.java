@@ -405,7 +405,7 @@ public class Map extends LabyrinthModel
 				
 				// add a single monster at (0, 0)
 				// this will be replaced by a probability
-				if(x == 0 && y == 0)
+				if(x == 1 && y == 1)
 				{
 					t.setHasMonster(true);
 				}

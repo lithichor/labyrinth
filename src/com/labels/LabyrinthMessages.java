@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
  */
 public class LabyrinthMessages
 {
-	public static ResourceBundle messages;
+	public ResourceBundle messages;
 	
 	public LabyrinthMessages()
 	{
@@ -26,7 +26,7 @@ public class LabyrinthMessages
 	}
 	
 	/**
-	 * public method to get the message we want. ResourceBundle already
+	 * Public method to get the message we want. ResourceBundle already
 	 * throws an exception when the key can't be found in the resource,
 	 * so we don't need to add any checks for it
 	 * 
@@ -38,5 +38,31 @@ public class LabyrinthMessages
 	public String getMessage(String messageKey)
 	{
 		return messages.getString(messageKey);
+	}
+	
+	/**
+	 * Get a message with a parameter
+	 * @param messageKey
+	 * @param replacement
+	 * @return
+	 */
+	public String getMessage(String messageKey, String replacement)
+	{
+		String str = messages.getString(messageKey);
+		str.replace("{0}", replacement);
+		return str;
+	}
+	
+	/**
+	 * Get a message with a parameter
+	 * @param messageKey
+	 * @param replacement
+	 * @return
+	 */
+	public String getMessage(String messageKey, Integer replacement)
+	{
+		String str = messages.getString(messageKey);
+		str.replace("{0}", replacement.toString());
+		return str;
 	}
 }

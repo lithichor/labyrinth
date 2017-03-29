@@ -77,6 +77,10 @@ public class TurnsServlet extends LabyrinthHttpServlet
 			{
 				errors.add(messages.getMessage("turn.no_turn_for_id"));
 			}
+			else if(turn.isInCombat())
+			{
+				errors.add(messages.getMessage("turn.in_combat"));
+			}
 			else
 			{
 				data = actions.getData(request);

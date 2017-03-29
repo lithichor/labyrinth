@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.helpers.AttackHelper;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
 
@@ -12,9 +13,9 @@ public class Monster extends LabyrinthModel
 {
 	private Integer id;
 	private Integer tileId = 0;
-	private Integer health = 0;
-	private Integer attack = 0;
-	private Integer defense = 0;
+	private Integer health = AttackHelper.initializeAttributes();
+	private Integer attack = AttackHelper.initializeAttributes();
+	private Integer defense = AttackHelper.initializeAttributes();
 	
 	public Integer getId() { return id; }
 	public void setId(Integer id) { this.id = id; }
