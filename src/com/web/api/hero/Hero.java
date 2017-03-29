@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.helpers.AttackHelper;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
 
@@ -13,12 +14,12 @@ public class Hero extends LabyrinthModel
 	private Integer id;
 	private Integer gameId;
 	
-	private Integer health = initializeAttributes();
+	private Integer health = AttackHelper.initializeAttributes();
 	private Integer maxHealth = health;
-	private Integer strength = initializeAttributes();
-	private Integer magic = initializeAttributes();
-	private Integer attack = initializeAttributes();
-	private Integer defense = initializeAttributes();
+	private Integer strength = AttackHelper.initializeAttributes();
+	private Integer magic = AttackHelper.initializeAttributes();
+	private Integer attack = AttackHelper.initializeAttributes();
+	private Integer defense = AttackHelper.initializeAttributes();
 	private Integer experience = 0;
 	
 	public Integer getHealth() { return this.health; }
@@ -66,7 +67,7 @@ public class Hero extends LabyrinthModel
 			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
 		}
 		
-		this.id = this.retrieveId();
+		this.id = this.retrieveId(this.gameId);
 		
 		return success;
 	}
@@ -366,11 +367,16 @@ public class Hero extends LabyrinthModel
 		}
 	}
 	
-	private Integer retrieveId() throws LabyrinthException
+	public Integer getHeroId(Integer gameId) throws LabyrinthException
+	{
+		return retrieveId(gameId);
+	}
+	
+	private Integer retrieveId(Integer gameId) throws LabyrinthException
 	{
 		String sql = "SELECT id FROM heros WHERE game_id = ?";
 		ArrayList<Object> params = new ArrayList<>();
-		params.add(this.gameId);
+		params.add(gameId);
 		ResultSet results = null;
 		int heroId = 0;
 		
@@ -390,15 +396,5 @@ public class Hero extends LabyrinthModel
 		}
 		
 		return heroId;
-	}
-	
-	private Integer initializeAttributes()
-	{
-		int init = 1;
-		for(int x = 0; x < 4; x++)
-		{
-			init += rand.nextInt(5) + 1;
-		}
-		return new Integer(init);
 	}
 }

@@ -17,7 +17,8 @@ public class Turn extends LabyrinthModel
 	private Integer gameId;
 	private Integer mapId;
 	private Point coords;
-	
+	private boolean inCombat;
+
 	public Integer getId() { return id; }
 	public void setId(Integer id) { this.id = id; }
 	public Integer getIteration() { return iteration; }
@@ -30,12 +31,14 @@ public class Turn extends LabyrinthModel
 	public void setMapId(Integer mapId) { this.mapId = mapId; }
 	public Point getCoords() { return coords; }
 	public void setCoords(Point coords) { this.coords = coords; }
-	
+	public void setInCombat(boolean inCombat) { this.inCombat = inCombat; }
+	public boolean isInCombat() { return this.inCombat; }
+
 	public Turn loadByUserAndTurn(Integer userId, Integer turnId) throws LabyrinthException
 	{
 		return load(userId, 0, turnId);
 	}
-	
+
 	public Turn loadByUserAndGame(Integer userId, Integer gameId) throws LabyrinthException
 	{
 		return load(userId, gameId, 0);
@@ -52,6 +55,7 @@ public class Turn extends LabyrinthModel
 				+ "game_id, "
 				+ "map_id, "
 				+ "x, y, "
+				+ "in_combat, "
 				+ "created_at, "
 				+ "updated_at "
 				+ "FROM turns "
@@ -91,6 +95,7 @@ public class Turn extends LabyrinthModel
 				turn.setGameId(results.getInt("game_id"));
 				turn.setMapId(results.getInt("map_id"));
 				turn.setCoords(new Point(results.getInt("x"), results.getInt("y")));
+				turn.setInCombat(results.getInt("in_combat") == 1);
 				turn.setCreatedAt(new Date(results.getTimestamp("created_at").getTime()));
 				turn.setUpdatedAt(new Date(results.getTimestamp("updated_at").getTime()));
 			}
@@ -110,14 +115,15 @@ public class Turn extends LabyrinthModel
 		int turnId = 0;
 		ResultSet results = null;
 		String sql = "INSERT INTO turns "
-				+ "(iteration, user_id, game_id, map_id, x, y, created_at, updated_at) "
-				+ "VALUES(0, ?, ?, ?, ?, ?, now(), now())";
+				+ "(iteration, user_id, game_id, map_id, x, y, in_combat, created_at, updated_at) "
+				+ "VALUES(0, ?, ?, ?, ?, ?, ?, now(), now())";
 		ArrayList<Object> params = new ArrayList<>();
 		params.add(this.userId);
 		params.add(this.gameId);
 		params.add(this.mapId);
 		params.add(this.coords.x);
 		params.add(this.coords.y);
+		params.add(this.inCombat ? 1 : 0);
 		
 		try
 		{
@@ -178,6 +184,7 @@ public class Turn extends LabyrinthModel
 				+ "x = ?, "
 				+ "y = ?, "
 				+ "iteration = ?, "
+				+ "in_combat = ?, "
 				+ "updated_at = now() "
 				+ "WHERE id = ?";
 		ArrayList<Object> params = new ArrayList<>();
@@ -185,6 +192,7 @@ public class Turn extends LabyrinthModel
 		params.add(this.coords.x);
 		params.add(this.coords.y);
 		params.add(this.iteration);
+		params.add(this.inCombat ? 1 : 0);
 		params.add(this.id);
 		
 		try

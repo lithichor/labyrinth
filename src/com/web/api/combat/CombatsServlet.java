@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
+import com.labels.LabyrinthMessages;
 import com.models.api.APIErrorMessage;
 import com.models.constants.EndpointsWithIds;
 import com.parents.LabyrinthException;
@@ -17,7 +18,9 @@ public class CombatsServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = -125705493904670894L;
 	private CombatsServletActions actions;
-	private Combat combat = new Combat();
+	private Combat combat = null;
+	
+	private LabyrinthMessages notifications = new LabyrinthMessages("com.labels.notificationMessages");
 	
 	public void setActions(CombatsServletActions actions) { this.actions = actions; }
 	public void setCombat(Combat c) { this.combat = c; }
@@ -76,6 +79,7 @@ public class CombatsServlet extends LabyrinthHttpServlet
 		User user = null;
 		JsonObject data = null;
 		String results = "";
+		combat = (combat == null) ? new Combat() : combat;
 
 		if(combatId <= 0)
 		{
@@ -106,7 +110,6 @@ public class CombatsServlet extends LabyrinthHttpServlet
 					throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
 				}
 				
-				
 				if(combat == null)
 				{
 					errors.add(messages.getMessage("combat.no_id_for_user"));
@@ -124,7 +127,9 @@ public class CombatsServlet extends LabyrinthHttpServlet
 							// might need a CombatResults class (string + hero + monster)
 							if(results.equals("Run away!"))
 							{
+								combat.updateTurn();
 								combat.delete();
+								results = notifications.getMessage("combat.run_away");
 							}
 						}
 						else
@@ -160,24 +165,5 @@ public class CombatsServlet extends LabyrinthHttpServlet
 		
 		CombatsOptions options = new CombatsOptions();
 		apiOut(gson.toJson(options), response);
-	}
-
-	// TEMP ONLY - will be removed with #201
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
-	{
-		Combat c = new Combat();
-		c.setUserId(1);
-		c.setHeroId(2293);
-		c.setMonsterId(1930);
-
-		try
-		{
-			c.save();
-		}
-		catch (LabyrinthException le)
-		{
-			le.printStackTrace();
-			apiOut("oops", response);
-		}
 	}
 }
