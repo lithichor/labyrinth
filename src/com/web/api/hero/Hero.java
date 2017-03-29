@@ -67,7 +67,7 @@ public class Hero extends LabyrinthModel
 			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
 		}
 		
-		this.id = this.retrieveId(0);
+		this.id = this.retrieveId(this.gameId);
 		
 		return success;
 	}
@@ -376,7 +376,7 @@ public class Hero extends LabyrinthModel
 	{
 		String sql = "SELECT id FROM heros WHERE game_id = ?";
 		ArrayList<Object> params = new ArrayList<>();
-		params.add((gameId == 0) ? this.gameId : gameId);
+		params.add(gameId);
 		ResultSet results = null;
 		int heroId = 0;
 		
