@@ -36,6 +36,14 @@ public class Turn extends LabyrinthModel
 
 	public Turn loadByUserAndTurn(Integer userId, Integer turnId) throws LabyrinthException
 	{
+		if(userId <= 0)
+		{
+			throw new LabyrinthException(messages.getMessage("turn.no_user_id"));
+		}
+		if(turnId <= 0)
+		{
+			throw new LabyrinthException(messages.getMessage("turn.no_turn_id"));
+		}
 		return load(userId, 0, turnId);
 	}
 
