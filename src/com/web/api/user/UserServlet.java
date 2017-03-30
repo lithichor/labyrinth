@@ -337,7 +337,6 @@ public class UserServlet extends LabyrinthHttpServlet
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-		user = null;
 
 		try
 		{
@@ -355,7 +354,6 @@ public class UserServlet extends LabyrinthHttpServlet
 			}
 			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 			return;
-
 		}
 		boolean authenticated = (user != null);
 

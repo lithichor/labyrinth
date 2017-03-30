@@ -5,8 +5,6 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,8 +27,6 @@ public class UserServletGetTests extends LabyrinthHttpTest
 	public void setup() throws IOException
 	{
 		user = mock(User.class);
-		request = mock(HttpServletRequest.class);
-		response = mock(HttpServletResponse.class);
 		actions = mock(UserServletActions.class);
 
 		servlet = new UserServlet(user);
