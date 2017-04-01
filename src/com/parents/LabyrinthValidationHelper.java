@@ -18,6 +18,16 @@ public abstract class LabyrinthValidationHelper
 		return errors;
 	}
 	
+	public String getErrorsAsString()
+	{
+		String errorStr = "";
+		
+		for(String s: errors)
+		{
+			errorStr += s + "\n";
+		}
+		return errorStr;
+	}
 
 	public abstract boolean validate(HashMap<String, String> params);
 	

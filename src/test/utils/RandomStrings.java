@@ -42,4 +42,9 @@ public class RandomStrings
 	{
 		return rand.nextInt(10);
 	}
+	
+	public char getOneCharacter()
+	{
+		return (char) (rand.nextInt((122 - 97) + 1) + 97);
+	}
 }
