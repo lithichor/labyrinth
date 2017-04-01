@@ -9,7 +9,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	UserServletPostTests.class,
 	UserServletGetTests.class,
 	UserServletPutTests.class,
-	UserServletPutTests.class})
+	UserServletPutTests.class,
+	UserValidationHelperTests.class})
 public class RunAllUserTests
 {
 

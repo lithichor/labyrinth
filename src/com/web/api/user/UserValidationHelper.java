@@ -256,13 +256,14 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 		boolean valid = true;
 		
 		// need at least one digit, one lowercase letter, and one uppercase letter
-		String regex = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})";
+		String regex = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])";
 		
 		// this solution found here:
 		// http://stackoverflow.com/questions/8923398/regex-doesnt-work-in-string-matches
 		Pattern pattern = Pattern.compile(regex);
 		Matcher match = pattern.matcher(password);
 		
+		// need six or more characters
 		if(password.length() < 6)
 		{
 			errors.add(messages.getMessage("signup.password_too_short"));
