@@ -107,6 +107,7 @@ public class Game extends LabyrinthModel
 	public APIGame startNewGame(Integer userId) throws LabyrinthException
 	{
 		APIGame g = null;
+		
 		try
 		{
 			Game game = new Game();
@@ -120,7 +121,7 @@ public class Game extends LabyrinthModel
 			map.setGameId(game.getId());
 
 			hero.save();
-			map.generateMap();
+			map = map.generateMap(map);
 			
 			Turn turn = new Turn();
 			turn.setGameId(game.getId());

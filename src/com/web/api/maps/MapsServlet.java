@@ -170,7 +170,7 @@ public class MapsServlet extends LabyrinthHttpServlet
 				}
 				else
 				{
-					map.generateMap();
+					map = map.generateMap(map);
 				}
 			}
 			catch(LabyrinthException le)
