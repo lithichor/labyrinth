@@ -5,16 +5,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
 
 import com.models.constants.GeneralConstants;
 import com.parents.LabyrinthException;
 import com.parents.LabyrinthModel;
-import com.web.api.monster.Monster;
 import com.web.api.tile.Tile;
 import com.web.api.tile.Tile.Boundary;
 
-public class Map extends LabyrinthModel
+public class Map extends LabyrinthModel implements Cloneable
 {
 	private Integer id;
 	private Integer gameId;
@@ -301,137 +299,6 @@ public class Map extends LabyrinthModel
 		return null;
 	}
 	
-	/**
-	 * This is the first method to generate a map. Later
-	 * efforts will be more complex. The idea is to have
-	 * multiple types of Labyrinths that are generated at
-	 * random.
-	 * @throws LabyrinthException
-	 */
-	public void generateMap() throws LabyrinthException
-	{
-		MapsServletActions mapActions = new MapsServletActions();
-		MapType mapType = null;
-		try
-		{
-			mapType = mapActions.getMapType();
-		}
-		catch(LabyrinthException le)
-		{
-			throw le;
-		}
-		this.setType(mapType.getType());
-		this.setName(mapType.getName());
-
-		Random rand = new Random();
-		// the ID is used when making the Tiles
-		boolean success = this.save();
-		if(!success)
-		{
-			throw new LabyrinthException(messages.getMessage("map.error_creating_map"));
-		}
-		// set this Map's grid size
-		this.setGridSize(GeneralConstants.GRID_SIZE);
-		
-		// we have to create the grid first, because we
-		// reference things out of order when setting the walls
-		for(int x = 0; x < GeneralConstants.GRID_SIZE; x++)
-		{
-			ArrayList<Tile> column = new ArrayList<>();
-			
-			for(int y = 0; y < GeneralConstants.GRID_SIZE; y++)
-			{
-				Tile t = new Tile(x, y, this.id);
-				column.add(t);
-			}
-			grid.add(column);
-		}
-		
-		// now add the walls and monsters
-		for(ArrayList<Tile> column: grid)
-		{
-			for(Tile t: column)
-			{
-				int x = t.getCoords().x;
-				int y = t.getCoords().y;
-				
-				// set east-west walls on the perimeter
-				if(x == 0)
-				{
-					t.setWest(Boundary.WALL);
-				}
-				else if(x == GeneralConstants.GRID_SIZE - 1)
-				{
-					t.setEast(Boundary.WALL);
-				}
-				// set walls randomly inside the maze
-				if(x < GeneralConstants.GRID_SIZE - 1 && rand.nextInt(10) < 3)
-				{
-					t.setEast(Boundary.WALL);
-					try
-					{
-						grid.get(x + 1).get(y).setWest(Boundary.WALL);
-					}
-					catch(ArrayIndexOutOfBoundsException oobe)
-					{
-						System.out.println("\n\nWoah! Error, Dude:\nX: " + x + "\nY: " + y);
-						throw oobe;
-					}
-				}
-				
-				// set south-north walls on perimeter
-				if(y == 0)
-				{
-					t.setNorth(Boundary.WALL);
-				}
-				else if(y == GeneralConstants.GRID_SIZE - 1)
-				{
-					t.setSouth(Boundary.WALL);
-				}
-				// set walls randomly inside the maze
-				if(y < GeneralConstants.GRID_SIZE - 1 && rand.nextInt(10) < 3)
-				{
-					t.setSouth(Boundary.WALL);
-					try
-					{
-						grid.get(x).get(y + 1).setNorth(Boundary.WALL);
-					}
-					catch(ArrayIndexOutOfBoundsException oobe)
-					{
-						System.out.println("\n\nERROR:\nX: " + x + "\nY: " + y);
-						throw oobe;
-					}
-				}
-				
-				// add a single monster at (0, 0)
-				// this will be replaced by a probability
-				if(x == 1 && y == 1)
-				{
-					t.setHasMonster(true);
-				}
-				
-				// save the tile
-				t.save();
-				
-				// set the first tile ID - (0, 0) is the first tile
-				if(x == 0 && y == 0)
-				{
-					this.setFirstTileId(t.getId());
-				}
-				
-				// add a monster (just one for now)
-				// must add monster after tile is saved (need tileId)
-				if(t.hasMonster())
-				{
-					Monster m = new Monster();
-					m.setTileId(t.getId());
-					m.save();
-				}
-			}
-		}
-		
-		System.out.println(toString());
-	}
 	
 	private Integer getFirstTile(Integer mapId) throws LabyrinthException
 	{
@@ -454,6 +321,18 @@ public class Map extends LabyrinthModel
 			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
 		}
 		return tileId;
+	}
+	
+	public Map generateMap(Map mapIn) throws LabyrinthException
+	{
+		Map map = new Map();
+		MapHelper helper = new MapHelper();
+		
+		map = helper.getMapType(mapIn);
+		map = helper.generateMapGrid(map);
+		map = helper.saveMap(map);
+		
+		return map;
 	}
 	
 	public String toString()
@@ -498,5 +377,20 @@ public class Map extends LabyrinthModel
 				"\nEAST: " + eastWalls +
 				"\nWEST: " + westWalls +
 				"\nMONSTERS: " + monsters;
+	}
+	
+	/**
+	 * return a clone of this Map, or null if it throws an exception
+	 */
+	public Map clone()
+	{
+		try
+		{
+			return (Map)super.clone();
+		}
+		catch(CloneNotSupportedException cnse)
+		{
+			return null;
+		}
 	}
 }
