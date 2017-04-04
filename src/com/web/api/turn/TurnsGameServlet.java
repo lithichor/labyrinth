@@ -15,6 +15,11 @@ import com.web.api.user.User;
 public class TurnsGameServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = -5314489077659984779L;
+	private Turn turn;
+	private TurnsServletActions actions;
+	
+	public void setTurn(Turn turn) { this.turn = turn; }
+	public void setActions(TurnsServletActions actions) { this.actions = actions; }
 
 	/**
 	 * Return the turn associated with a Game ID
@@ -22,14 +27,14 @@ public class TurnsGameServlet extends LabyrinthHttpServlet
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-		Turn turn = null;
-		TurnsServletActions actions = new TurnsServletActions();
+		turn = (turn == null) ? new Turn() : turn;
+		actions = (actions == null) ? new TurnsServletActions() : actions;
 		Integer gameId = actions.getIdFromUrl(request, EndpointsWithIds.TURNS_GAMES);
 		
 		try
 		{
 			User user = actions.authenticateUser(request);
-			turn = new Turn().loadByUserAndGame(user.getId(), gameId);
+			turn = turn.loadByUserAndGame(user.getId(), gameId);
 			
 			if(turn == null)
 			{
