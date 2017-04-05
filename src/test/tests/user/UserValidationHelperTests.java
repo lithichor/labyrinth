@@ -20,7 +20,6 @@ public class UserValidationHelperTests extends LabyrinthJUnitTest
 	private String lastName = "squid";
 	private String email = "baby@squid.corn";
 	private String password = "1QWEqwe";
-	private String confirm = "1QWEqwe";
 
 	@Before
 	public void setup()
@@ -34,8 +33,7 @@ public class UserValidationHelperTests extends LabyrinthJUnitTest
 		String errorMessage = "The Player needs to have a first name\n" +
 				"The Player needs to have a last name\n" +
 				"You need to include an email address\n" +
-				"The Player needs a password\n" +
-				"The password needs to be confirmed\n";
+				"The Player needs a password\n";
 		HashMap<String, String> params = new HashMap<>();
 		
 		helper.validate(params);
@@ -51,7 +49,6 @@ public class UserValidationHelperTests extends LabyrinthJUnitTest
 		params.put("lastName", lastName);
 		params.put("email", email);
 		params.put("password", password);
-		params.put("confirm", confirm);
 		
 		helper.validate(params);
 		
@@ -66,7 +63,6 @@ public class UserValidationHelperTests extends LabyrinthJUnitTest
 		params.put("firstName", firstName);
 		params.put("email", email);
 		params.put("password", password);
-		params.put("confirm", confirm);
 		
 		helper.validate(params);
 		
@@ -81,7 +77,6 @@ public class UserValidationHelperTests extends LabyrinthJUnitTest
 		params.put("firstName", firstName);
 		params.put("lastName", lastName);
 		params.put("password", password);
-		params.put("confirm", confirm);
 		
 		helper.validate(params);
 		
@@ -96,7 +91,6 @@ public class UserValidationHelperTests extends LabyrinthJUnitTest
 		params.put("firstName", firstName);
 		params.put("lastName", lastName);
 		params.put("email", email);
-		params.put("confirm", confirm);
 		
 		helper.validate(params);
 		
