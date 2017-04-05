@@ -16,7 +16,6 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 	public boolean validate(HashMap<String, String> params)
 	{
 		boolean valid = true;
-		boolean password = true;
 		
 		if(!validateParameterLength(params))
 		{
@@ -62,24 +61,9 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 				errors.add(messages.getMessage("signup.user_needs_password"));
 			}
 			valid = false;
-			password = false;
 		}
 		else if (!validatePassword(params.get("password")))
 		{
-			valid = false;
-			password = false;
-		}
-		if(params.get("confirm") == null || "".equalsIgnoreCase(params.get("confirm")))
-		{
-			// there will not be a duplicate of this error
-			errors.add(messages.getMessage("signup.password_needs_confirmation"));
-			valid = false;
-			password = false;
-		}
-		if(password && (!params.get("confirm").equals(params.get("password"))))
-		{
-			// there will not be a duplicate of this error
-			errors.add(messages.getMessage("signup.passwords_do_not_match"));
 			valid = false;
 		}
 		
@@ -92,7 +76,7 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 		
 		for(String key: params.keySet())
 		{
-			if(!"confirm".equalsIgnoreCase(params.get(key)) && params.get(key).length() > 250)
+			if(params.get(key).length() > 250)
 			{
 				valid = false;
 				errors.add("The " + key + " " + messages.getMessage("signup.parameter_too_long"));
@@ -168,7 +152,6 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 			{
 				user.setPassword(encryptor.encrypt(data.get("password").getAsString()));
 				params.put("password", data.get("password").getAsString());
-				params.put("confirm", data.get("password").getAsString());
 			}
 			catch(IllegalStateException | UnsupportedOperationException ex)
 			{
@@ -187,14 +170,6 @@ public class UserValidationHelper extends LabyrinthValidationHelper
 		}
 		else
 		{
-			// if we're creating a user from the API endpoint, we don't need to
-			// check for a password confirmation
-			// this will happen if the password provided is null or an empty string
-			if(errors.contains(messages.getMessage("signup.password_needs_confirmation")))
-			{
-				errors.remove(messages.getMessage("signup.password_needs_confirmation"));
-			}
-			
 			return null;
 		}
 	}
