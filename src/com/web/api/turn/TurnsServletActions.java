@@ -13,16 +13,26 @@ import com.web.api.tile.Tile.Boundary;
 
 public class TurnsServletActions extends LabyrinthServletActions
 {
+	private Map map;
+	private Hero hero;
+	private Combat combat;
+	private Monster monster;
+	
+	public void setMap(Map map) { this.map = map; }
+	public void setHero(Hero hero) { this.hero = hero; }
+	public void setCombat(Combat combat) { this.combat = combat; }
+	public void setMonster(Monster monster) { this.monster = monster; }
+
 	public Turn makeMove(String direction, Turn turn) throws LabyrinthException
 	{
 		int x = turn.getCoords().x;
 		int y = turn.getCoords().y;
-		Map map = null;
+		map = (map == null) ? new Map() : map;
 		Tile t = null;
-		
-		map = new Map().load(turn.getGameId(), turn.getMapId()).get(0);
+
+		map = map.load(turn.getGameId(), turn.getMapId()).get(0);
 		t = map.getTileByCoords(turn.getCoords(), turn.getUserId());
-		
+
 		switch(direction)
 		{
 		// need to check for walls
@@ -63,17 +73,18 @@ public class TurnsServletActions extends LabyrinthServletActions
 		{
 			turn.setInCombat(true);
 			
-			Combat combat = new Combat();
+			combat = (combat == null) ? new Combat() : combat;
 			combat.setUserId(turn.getUserId());
 			
 			// get the heroId
-			int heroId = new Hero().getHeroId(turn.getGameId());
+			hero = (hero == null) ? new Hero() : hero;
+			int heroId = hero.getHeroId(turn.getGameId());
 			combat.setHeroId(heroId);
 			
 			combat.setTurnId(turn.getId());
 			
 			// create the monster
-			Monster monster = new Monster();
+			monster = (monster == null) ? new Monster() : monster;
 			monster.setTileId(nextTile.getId());
 			monster.save();
 
