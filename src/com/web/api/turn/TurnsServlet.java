@@ -17,6 +17,12 @@ public class TurnsServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = 4222322558201838792L;
 
+	private Turn turn;
+	private TurnsServletActions actions;
+	
+	public void setTurn(Turn turn) { this.turn = turn; }
+	public void setActions(TurnsServletActions actions) { this.actions = actions; }
+	
 	/**
 	 * Return the current state of the Player
 	 */
@@ -63,8 +69,10 @@ public class TurnsServlet extends LabyrinthHttpServlet
 	public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-		Turn turn = new Turn();
-		TurnsServletActions actions = new TurnsServletActions();
+		
+		turn = (turn == null) ? new Turn() : turn;
+		actions = (actions == null) ? new TurnsServletActions() : actions;
+		
 		Integer turnId = actions.getIdFromUrl(request, EndpointsWithIds.TURNS);
 		JsonObject data = null;
 		String direction = "";
@@ -72,7 +80,7 @@ public class TurnsServlet extends LabyrinthHttpServlet
 		try
 		{
 			User user = actions.authenticateUser(request);
-			turn = new Turn().loadByUserAndTurn(user.getId(), turnId);
+			turn = turn.loadByUserAndTurn(user.getId(), turnId);
 			if(turn == null)
 			{
 				errors.add(messages.getMessage("turn.no_turn_for_id"));
@@ -111,7 +119,7 @@ public class TurnsServlet extends LabyrinthHttpServlet
 		{
 			errors.add(le.getMessage());
 		}
-		
+
 		if(errors.size() > 0)
 		{
 			apiOut(gson.toJson(new APIErrorMessage(errors)), response);

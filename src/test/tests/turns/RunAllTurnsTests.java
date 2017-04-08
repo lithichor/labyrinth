@@ -6,7 +6,10 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	TurnsGameServletGetTests.class})
+	TurnsGameServletGetTests.class,
+	TurnsActionsTests.class,
+	TurnsServletPutTests.class
+	})
 public class RunAllTurnsTests
 {
 
