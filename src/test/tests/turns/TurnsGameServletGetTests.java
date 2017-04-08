@@ -28,19 +28,19 @@ public class TurnsGameServletGetTests extends LabyrinthHttpTest
 	@Before
 	public void setup()
 	{
-		servlet = new TurnsGameServlet();
-		
 		user = mock(User.class);
 		turn = mock(Turn.class);
 		actions = mock(TurnsServletActions.class);
+		
+		servlet = new TurnsGameServlet();
+		servlet.setTurn(turn);
+		servlet.setActions(actions);
 	}
 	
 	@Test
 	public void testLoadTurnThrowsException() throws LabyrinthException, ServletException, IOException
 	{
 		String errorMessage = "Excepted";
-		servlet.setTurn(turn);
-		servlet.setActions(actions);
 		
 		when(request.getRequestURI()).thenReturn("api/turns/game/14");
 		when(response.getWriter()).thenReturn(printer);
@@ -58,8 +58,6 @@ public class TurnsGameServletGetTests extends LabyrinthHttpTest
 	public void testLoadTurnReturnsNull() throws LabyrinthException, ServletException, IOException
 	{
 		String errorMessage = messages.getMessage("turn.no_turn_for_game_id");
-		servlet.setTurn(turn);
-		servlet.setActions(actions);
 		
 		when(request.getRequestURI()).thenReturn("api/turns/game/14");
 		when(response.getWriter()).thenReturn(printer);
