@@ -216,9 +216,16 @@ public class UserValidationHelperTests extends LabyrinthJUnitTest
 		String dataStr = "{";
 		dataStr += (rand.nextInt(2) == 0) ? "firstName: " + firstName + "," : "";
 		dataStr += (rand.nextInt(2) == 0) ? "lastName: " + lastName + "," : "";
+		// email is accepted, but it doesn't change the email; this is here
+		// to make sure it continues to work that way
 		dataStr += (rand.nextInt(2) == 0) ? "email: " + email + "," : "";
 		dataStr += (rand.nextInt(2) == 0) ? "password: " + password + "," : "";
-		dataStr = dataStr.substring(0, dataStr.length() - 1);
+		
+		// only strip out the comma if one of the attributes is set for change
+		if(dataStr.length() > 2)
+		{
+			dataStr = dataStr.substring(0, dataStr.length() - 1);
+		}
 		dataStr += "}";
 		JsonObject data = gson.fromJson(dataStr, JsonObject.class);
 
