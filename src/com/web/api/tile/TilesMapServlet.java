@@ -16,7 +16,14 @@ import com.web.api.user.User;
 public class TilesMapServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = 6416254265624381493L;
-
+	private ArrayList<Tile> tiles;
+	private Tile tile;
+	private TilesServletActions actions;
+	
+	public void setTiles(ArrayList<Tile> tiles) { this.tiles = tiles; }
+	public void setTile(Tile tile) { this.tile = tile; }
+	public void setActions(TilesServletActions actions) { this.actions = actions; }
+	
 	/**
 	 * GET all the tiles for a specific Map
 	 */
@@ -26,8 +33,9 @@ public class TilesMapServlet extends LabyrinthHttpServlet
 		
 		User user;
 		int mapId = 0;
-		TilesServletActions actions = new TilesServletActions();
-		ArrayList<Tile> tiles = new ArrayList<>();
+		actions = (actions == null) ? new TilesServletActions() : actions;
+		tiles = (tiles == null) ? new ArrayList<>() : tiles;
+		tile = (tile == null) ? new Tile(0, 0, null) : tile;
 		ArrayList<APITile> apiTiles = new ArrayList<>();
 		
 		mapId = actions.getIdFromUrl(request, EndpointsWithIds.TILES_MAPS);
@@ -39,7 +47,7 @@ public class TilesMapServlet extends LabyrinthHttpServlet
 			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 			return;
 		}
-		
+
 		try
 		{
 			user = actions.authenticateUser(request);
@@ -56,7 +64,7 @@ public class TilesMapServlet extends LabyrinthHttpServlet
 			}
 
 			// load tiles and add to array list of API tiles
-			tiles = new Tile(0, 0, null).load(mapId, 0, user.getId());
+			tiles = tile.load(mapId, 0, user.getId());
 			for(Tile t: tiles)
 			{
 				apiTiles.add(new APITile(t));
