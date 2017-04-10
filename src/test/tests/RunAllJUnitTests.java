@@ -7,6 +7,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import test.parents.LabyrinthJUnitTest;
 import test.tests.combats.RunAllCombatTests;
 import test.tests.instructions.RunAllInstructionsTests;
+import test.tests.tiles.RunAllTilesTests;
 import test.tests.turns.RunAllTurnsTests;
 import test.tests.user.RunAllUserTests;
 
@@ -15,7 +16,8 @@ import test.tests.user.RunAllUserTests;
 	RunAllCombatTests.class,
 	RunAllInstructionsTests.class,
 	RunAllUserTests.class,
-	RunAllTurnsTests.class
+	RunAllTurnsTests.class,
+	RunAllTilesTests.class
 	})
 public class RunAllJUnitTests extends LabyrinthJUnitTest
 {
