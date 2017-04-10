@@ -26,8 +26,10 @@ public class TurnsServletPutTests extends LabyrinthHttpTest
 	private TurnsServletActions actions;
 	
 	@Before
-	public void setuo() throws IOException
+	public void setup() throws IOException
 	{
+		super.testSetup();
+		
 		turn = mock(Turn.class);
 		actions = mock(TurnsServletActions.class);
 		
@@ -35,9 +37,6 @@ public class TurnsServletPutTests extends LabyrinthHttpTest
 		servlet = new TurnsServlet();
 		servlet.setTurn(turn);
 		servlet.setActions(actions);
-		
-		when(request.getRequestURI()).thenReturn("");
-		when(response.getWriter()).thenReturn(printer);
 	}
 	
 	@Test

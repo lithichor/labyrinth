@@ -1,5 +1,6 @@
 package test.parents;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -22,4 +23,11 @@ public abstract class LabyrinthHttpTest extends LabyrinthJUnitTest
 	// used to get errors from servlets
 	protected StringWriter strWriter = new StringWriter();
 	protected PrintWriter printer = new PrintWriter(strWriter);
+	
+	protected void testSetup() throws IOException
+	{
+		// this is used when there is an ID to parse from the URL
+		when(request.getRequestURI()).thenReturn("");
+		when(response.getWriter()).thenReturn(printer);
+	}
 }
