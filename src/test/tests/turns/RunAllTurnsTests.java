@@ -8,7 +8,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	TurnsGameServletGetTests.class,
 	TurnsActionsTests.class,
-	TurnsServletPutTests.class
+	TurnsServletPutTests.class,
+	TurnsServletGetTests.class
 	})
 public class RunAllTurnsTests
 {

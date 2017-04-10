@@ -29,9 +29,9 @@ public class TurnsServlet extends LabyrinthHttpServlet
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-		Turn turn = new Turn();
+		turn = (turn == null) ? new Turn() : turn;
 		APITurn apiTurn = null;
-		TurnsServletActions actions = new TurnsServletActions();
+		actions = (actions == null) ? new TurnsServletActions() : actions;
 		Integer turnId = actions.getIdFromUrl(request, EndpointsWithIds.TURNS);
 		
 		try
