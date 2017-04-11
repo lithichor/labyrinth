@@ -48,7 +48,8 @@ public class Map extends LabyrinthModel implements Cloneable
 				+ "updated_at, "
 				+ "grid_size, "
 				+ "name, "
-				+ "type "
+				+ "type, "
+				+ "first_tile_id "
 				+ "FROM maps ";
 		// if both are provided
 		if(gameId > 0 && mapId > 0)
@@ -79,7 +80,7 @@ public class Map extends LabyrinthModel implements Cloneable
 		try
 		{
 			results = dbh.executeQuery(sql, params);
-			
+
 			while(results.next())
 			{
 				Map map = new Map();
@@ -88,12 +89,14 @@ public class Map extends LabyrinthModel implements Cloneable
 				map.setGameId(results.getInt("game_id"));
 				map.setId(results.getInt("id"));
 				int gridSize = results.getInt("grid_size") == 0 ?
-						GeneralConstants.GRID_SIZE :results.getInt("grid_size");
+						GeneralConstants.GRID_SIZE : results.getInt("grid_size");
 				map.setGridSize(gridSize);
-				map.setFirstTileId(getFirstTile(map.getId()));
+				int firstTileId = results.getInt("first_tile_id") == 0 ?
+						getFirstTile(map.getId()) : results.getInt("first_tile_id");
+				map.setFirstTileId(firstTileId);
 				map.setName(results.getString("name"));
 				map.setType(results.getString("type"));
-				
+
 				maps.add(map);
 			}
 		}
@@ -102,7 +105,7 @@ public class Map extends LabyrinthModel implements Cloneable
 			sqle.printStackTrace();
 			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
 		}
-		
+
 		if(maps.size() == 0)
 		{
 			throw new LabyrinthException(messages.getMessage("map.no_maps_for_game"));
@@ -183,7 +186,9 @@ public class Map extends LabyrinthModel implements Cloneable
 				int gridSize = results.getInt("grid_size") == 0 ?
 						GeneralConstants.GRID_SIZE : results.getInt("grid_size");
 				map.setGridSize(gridSize);
-				map.setFirstTileId(getFirstTile(map.getId()));
+				int firstTileId = results.getInt("first_tile_id") == 0 ?
+						getFirstTile(map.getId()) : results.getInt("first_tile_id");
+				map.setFirstTileId(firstTileId);
 				map.setName(results.getString("name"));
 				map.setType(results.getString("type"));
 				
@@ -299,6 +304,28 @@ public class Map extends LabyrinthModel implements Cloneable
 		return null;
 	}
 	
+	public boolean saveFirstTileId() throws LabyrinthException
+	{
+		this.firstTileId = getFirstTile(this.id);
+		
+		boolean success = false;
+		String sql = "UPDATE maps SET first_tile_id = ? WHERE id = ?";
+		ArrayList<Object> params = new ArrayList<>();
+		params.add(this.firstTileId);
+		params.add(this.id);
+		
+		try
+		{
+			success = dbh.execute(sql, params);
+		}
+		catch(SQLException sqle)
+		{
+			sqle.printStackTrace();
+			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
+		}
+		
+		return success;
+	}
 	
 	private Integer getFirstTile(Integer mapId) throws LabyrinthException
 	{
@@ -318,11 +345,12 @@ public class Map extends LabyrinthModel implements Cloneable
 		}
 		catch(SQLException sqle)
 		{
+			sqle.printStackTrace();
 			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
 		}
 		return tileId;
 	}
-	
+
 	public Map generateMap(Map mapIn) throws LabyrinthException
 	{
 		Map map = new Map();
@@ -334,7 +362,7 @@ public class Map extends LabyrinthModel implements Cloneable
 		
 		return map;
 	}
-	
+
 	public String toString()
 	{
 		String southWalls = "";
