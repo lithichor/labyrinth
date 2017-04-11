@@ -154,9 +154,18 @@ public class MapHelper
 		return map;
 	}
 
+	/**
+	 * Save any fields for the map that couldn't be saved when it
+	 * was first created.
+	 * 
+	 * @param mapIn
+	 * @return
+	 * @throws LabyrinthException
+	 */
 	public Map saveMap(Map mapIn) throws LabyrinthException
 	{
 		Map map = mapIn.clone();
+		map.saveFirstTileId();
 		System.out.println(map.toString());
 		return map;
 	}
