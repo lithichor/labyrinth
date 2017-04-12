@@ -22,7 +22,7 @@ import com.web.api.user.User;
 
 import test.parents.LabyrinthHttpTest;
 
-public class TilesMapGetTests extends LabyrinthHttpTest
+public class TilesMapServletGetTests extends LabyrinthHttpTest
 {
 	private TilesMapServlet servlet;
 	private TilesServletActions actions;

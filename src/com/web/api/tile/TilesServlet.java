@@ -16,6 +16,11 @@ import com.web.api.user.User;
 public class TilesServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = -1333490555879202438L;
+	private Tile tile;
+	private TilesServletActions actions;
+	
+	public void setTile(Tile tile) { this.tile = tile; }
+	public void setActions(TilesServletActions actions) { this.actions = actions; }
 	
 	/**
 	 * GET a specific Tile, identified by the tileId
@@ -26,7 +31,8 @@ public class TilesServlet extends LabyrinthHttpServlet
 		
 		User user;
 		int tileId = 0;
-		TilesServletActions actions = new TilesServletActions();
+		actions = (actions == null) ? new TilesServletActions() : actions;
+		tile = (tile == null) ? new Tile(0, 0, null) : tile;
 		ArrayList<Tile> tiles = new ArrayList<>();
 		ArrayList<APITile> apiTiles = new ArrayList<>();
 		
@@ -59,7 +65,7 @@ public class TilesServlet extends LabyrinthHttpServlet
 
 			// load tiles and add to array list of API tiles
 			// provide userId to prevent cross tenant bug
-			tiles = new Tile(0, 0, null).load(0, tileId, user.getId());
+			tiles = tile.load(0, tileId, user.getId());
 			for(Tile t: tiles)
 			{
 				apiTiles.add(new APITile(t));
