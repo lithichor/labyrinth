@@ -6,7 +6,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	TilesMapGetTests.class
+	TilesMapServletGetTests.class,
+	TilesServletGetTests.class
 	})
 public class RunAllTilesTests
 {
