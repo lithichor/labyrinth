@@ -1,13 +1,13 @@
 # ************************************************************
 # Sequel Pro SQL dump
-# Version 4529
+# Version 4541
 #
 # http://www.sequelpro.com/
 # https://github.com/sequelpro/sequelpro
 #
-# Host: 127.0.0.1 (MySQL 5.7.11)
+# Host: 127.0.0.1 (MySQL 5.7.17)
 # Database: labyrinth
-# Generation Time: 2017-03-04 22:51:29 +0000
+# Generation Time: 2017-04-13 10:34:29 +0000
 # ************************************************************
 
 
@@ -28,6 +28,7 @@ CREATE TABLE `combats` (
   `user_id` int(11) NOT NULL,
   `hero_id` int(11) NOT NULL,
   `monster_id` int(11) NOT NULL,
+  `turn_id` int(11) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime DEFAULT NULL,
@@ -71,6 +72,31 @@ CREATE TABLE `heros` (
 
 
 
+# Dump of table map_adjectives
+# ------------------------------------------------------------
+
+CREATE TABLE `map_adjectives` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `adjective` varchar(63) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `adjective` (`adjective`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table map_nouns
+# ------------------------------------------------------------
+
+CREATE TABLE `map_nouns` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `noun` varchar(63) NOT NULL DEFAULT '',
+  `type` varchar(63) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `noun` (`noun`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
 # Dump of table maps
 # ------------------------------------------------------------
 
@@ -78,6 +104,9 @@ CREATE TABLE `maps` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `game_id` int(11) NOT NULL,
   `grid_size` int(11) NOT NULL,
+  `name` varchar(63) NOT NULL,
+  `type` varchar(63) NOT NULL,
+  `first_tile_id` int(11) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime DEFAULT NULL,
@@ -134,6 +163,7 @@ CREATE TABLE `turns` (
   `user_id` int(11) NOT NULL,
   `game_id` int(11) NOT NULL,
   `map_id` int(11) NOT NULL,
+  `in_combat` tinyint(1) NOT NULL DEFAULT '0',
   `x` int(11) NOT NULL,
   `y` int(11) NOT NULL,
   `created_at` datetime NOT NULL,
