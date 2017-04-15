@@ -16,6 +16,7 @@ public class User extends LabyrinthModel
 	private String lastName;
 	private String email;
 	private transient String password;
+	private Game game;
 	
 	public User()
 	{
@@ -33,19 +34,18 @@ public class User extends LabyrinthModel
 	public void setEmail(String email) { this.email = email; }
 	public String getPassword() { return password; }
 	public void setPassword(String password) { this.password = password; }
+	public void setGame(Game game) { this.game = game; }
 
 	public boolean save() throws LabyrinthException
 	{
 		boolean success = false;
 		String sql = "INSERT INTO users (first_name, last_name, email, password, created_at, updated_at) "
-				+ "VALUES(?, ?, ?, ?, ?, ?)";
+				+ "VALUES(?, ?, ?, ?, now(), now())";
 		ArrayList<Object> params = new ArrayList<Object>();
 		params.add(this.firstName);
 		params.add(this.lastName);
 		params.add(this.email);
 		params.add(this.password);
-		params.add(this.createdAt);
-		params.add(this.updatedAt);
 		
 		try
 		{
@@ -95,10 +95,10 @@ public class User extends LabyrinthModel
 			sql += "password = ? ";
 			params.add(this.getPassword());
 		}
-		
+
 		sql += ", updated_at = now() WHERE id = ?";
 		params.add(this.getId());
-		
+
 		try
 		{
 			success = dbh.execute(sql, params);
@@ -108,7 +108,7 @@ public class User extends LabyrinthModel
 			sqle.printStackTrace();
 			throw new LabyrinthException(sqle);
 		}
-		
+
 		return success;
 	}
 	
@@ -118,12 +118,13 @@ public class User extends LabyrinthModel
 		String sql = "UPDATE users SET updated_at = now(), deleted_at = now() WHERE id = ?";
 		ArrayList<Object> parameters = new ArrayList<Object>();
 		parameters.add(this.getId());
+		game = (game == null) ? new Game() : game;
 		ArrayList<Game> games = null;
 		
 		// load games for deletion
 		try
 		{
-			games = new Game().load(this.id, 0);
+			games = game.load(this.id, 0);
 		}
 		catch(LabyrinthException le)
 		{
@@ -161,7 +162,7 @@ public class User extends LabyrinthModel
 	{
 		return this.login(this.email, this.password);
 	}
-	
+
 	public User login(String email, String password) throws LabyrinthException
 	{
 		User user = new User();
@@ -215,7 +216,7 @@ public class User extends LabyrinthModel
 		
 		try
 		{
-			results = this.getDbh().executeQuery(sql, params);
+			results = dbh.executeQuery(sql, params);
 			
 			while(results.next())
 			{
@@ -303,5 +304,54 @@ public class User extends LabyrinthModel
 			sqle.printStackTrace();
 			throw new LabyrinthException(sqle);
 		}
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (email == null)
+		{
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (firstName == null)
+		{
+			if (other.firstName != null)
+				return false;
+		} else if (!firstName.equals(other.firstName))
+			return false;
+		if (id == null)
+		{
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (lastName == null)
+		{
+			if (other.lastName != null)
+				return false;
+		} else if (!lastName.equals(other.lastName))
+			return false;
+		return true;
 	}
 }

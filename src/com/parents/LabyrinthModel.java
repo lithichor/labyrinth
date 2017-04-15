@@ -22,6 +22,10 @@ public abstract class LabyrinthModel
 		dbh = DatabaseHelper.getInstance();
 	}
 	
+	public void setDbh(DatabaseHelper dbh)
+	{
+		this.dbh = dbh;
+	}
 	protected DatabaseHelper getDbh()
 	{
 		return this.dbh;
