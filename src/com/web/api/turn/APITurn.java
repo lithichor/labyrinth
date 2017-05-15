@@ -12,6 +12,7 @@ public class APITurn extends LabyrinthAPIModel
 	private Integer gameId;
 	private Integer mapId;
 	private Point coords;
+	private boolean inCombat;
 	
 	public APITurn(Turn turn)
 	{
@@ -21,6 +22,7 @@ public class APITurn extends LabyrinthAPIModel
 		this.gameId = turn.getGameId();
 		this.mapId = turn.getMapId();
 		this.coords = turn.getCoords();
+		this.inCombat = turn.isInCombat();
 	}
 
 	public Integer getId() { return id; }
@@ -35,4 +37,6 @@ public class APITurn extends LabyrinthAPIModel
 	public void setMapId(Integer mapId) { this.mapId = mapId; }
 	public Point getCoords() { return coords; }
 	public void setCoords(Point coords) { this.coords = coords; }
+	public boolean isInCombat() { return this.inCombat; }
+	public void setInCombat(boolean inCombat) { this.inCombat = inCombat; }
 }
