@@ -68,6 +68,12 @@ public class MapHelper
 	public Map addWallsAndMonsters(Map mapIn) throws LabyrinthException
 	{
 		Map map = mapIn.clone();
+		
+		// add at least one monster; this selects a tile at
+		// random to have a monster. In the loop, when we get
+		// to that tile, we add the monster
+		int numberTiles = (int)Math.pow(GeneralConstants.GRID_SIZE, 2);
+		int monsterTileId = rand.nextInt(numberTiles);
 	
 		// now add the walls and monsters
 		for(ArrayList<Tile> column: map.getGrid())
@@ -125,8 +131,8 @@ public class MapHelper
 					}
 				}
 				
-				// 5% probability of a Monster in any given Tile
-				if(rand.nextInt(100) <= 5)
+				// 25% probability of a Monster in any given Tile
+				if(rand.nextInt(100) <= 25)
 				{
 					t.setHasMonster(true);
 				}
@@ -134,6 +140,13 @@ public class MapHelper
 				// save the tile
 				t.save();
 				
+				// set the monster flag for the tile found at the
+				// start of this method
+				if(t.getId() == monsterTileId)
+				{
+					t.setHasMonster(true);
+				}
+
 				// set the first tile ID - (0, 0) is the first tile
 				if(x == 0 && y == 0)
 				{
