@@ -18,6 +18,7 @@ public class Turn extends LabyrinthModel
 	private Integer mapId;
 	private Point coords;
 	private boolean inCombat;
+	private Integer combatId;
 
 	public Integer getId() { return id; }
 	public void setId(Integer id) { this.id = id; }
@@ -33,6 +34,8 @@ public class Turn extends LabyrinthModel
 	public void setCoords(Point coords) { this.coords = coords; }
 	public void setInCombat(boolean inCombat) { this.inCombat = inCombat; }
 	public boolean isInCombat() { return this.inCombat; }
+	public Integer getCombatId() { return combatId; }
+	public void setCombatId(Integer combatId) { this.combatId = combatId; }
 
 	public Turn loadByUserAndTurn(Integer userId, Integer turnId) throws LabyrinthException
 	{
@@ -113,7 +116,6 @@ public class Turn extends LabyrinthModel
 			sqle.printStackTrace();
 			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
 		}
-		
 		return turn;
 	}
 	

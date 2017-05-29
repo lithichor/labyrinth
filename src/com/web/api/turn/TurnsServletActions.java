@@ -90,6 +90,10 @@ public class TurnsServletActions extends LabyrinthServletActions
 
 			combat.setMonsterId(monster.getId());
 			combat.save();
+			if(turn.isInCombat())
+			{
+				turn.setCombatId(combat.getId());
+			}
 		}
 
 		turn.setCoords(new Point(x, y));
