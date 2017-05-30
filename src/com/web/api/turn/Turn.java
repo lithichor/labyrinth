@@ -32,8 +32,8 @@ public class Turn extends LabyrinthModel
 	public void setMapId(Integer mapId) { this.mapId = mapId; }
 	public Point getCoords() { return coords; }
 	public void setCoords(Point coords) { this.coords = coords; }
-	public void setInCombat(boolean inCombat) { this.inCombat = inCombat; }
 	public boolean isInCombat() { return this.inCombat; }
+	public void setInCombat(boolean inCombat) { this.inCombat = inCombat; }
 	public Integer getCombatId() { return combatId; }
 	public void setCombatId(Integer combatId) { this.combatId = combatId; }
 
@@ -67,6 +67,7 @@ public class Turn extends LabyrinthModel
 				+ "map_id, "
 				+ "x, y, "
 				+ "in_combat, "
+				+ "combat_id, "
 				+ "created_at, "
 				+ "updated_at "
 				+ "FROM turns "
@@ -107,6 +108,7 @@ public class Turn extends LabyrinthModel
 				turn.setMapId(results.getInt("map_id"));
 				turn.setCoords(new Point(results.getInt("x"), results.getInt("y")));
 				turn.setInCombat(results.getInt("in_combat") == 1);
+				turn.setCombatId(results.getInt("combat_id"));
 				turn.setCreatedAt(new Date(results.getTimestamp("created_at").getTime()));
 				turn.setUpdatedAt(new Date(results.getTimestamp("updated_at").getTime()));
 			}
@@ -194,8 +196,12 @@ public class Turn extends LabyrinthModel
 				+ "x = ?, "
 				+ "y = ?, "
 				+ "iteration = ?, "
-				+ "in_combat = ?, "
-				+ "updated_at = now() "
+				+ "in_combat = ?, ";
+				if(this.inCombat)
+				{
+					sql += "combat_id = ?, ";
+				}
+				sql += "updated_at = now() "
 				+ "WHERE id = ?";
 		ArrayList<Object> params = new ArrayList<>();
 		params.add(this.mapId);
@@ -203,6 +209,10 @@ public class Turn extends LabyrinthModel
 		params.add(this.coords.y);
 		params.add(this.iteration);
 		params.add(this.inCombat ? 1 : 0);
+		if(this.inCombat)
+		{
+			params.add(this.combatId);
+		}
 		params.add(this.id);
 		
 		try
