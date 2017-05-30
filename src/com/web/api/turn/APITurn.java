@@ -24,7 +24,14 @@ public class APITurn extends LabyrinthAPIModel
 		this.mapId = turn.getMapId();
 		this.coords = turn.getCoords();
 		this.inCombat = turn.isInCombat();
-		this.combatId = turn.getCombatId();
+		if(turn.getCombatId() == null || turn.getCombatId() <= 0)
+		{
+			this.combatId = null;
+		}
+		else
+		{
+			this.combatId = turn.getCombatId();
+		}
 	}
 
 	public Integer getId() { return id; }
