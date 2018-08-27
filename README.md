@@ -1,3 +1,5 @@
+This repo is no longer under development.
+
 # The Labyrinth
 
 An online single player roguelike game with a REST API interface.
