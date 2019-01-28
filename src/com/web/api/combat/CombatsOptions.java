@@ -6,9 +6,9 @@ public class CombatsOptions extends LabyrinthOptions
 {
 	public CombatsOptions()
 	{
-		basics = "Combat occurs when a Hero meets a Monster. The Hero has some options "
-				+ "when this occurs; attack the monster, cast a spell, or run away. "
-				+ "The choices available to the Monster are more limited.";
+		basics = "Combat occurs when a Hero meets a Monster, coming through the rye. The Hero "
+				+ "has some options when this occurs; attack the monster, cast a spell, or run "
+				+ "away. The choices available to the Monster are more limited.";
 		
 		fields.put("id", "Integer");
 		fields.put("userId", "Integer");
