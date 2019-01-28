@@ -20,6 +20,9 @@ public class UserOptions extends LabyrinthOptions
 		
 		get.put("general",  "A Get verb returns the authenticated User. A User cannot access the "
 				+ "information of other Users.");
+		get.put("authentication",  "The Labyrinth users Basic authentication. To authenticate a "
+				+ "request you need to include the email and password in the header. If you use "
+				+ "curl, it looks something like this: -u email:password");
 		
 		post.put("general", "A Post verb creates a new User. It has to be accompanied by a data set, "
 				+ "which needs to include firstName, lastName, email, and password. This is the only "

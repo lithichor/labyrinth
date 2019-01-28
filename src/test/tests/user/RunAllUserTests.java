@@ -6,9 +6,9 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	UserServletPostTests.class,
+	UserServletDeleteTests.class,
 	UserServletGetTests.class,
-	UserServletPutTests.class,
+	UserServletPostTests.class,
 	UserServletPutTests.class,
 	UserValidationHelperTests.class,
 	UserModelTests.class

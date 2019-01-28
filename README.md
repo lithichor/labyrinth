@@ -28,11 +28,19 @@ with your favorite JDBC alternative.
 
 ##### Using the API
 This API is supposed to be self-documenting. The first call you should make is to the instructions
-endpoint; that will give you a list of endpoints you can call.
+endpoint; that will give you a list of endpoints you can call. If you're working in linux, you can use
+the curl command:
+
+> curl http://localhost:8080/TheLabyrinth/api/instructions
 
 When you want to start working with an endpoint, the first thing you should do is call the OPTIONS
 method; that will give you some basic information about the endpoint such as which methods are supported,
 what the data should look like, and what related endpoints exist.
+
+Many endpoints require authorization when you call them. The Labyrinth users Basic authentication; you need
+to include the email and password in most of your requests:
+
+> curl -u eric@eric.corn:password localhost:8080/TheLabyrinth/api/user -X GET
 
 I've written an API client you can use to interface with the REST API, but feel free to write your own,
 especially if you aren't writing code in Java.
