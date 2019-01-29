@@ -16,6 +16,16 @@ import com.web.api.user.User;
 public class MonstersServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = 2502557358566091760L;
+	private MonstersServletActions actions;
+	private Monster monster;
+
+	public MonstersServlet()
+	{
+		this.actions = new MonstersServletActions();
+	}
+
+	public void setActions(MonstersServletActions actions) { this.actions = actions; }
+	public void setMonster(Monster monster) { this.monster = monster; }
 
 	/**
 	 * api/monsters
@@ -27,15 +37,26 @@ public class MonstersServlet extends LabyrinthHttpServlet
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-		
-		MonstersServletActions actions = new MonstersServletActions();
+
 		int monsterId = actions.getIdFromUrl(request, EndpointsWithIds.MONSTERS);
 		ArrayList<Monster> monsters = new ArrayList<>();
-		
+		User user = null;
+
 		try
 		{
-			User user = actions.authenticateUser(request);
-			
+			user = actions.authenticateUser(request);
+		}
+		catch(LabyrinthException le)
+		{
+			errors.add(le.getMessage());
+			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
+			return;
+		}
+
+		boolean authenticated = (user != null);
+
+		if(authenticated)
+		{
 			// no ID means no monsters
 			if(monsterId <= 0)
 			{
@@ -43,17 +64,29 @@ public class MonstersServlet extends LabyrinthHttpServlet
 			}
 			else
 			{
-				monsters = new Monster().loadMonstersByUserAndMonster(user.getId(), monsterId);
+				try
+				{
+					monsters = monster.loadMonstersByUserAndMonster(user.getId(), monsterId);
+				}
+				catch (LabyrinthException le)
+				{
+					errors.add(messages.getMessage("unknown.unknown_error"));
+					le.printStackTrace();
+					apiOut(gson.toJson(new APIErrorMessage(errors)), response);
+					return;
+				}
+
 				if(monsters.size() == 0)
 				{
 					errors.add(messages.getMessage("monster.no_monster_found"));
 				}
 			}
 		}
-		catch(LabyrinthException le)
+		else
 		{
-			errors.add(le.getMessage());
+			errors.add(messages.getMessage("user.no_such_player"));
 		}
+
 		if(errors.size() > 0)
 		{
 			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
@@ -64,11 +97,11 @@ public class MonstersServlet extends LabyrinthHttpServlet
 			apiOut(gson.toJson(new APIMonster(monsters.get(0))), response);
 		}
 	}
-	
+
 	public void doOptions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-		
+
 		MonstersOptions options = new MonstersOptions();
 		apiOut(gson.toJson(options), response);
 	}

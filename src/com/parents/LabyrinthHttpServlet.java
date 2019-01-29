@@ -9,16 +9,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.Gson;
 import com.labels.LabyrinthMessages;
 import com.models.api.APIErrorMessage;
+
+import test.tests.wrappers.GsonWrapper;
 
 public abstract class LabyrinthHttpServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 6063276226361967817L;
 	protected ArrayList<String> errors = new ArrayList<String>();
-	protected Gson gson = new Gson();
+	protected GsonWrapper gson = new GsonWrapper();
 	protected LabyrinthMessages messages = new LabyrinthMessages();
+	
+	public void setGson(GsonWrapper gson) { this.gson = gson; }
 	
 	public ArrayList<String> getErrors()
 	{
