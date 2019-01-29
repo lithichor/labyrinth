@@ -56,7 +56,6 @@ public class UserServletGetTests extends LabyrinthHttpTest
 		LabyrinthException labex = new LabyrinthException(messages.getMessage("user.no_such_player"));
 
 		when(actions.authenticateUser(request)).thenThrow(labex);
-		when(request.getHeader("authorization")).thenReturn("");
 
 		servlet.doGet(request, response);
 		String messageStr = strWriter.getBuffer().toString();

@@ -13,12 +13,16 @@ import com.google.gson.Gson;
 import com.labels.LabyrinthMessages;
 import com.models.api.APIErrorMessage;
 
+import test.tests.wrappers.GsonWrapper;
+
 public abstract class LabyrinthHttpServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 6063276226361967817L;
 	protected ArrayList<String> errors = new ArrayList<String>();
-	protected Gson gson = new Gson();
+	protected GsonWrapper gson = new GsonWrapper();
 	protected LabyrinthMessages messages = new LabyrinthMessages();
+	
+	public void setGson(GsonWrapper gson) { this.gson = gson; }
 	
 	public ArrayList<String> getErrors()
 	{
@@ -40,7 +44,7 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 	{
 		errors.clear();
 		errors.add(messages.getMessage("method.no_get"));
-		apiOut(gson.toJson(new APIErrorMessage(errors)), response);
+		apiOut(new Gson().toJson(new APIErrorMessage(errors)), response);
 	}
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
