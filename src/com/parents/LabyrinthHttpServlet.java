@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.Gson;
 import com.labels.LabyrinthMessages;
 import com.models.api.APIErrorMessage;
 
@@ -44,7 +43,7 @@ public abstract class LabyrinthHttpServlet extends HttpServlet
 	{
 		errors.clear();
 		errors.add(messages.getMessage("method.no_get"));
-		apiOut(new Gson().toJson(new APIErrorMessage(errors)), response);
+		apiOut(gson.toJson(new APIErrorMessage(errors)), response);
 	}
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
