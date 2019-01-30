@@ -1,4 +1,4 @@
-package test.tests.wrappers;
+package com.models.wrappers;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

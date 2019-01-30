@@ -19,9 +19,9 @@ import com.web.api.tile.TilesServlet;
 import com.web.api.tile.TilesServletActions;
 import com.web.api.user.User;
 
-import test.parents.LabyrinthHttpTest;
+import test.parents.LabyrinthHttpServletTest;
 
-public class TilesServletGetTests extends LabyrinthHttpTest
+public class TilesServletGetTests extends LabyrinthHttpServletTest
 {
 	private TilesServlet servlet;
 	private TilesServletActions actions;

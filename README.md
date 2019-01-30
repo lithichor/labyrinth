@@ -37,8 +37,8 @@ When you want to start working with an endpoint, the first thing you should do i
 method; that will give you some basic information about the endpoint such as which methods are supported,
 what the data should look like, and what related endpoints exist.
 
-Many endpoints require authorization when you call them. The Labyrinth users Basic authentication; you need
-to include the email and password in most of your requests:
+Many endpoints require authentication when you call them. The Labyrinth uses Basic authentication; you need
+to include the user's email and password in most of your requests:
 
 > curl -u eric@eric.corn:password localhost:8080/TheLabyrinth/api/user -X GET
 

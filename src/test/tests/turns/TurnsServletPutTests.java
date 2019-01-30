@@ -16,9 +16,9 @@ import com.web.api.turn.TurnsServlet;
 import com.web.api.turn.TurnsServletActions;
 import com.web.api.user.User;
 
-import test.parents.LabyrinthHttpTest;
+import test.parents.LabyrinthHttpServletTest;
 
-public class TurnsServletPutTests extends LabyrinthHttpTest
+public class TurnsServletPutTests extends LabyrinthHttpServletTest
 {
 	private User user;
 	private Turn turn;

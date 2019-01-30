@@ -11,38 +11,35 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.models.constants.EndpointsWithIds;
+import com.models.wrappers.GsonWrapper;
 import com.parents.LabyrinthException;
-import com.web.api.monster.APIMonster;
 import com.web.api.monster.Monster;
 import com.web.api.monster.MonstersServlet;
 import com.web.api.monster.MonstersServletActions;
 import com.web.api.user.User;
 
-import test.parents.LabyrinthHttpTest;
-import test.tests.wrappers.GsonWrapper;
+import test.parents.LabyrinthHttpServletTest;
 
-public class MonstersServletGetTests extends LabyrinthHttpTest
+public class MonstersServletGetTests extends LabyrinthHttpServletTest
 {
 	private MonstersServlet servlet = new MonstersServlet();
 	private MonstersServletActions actions = mock(MonstersServletActions.class);
 	private User user = new User();
-	private GsonWrapper gson = mock(GsonWrapper.class);
+	private GsonWrapper gsonWrapper = mock(GsonWrapper.class);
 
 	@Before
 	public void setup() throws IOException
 	{
 		user.setId(4);
 		servlet.setActions(actions);
-		servlet.setGson(gson);
+		servlet.setGson(gsonWrapper);
 
-		when(response.getWriter()).thenReturn(printer);
+		when(response.getWriter()).thenReturn(printerTwo);
 	}
 
 	@Test
 	/**
-	 * Verify the doGet method executes with no errors. Verification is
-	 * done by making sure getWriter() is called one time and errors is
-	 * empty
+	 * Verify the doGet method executes with no errors
 	 * 
 	 * @throws ServletException
 	 * @throws IOException
@@ -61,15 +58,11 @@ public class MonstersServletGetTests extends LabyrinthHttpTest
 		when(actions.getIdFromUrl(request, EndpointsWithIds.MONSTERS)).thenReturn(monsterId);
 		when(actions.authenticateUser(request)).thenReturn(user);
 		when(monster.loadMonstersByUserAndMonster(4, 4)).thenReturn(monsters);
-		when(gson.toJson(new APIMonster(m))).thenReturn("{id: 1}");
 
 		servlet.doGet(request, response);
 
 		ArrayList<String> errors = servlet.getErrors();
 
-		// getWriter() is called for the error condition and the non-error
-		// condition, so also make sure errors.size() is zero;
-		verify(response, times(1)).getWriter();
 		assertTrue(errors.size() == 0);
 	}
 
@@ -85,6 +78,7 @@ public class MonstersServletGetTests extends LabyrinthHttpTest
 	public void testMonstersDoGetAuthenticateThrowsException() throws ServletException, IOException, LabyrinthException
 	{
 		String errorMessage = "Exception Thrown";
+		
 		when(actions.authenticateUser(request)).thenThrow(new LabyrinthException(errorMessage));
 
 		servlet.doGet(request, response);
