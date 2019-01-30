@@ -15,9 +15,9 @@ import com.web.api.user.User;
 import com.web.api.user.UserServlet;
 import com.web.api.user.UserServletActions;
 
-import test.parents.LabyrinthHttpTest;
+import test.parents.LabyrinthHttpServletTest;
 
-public class UserServletGetTests extends LabyrinthHttpTest
+public class UserServletGetTests extends LabyrinthHttpServletTest
 {
 	private UserServlet servlet;
 	private User user;

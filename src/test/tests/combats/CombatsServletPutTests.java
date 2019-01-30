@@ -16,9 +16,9 @@ import com.web.api.combat.CombatsServlet;
 import com.web.api.combat.CombatsServletActions;
 import com.web.api.user.User;
 
-import test.parents.LabyrinthHttpTest;
+import test.parents.LabyrinthHttpServletTest;
 
-public class CombatsServletPutTests extends LabyrinthHttpTest
+public class CombatsServletPutTests extends LabyrinthHttpServletTest
 {
 	private CombatsServlet combatsServlet;
 	private CombatsServletActions combatActions;

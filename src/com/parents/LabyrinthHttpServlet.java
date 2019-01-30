@@ -11,8 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.labels.LabyrinthMessages;
 import com.models.api.APIErrorMessage;
-
-import test.tests.wrappers.GsonWrapper;
+import com.models.wrappers.GsonWrapper;
 
 public abstract class LabyrinthHttpServlet extends HttpServlet
 {

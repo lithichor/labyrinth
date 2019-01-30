@@ -22,6 +22,7 @@ public class MonstersServlet extends LabyrinthHttpServlet
 	public MonstersServlet()
 	{
 		this.actions = new MonstersServletActions();
+		this.monster = new Monster();
 	}
 
 	public void setActions(MonstersServletActions actions) { this.actions = actions; }

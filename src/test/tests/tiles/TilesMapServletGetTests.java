@@ -20,9 +20,9 @@ import com.web.api.tile.TilesMapServlet;
 import com.web.api.tile.TilesServletActions;
 import com.web.api.user.User;
 
-import test.parents.LabyrinthHttpTest;
+import test.parents.LabyrinthHttpServletTest;
 
-public class TilesMapServletGetTests extends LabyrinthHttpTest
+public class TilesMapServletGetTests extends LabyrinthHttpServletTest
 {
 	private TilesMapServlet servlet;
 	private TilesServletActions actions;
