@@ -24,6 +24,6 @@ public class BackgroundJobManager extends LabyrinthServletContextListener
 	@Override
 	public void contextDestroyed(ServletContextEvent event)
 	{
-		scheduler.shutdown();
+		scheduler.shutdownNow();
 	}
 }

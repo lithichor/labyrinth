@@ -7,13 +7,9 @@ public class LabyrinthServletContextListener implements ServletContextListener
 {
 
 	@Override
-	public void contextDestroyed(ServletContextEvent event)
-	{
-	}
+	public void contextDestroyed(ServletContextEvent event){}
 
 	@Override
-	public void contextInitialized(ServletContextEvent event)
-	{
-	}
+	public void contextInitialized(ServletContextEvent event){}
 
 }
