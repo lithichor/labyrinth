@@ -7,3 +7,4 @@ src/labyrinth*.sql
 *.DS_Store
 src/prototype
 bin/
+/.clover/
