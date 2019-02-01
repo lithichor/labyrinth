@@ -171,6 +171,12 @@ public class MonsterModelTests extends LabyrinthJUnitTest
 		assertTrue("Expected 1 monster returned, but got " + monsters.size(), monsters.size() == 1);
 		assertTrue("Expected attack to be 5, but was " + monster.getAttack(),
 				monsters.get(0).getAttack() == 5);
+		assertTrue("Expected defense to be 5, but was " + monster.getDefense(),
+				monsters.get(0).getDefense() == 5);
+		assertTrue("Expected health to be 5, but was " + monster.getHealth(),
+				monsters.get(0).getHealth() == 5);
+		assertTrue("Expected tileId to be 5, but was " + monster.getTileId(),
+				monsters.get(0).getTileId() == 5);
 		assertTrue("Expected monsterId to be " + monsterId + ", but was " + monsters.get(0).getId(),
 				monsters.get(0).getId() == monsterId);
 	}
