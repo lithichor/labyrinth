@@ -7,7 +7,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
 	MonstersServletGetTests.class,
-	MonstersTileServletGetTests.class
+	MonstersTileServletGetTests.class,
+	MonsterModelTests.class
 	})
 public class RunAllMonstersTests
 {
