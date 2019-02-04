@@ -1,4 +1,12 @@
-This repo is no longer under development.
+This repo is no longer under development. At the moment I'm writing unit tests for all the classes
+I didn't write them for in 2017 when I was developing the API. When that's done I'll start adding
+new functionality to it.
+
+While I'm at it, I might as well admit that while I describe some steps to get the server up and
+running, I don't expect anyone to actually do that. This video game has turned into a way for me
+to exercise some of the concepts I've come up with to write more efficient tests. I expect it to
+eventually be a useful, functioning REST API server with an accompanying front end so people can
+actually play the game, but that's a long range goal. A very long range goal.
 
 # The Labyrinth
 
@@ -7,8 +15,6 @@ An online single player roguelike game with a REST API interface.
 Before we start, a few caveats:
 
 This is a work in progress; I'll remove this caveat when the project is ready for prime time.
-
-I don't plan to host this project. Instead, I'm offering it as open source so other people can host it.
 
 This video game is an API-first project. The main focus is on making the API and the test frameworks for
 it; there's no real plan for a user interface. My hope is that people will be interested enough in
