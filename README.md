@@ -16,8 +16,6 @@ Before we start, a few caveats:
 
 This is a work in progress; I'll remove this caveat when the project is ready for prime time.
 
-I don't plan to host this project. Instead, I'm offering it as open source so other people can host it.
-
 This video game is an API-first project. The main focus is on making the API and the test frameworks for
 it; there's no real plan for a user interface. My hope is that people will be interested enough in
 the game that they'll a) host the server for themselves and anyone else who wants to use it, and
