@@ -11,6 +11,31 @@ import com.parents.LabyrinthModel;
 
 public class Turn extends LabyrinthModel
 {
+	public static final String LOAD_SQL = "SELECT id, "
+			+ "iteration, "
+			+ "user_id, "
+			+ "game_id, "
+			+ "map_id, "
+			+ "x, y, "
+			+ "in_combat, "
+			+ "combat_id, "
+			+ "created_at, "
+			+ "updated_at "
+			+ "FROM turns "
+			+ "WHERE deleted_at IS NULL ";
+	public static final String SAVE_SQL = "INSERT INTO turns "
+			+ "(iteration, user_id, game_id, map_id, x, y, in_combat, created_at, updated_at) "
+			+ "VALUES(0, ?, ?, ?, ?, ?, ?, now(), now())";
+	public static final String DELETE_SQL = "UPDATE turns SET deleted_at = now() where user_id = ?";
+	private static final String UPDATE_SQL = "UPDATE turns SET "
+			+ "map_id = ?, "
+			+ "x = ?, "
+			+ "y = ?, "
+			+ "iteration = ?, "
+			+ "in_combat = ?, ";
+	public static final String UPDATE_IN_COMBAT_SQL = UPDATE_SQL + "combat_id = ?, updated_at = now() WHERE id = ?";
+	public static final String UPDATE_NOT_IN_COMBAT_SQL = UPDATE_SQL + "updated_at = now() WHERE id = ?";
+	
 	private Integer id;
 	private Integer iteration;
 	private Integer userId;
@@ -37,6 +62,15 @@ public class Turn extends LabyrinthModel
 	public Integer getCombatId() { return combatId; }
 	public void setCombatId(Integer combatId) { this.combatId = combatId; }
 
+	/**
+	 * A convenience method to load a Turn using IDs from User and Turn. An Exception
+	 * is thrown is wither ID is less than or equal to zero
+	 * 
+	 * @param userId
+	 * @param turnId
+	 * @return
+	 * @throws LabyrinthException
+	 */
 	public Turn loadByUserAndTurn(Integer userId, Integer turnId) throws LabyrinthException
 	{
 		if(userId <= 0)
@@ -50,33 +84,54 @@ public class Turn extends LabyrinthModel
 		return load(userId, 0, turnId);
 	}
 
+	/**
+	 * A convenience method to load a Turn using IDs from User and Game. An Exception
+	 * is thrown if either ID is less than or equal to zero
+	 * 
+	 * @param userId
+	 * @param gameId
+	 * @return
+	 * @throws LabyrinthException
+	 */
 	public Turn loadByUserAndGame(Integer userId, Integer gameId) throws LabyrinthException
 	{
+		if(userId <= 0)
+		{
+			throw new LabyrinthException(messages.getMessage("turn.no_user_id"));
+		}
+		if(gameId <= 0)
+		{
+			throw new LabyrinthException(messages.getMessage("turn.no_game_id"));
+		}
 		return load(userId, gameId, 0);
 	}
 	
-	private Turn load(Integer userId, Integer gameId, Integer turnId) throws LabyrinthException
+	/**
+	 * Load a Turn with IDs from User, Game, or Turn. A userId is always
+	 * required so we don't return another User's Turn
+	 * 
+	 * @param userId
+	 * @param gameId
+	 * @param turnId
+	 * @return - the Turn loaded from the database
+	 * @throws LabyrinthException
+	 */
+	public Turn load(Integer userId, Integer gameId, Integer turnId) throws LabyrinthException
 	{
+		// We have to have a userId to make sure we don't return another user's Turn
+		if(userId <= 0)
+		{
+			throw new LabyrinthException(messages.getMessage("turn.no_user_id"));
+		}
+		
 		Turn turn = null;
 		ArrayList<Object> params = new ArrayList<>();
 		ResultSet results = null;
-		String sql = "SELECT id, "
-				+ "iteration, "
-				+ "user_id, "
-				+ "game_id, "
-				+ "map_id, "
-				+ "x, y, "
-				+ "in_combat, "
-				+ "combat_id, "
-				+ "created_at, "
-				+ "updated_at "
-				+ "FROM turns "
-				+ "WHERE deleted_at IS NULL ";
-		if(userId > 0)
-		{
-			sql += "AND user_id = ? ";
-			params.add(userId);
-		}
+		String sql = LOAD_SQL;
+		
+		sql += "AND user_id = ? ";
+		params.add(userId);
+			
 		if(gameId > 0)
 		{
 			sql += "AND game_id = ? ";
@@ -88,11 +143,6 @@ public class Turn extends LabyrinthModel
 			params.add(turnId);
 		}
 		
-		if(userId <= 0 && gameId <= 0)
-		{
-			throw new LabyrinthException(messages.getMessage("turn.no_ids"));
-		}
-
 		try
 		{
 			results = dbh.executeQuery(sql, params);
@@ -126,9 +176,6 @@ public class Turn extends LabyrinthModel
 		boolean success = true;
 		int turnId = 0;
 		ResultSet results = null;
-		String sql = "INSERT INTO turns "
-				+ "(iteration, user_id, game_id, map_id, x, y, in_combat, created_at, updated_at) "
-				+ "VALUES(0, ?, ?, ?, ?, ?, ?, now(), now())";
 		ArrayList<Object> params = new ArrayList<>();
 		params.add(this.userId);
 		params.add(this.gameId);
@@ -136,10 +183,10 @@ public class Turn extends LabyrinthModel
 		params.add(this.coords.x);
 		params.add(this.coords.y);
 		params.add(this.inCombat ? 1 : 0);
-		
+
 		try
 		{
-			results = dbh.executeAndReturnKeys(sql, params);
+			results = dbh.executeAndReturnKeys(SAVE_SQL, params);
 			while(results.next())
 			{
 				turnId = results.getInt(1);
@@ -167,13 +214,17 @@ public class Turn extends LabyrinthModel
 	
 	public void delete(Integer userId) throws LabyrinthException
 	{
-		String sql = "UPDATE turns SET deleted_at = now() where user_id = ?";
+		if(userId <= 0)
+		{
+			throw new LabyrinthException(messages.getMessage("turn.no_user_id"));
+		}
+		
 		ArrayList<Object> params = new ArrayList<>();
 		params.add(userId);
 		
 		try
 		{
-			dbh.execute(sql, params);
+			dbh.execute(DELETE_SQL, params);
 		}
 		catch(SQLException sqle)
 		{
@@ -191,18 +242,17 @@ public class Turn extends LabyrinthModel
 	public boolean update() throws LabyrinthException
 	{
 		boolean success = true;
-		String sql = "UPDATE turns SET "
-				+ "map_id = ?, "
-				+ "x = ?, "
-				+ "y = ?, "
-				+ "iteration = ?, "
-				+ "in_combat = ?, ";
-				if(this.inCombat)
-				{
-					sql += "combat_id = ?, ";
-				}
-				sql += "updated_at = now() "
-				+ "WHERE id = ?";
+		String sql = "";
+		
+		if(this.inCombat)
+		{
+			sql = UPDATE_IN_COMBAT_SQL;
+		}
+		else
+		{
+			sql = UPDATE_NOT_IN_COMBAT_SQL;
+		}
+				
 		ArrayList<Object> params = new ArrayList<>();
 		params.add(this.mapId);
 		params.add(this.coords.x);
@@ -221,6 +271,7 @@ public class Turn extends LabyrinthModel
 		}
 		catch(SQLException sqle)
 		{
+			sqle.printStackTrace();
 			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
 		}
 		
