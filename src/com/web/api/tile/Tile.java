@@ -106,7 +106,7 @@ public class Tile extends LabyrinthModel
 	public void setMonster(Monster monster) { this.monster = monster; }
 	
 	/**
-	 * Save a tile to the database. The query returns the ID for the tile
+	 * Save a tile to the database. The query returns true or false for the success of the query
 	 * 
 	 * @return
 	 * @throws LabyrinthException
