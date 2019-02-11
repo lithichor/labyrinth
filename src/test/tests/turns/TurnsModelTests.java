@@ -279,7 +279,7 @@ public class TurnsModelTests extends LabyrinthJUnitTest
 	 * @throws LabyrinthException
 	 * @throws SQLException
 	 */
-	public void testTurnsLoadgetIntThrowsException() throws LabyrinthException, SQLException
+	public void testTurnsLoadGetIntThrowsException() throws LabyrinthException, SQLException
 	{
 		int userId = 9;
 		String errorMessage = messages.getMessage("unknown.horribly_wrong");
