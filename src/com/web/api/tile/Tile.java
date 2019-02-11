@@ -21,11 +21,45 @@ public class Tile extends LabyrinthModel
 	private Boundary south;
 	private Boundary east;
 	private Boundary west;
+	private Monster monster;
 	
 	public enum Boundary
 	{
 		DOOR, OPENING, WALL
 	}
+	
+	public static final String SAVE_SQL = "INSERT INTO tiles "
+			+ "(x, y, has_monster, visited, "
+			+ "map_id, north, south, east, west, "
+			+ "created_at, updated_at)\n"
+			+ "VALUES(?, ?, ?, ?, "
+			+ "?, '?', '?', '?', '?', "
+			+ " now(), now())";
+	
+	/**
+	 * This sql is incomplete; it must be finished with userId and deleted_at at a minimum
+	 */
+	public static final String LOAD_SQL = "SELECT t.id, x, y, map_id, has_monster, visited, "
+			+ "north, south, east, west, t.created_at, t.updated_at "
+			+ "FROM tiles t\n\t"
+			+ "LEFT JOIN maps m ON m.id = t.map_id\n\t"
+			+ "LEFT JOIN games g on g.id = m.game_id\n\t"
+			+ "WHERE ";
+	
+	/**
+	 * Get the mapIds for the game we are deleting
+	 */
+	public static final String GET_MAPS_TO_DELETE_SQL = "SELECT id FROM maps WHERE game_id = ? AND deleted_at IS NULL";
+	
+	/**
+	 * This sql is incomplete; it requires holders for the mapIds and closing parentheses
+	 */
+	public static final String DELETE_TILES_SQL = "UPDATE tiles SET deleted_at = now() where map_id in (";
+	
+	/**
+	 * This sql is incomplete; it requires holders for the mapIds and closing parentheses
+	 */
+	public static final String GET_TILE_IDS = "SELECT id FROM tiles WHERE map_id in (";
 	
 	/**
 	 * The Tile has to have coordinates and a mapId in order to exist.
@@ -44,6 +78,8 @@ public class Tile extends LabyrinthModel
 		south = Boundary.OPENING;
 		east = Boundary.OPENING;
 		west = Boundary.OPENING;
+		// the monster is for when we delete the tile
+		monster = new Monster();
 	}
 	
 	public Integer getId() { return this.id; }
@@ -67,24 +103,33 @@ public class Tile extends LabyrinthModel
 	public void setEast(Boundary east) { this.east = east; }
 	public Boundary getWest() { return this.west; }
 	public void setWest(Boundary west) { this.west = west; }
+	public void setMonster(Monster monster) { this.monster = monster; }
 	
+	/**
+	 * Save a tile to the database. The query returns the ID for the tile
+	 * 
+	 * @return
+	 * @throws LabyrinthException
+	 */
 	public boolean save() throws LabyrinthException
 	{
 		boolean success = false;
 		int tileId = 0;
 		ResultSet results = null;
-		String sql = "INSERT INTO tiles "
-				+ "(x, y, has_monster, visited, "
-				+ "map_id, north, south, east, west, "
-				+ "created_at, updated_at)\n"
-				+ "VALUES(" + coords.x + ", " + coords.y + ", " + getHasMonsterInt() + ", " + getWasVisitedInt() + ", "
-				+ mapId + ", '" + north + "', '" + south + "', '" + east + "', '" + west + "', "
-				+ " now(), now())";
 		ArrayList<Object> params = new ArrayList<>();
+		params.add(this.getCoords().x);
+		params.add(this.getCoords().y);
+		params.add(this.getHasMonsterInt());
+		params.add(this.getWasVisitedInt());
+		params.add(this.getMapId());
+		params.add(this.getNorth());
+		params.add(this.getSouth());
+		params.add(this.getEast());
+		params.add(this.getWest());
 
 		try
 		{
-			results = dbh.executeAndReturnKeys(sql, params);
+			results = dbh.executeAndReturnKeys(SAVE_SQL, params);
 			while(results.next())
 			{
 				tileId = results.getInt(1);
@@ -93,7 +138,7 @@ public class Tile extends LabyrinthModel
 		catch(SQLException sqle)
 		{
 			sqle.printStackTrace();
-			throw new LabyrinthException(sqle);
+			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
 		}
 		
 		if(tileId > 0)
@@ -105,38 +150,45 @@ public class Tile extends LabyrinthModel
 		return success;
 	}
 	
+	/**
+	 * Load a tile from the database. The userId is required to prevent cross-currency
+	 * issues. The tile may be loaded with the mapId or the tileId
+	 * 
+	 * @param mapId
+	 * @param tileId
+	 * @param userId
+	 * @return
+	 * @throws LabyrinthException
+	 */
 	public ArrayList<Tile> load(Integer mapId, Integer tileId, Integer userId) throws LabyrinthException
 	{
 		ArrayList<Tile> tiles = new ArrayList<>();
 		ArrayList<Object> params = new ArrayList<>();
 		ResultSet results = null;
-		String sql = "SELECT t.id, x, y, map_id, has_monster, visited, "
-				+ "north, south, east, west, t.created_at, t.updated_at "
-				+ "FROM tiles t\n\t"
-				+ "LEFT JOIN maps m ON m.id = t.map_id\n\t"
-				+ "LEFT JOIN games g on g.id = m.game_id\n\t"
-				+ "WHERE ";
-		if(mapId > 0)
-		{
-			sql += "map_id = ? ";
-			params.add(mapId);
-		}
-		else if(tileId > 0)
-		{
-			sql += "t.id = ? ";
-			params.add(tileId);
-		}
-		else
-		{
-			throw new LabyrinthException(messages.getMessage("tile.no_ids"));
-		}
+		String sql = LOAD_SQL;
 		
-		if(userId == 0)
+		// what happens if userId is negative?
+		if(userId <= 0)
 		{
 			throw new LabyrinthException(messages.getMessage("tile.no_user_id"));
 		}
-		sql += "\n\tAND user_id = ?\n\tAND t.deleted_at IS NULL";
 		params.add(userId);
+		sql += "\n\tuser_id = ?\n\tAND t.deleted_at IS NULL ";
+		
+		if(mapId > 0)
+		{
+			sql += "AND map_id = ? ";
+			params.add(mapId);
+		}
+		if(tileId > 0)
+		{
+			sql += "AND t.id = ? ";
+			params.add(tileId);
+		}
+		if(mapId <= 0 && tileId <= 0)
+		{
+			throw new LabyrinthException(messages.getMessage("tile.no_ids"));
+		}
 		
 		try
 		{
@@ -151,10 +203,10 @@ public class Tile extends LabyrinthModel
 				
 				t.setId(results.getInt("id"));
 				
-				t.setNorth(getBoundary(results.getString("north")));
-				t.setSouth(getBoundary(results.getString("south")));
-				t.setEast(getBoundary(results.getString("east")));
-				t.setWest(getBoundary(results.getString("west")));
+				t.setNorth(getBoundaryFromString(results.getString("north")));
+				t.setSouth(getBoundaryFromString(results.getString("south")));
+				t.setEast(getBoundaryFromString(results.getString("east")));
+				t.setWest(getBoundaryFromString(results.getString("west")));
 				
 				t.setHasMonster(results.getInt("has_monster") == 1);
 				t.setVisited(results.getInt("visited") == 1);
@@ -177,7 +229,8 @@ public class Tile extends LabyrinthModel
 			{
 				throw new LabyrinthException(messages.getMessage("tile.no_tiles_for_map"));
 			}
-			if(tileId > 0)
+			// this is when tileId == 0
+			else
 			{
 				throw new LabyrinthException(messages.getMessage("tile.no_tiles_found"));
 			}
@@ -190,13 +243,19 @@ public class Tile extends LabyrinthModel
 	 * This deletes the Tiles associated with a game. It must be called
 	 * before the Maps for the Game are deleted.
 	 * 
+	 * The Game ID is required
+	 * 
 	 * @param gameId
 	 * @throws LabyrinthException 
 	 */
 	public void deleteTiles(Integer gameId) throws LabyrinthException
 	{
+		if(gameId <= 0)
+		{
+			throw new LabyrinthException(messages.getMessage("tile.no_game_id"));
+		}
+		
 		// get the IDs of the maps belonging to the game
-		String sql = "SELECT id FROM maps WHERE game_id = ? AND deleted_at IS NULL";
 		ArrayList<Object> params = new ArrayList<>();
 		params.add(gameId);
 		ResultSet results = null;
@@ -205,7 +264,7 @@ public class Tile extends LabyrinthModel
 		
 		try
 		{
-			results = dbh.executeQuery(sql, params);
+			results = dbh.executeQuery(GET_MAPS_TO_DELETE_SQL, params);
 			while(results.next())
 			{
 				mapIds.add(results.getInt("id"));
@@ -217,41 +276,41 @@ public class Tile extends LabyrinthModel
 			}
 			
 			// now delete the Tiles
-			sql = "UPDATE tiles SET deleted_at = now() where map_id in (";
+			String delete_sql = DELETE_TILES_SQL;
 			params.clear();
 			for(int x = 0; x < mapIds.size(); x++)
 			{
 				if(x == 0)
 				{
-					sql += "?";
+					delete_sql += "?";
 				}
 				else
 				{
-					sql += ", ?";
+					delete_sql += ", ?";
 				}
 				params.add(mapIds.get(x));
 			}
-			sql += ")";
-			dbh.execute(sql, params);
+			delete_sql += ")";
+			dbh.execute(delete_sql, params);
 			
-			// now get the ids for the deleted tiles
-			sql = "SELECT id FROM tiles WHERE map_id in (";
+			// get the IDs for the deleted Tiles so we can delete the Monsters
+			String get_tile_ids = GET_TILE_IDS;
 			params.clear();
 			for(int x = 0; x < mapIds.size(); x++)
 			{
 				if(x == 0)
 				{
-					sql += "?";
+					get_tile_ids += "?";
 				}
 				else
 				{
-					sql += ", ?";
+					get_tile_ids += ", ?";
 				}
 				params.add(mapIds.get(x));
 			}
-			sql += ")";
+			get_tile_ids += ")";
 			
-			results = dbh.executeQuery(sql, params);
+			results = dbh.executeQuery(get_tile_ids, params);
 			while(results.next())
 			{
 				tileIds.add(results.getInt("id"));
@@ -265,34 +324,25 @@ public class Tile extends LabyrinthModel
 		catch(SQLException sqle)
 		{
 			sqle.printStackTrace();
-			throw new LabyrinthException(sqle);
+			throw new LabyrinthException(messages.getMessage("unknown.horribly_wrong"));
 		}
 		
+		// need to change this for testing - don't want it going to database
 		// delete any monsters on this Tile
-		new Monster().delete(tileIds);
+		monster.delete(tileIds);
 	}
 	
-	private Boundary getBoundary(String bound)
+	public Boundary getBoundaryFromString(String boundry)
 	{
-		switch(bound)
+		switch(boundry.toLowerCase())
 		{
-		case "WALL":
+		case "wall":
 			return Boundary.WALL;
-		case "DOOR":
+		case "door":
 			return Boundary.DOOR;
-		case "OPENING":
+		case "opening":
 			return Boundary.OPENING;
 		}
 		return null;
-	}
-	
-	public static void main(String[] args) throws LabyrinthException
-	{
-		Tile t = new Tile(1, 2, 0);
-		t.setEast(Boundary.DOOR);
-		t.setNorth(Boundary.WALL);
-		t.setSouth(Boundary.OPENING);
-		t.setWest(Boundary.OPENING);
-		t.save();
 	}
 }
