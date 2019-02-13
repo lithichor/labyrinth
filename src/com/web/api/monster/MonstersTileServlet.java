@@ -18,15 +18,18 @@ public class MonstersTileServlet extends LabyrinthHttpServlet
 	private static final long serialVersionUID = 2695498520215830537L;
 	MonstersServletActions actions;
 	Monster monster;
+	MonstersTileOptions options;
 
 	public MonstersTileServlet()
 	{
 		this.actions = new MonstersServletActions();
 		this.monster = new Monster();
+		this.options = new MonstersTileOptions();
 	}
 	
 	public void setActions(MonstersServletActions actions) { this.actions = actions; }
 	public void setMonster(Monster monster) { this.monster = monster; }
+	public void setMonstersTileOptions(MonstersTileOptions options) { this.options = options; }
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
 	{
@@ -91,7 +94,6 @@ public class MonstersTileServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		
-		MonstersTileOptions options = new MonstersTileOptions();
 		apiOut(gson.toJson(options), response);
 	}
 }

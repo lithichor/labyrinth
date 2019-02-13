@@ -8,7 +8,9 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	MonstersServletGetTests.class,
 	MonstersTileServletGetTests.class,
-	MonsterModelTests.class
+	MonsterModelTests.class,
+	MonstersServletOptionsTests.class,
+	MonstersTileServletOptionsTests.class
 	})
 public class RunAllMonstersTests
 {
