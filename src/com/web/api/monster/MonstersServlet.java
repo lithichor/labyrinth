@@ -18,15 +18,18 @@ public class MonstersServlet extends LabyrinthHttpServlet
 	private static final long serialVersionUID = 2502557358566091760L;
 	private MonstersServletActions actions;
 	private Monster monster;
+	private MonstersOptions options;
 
 	public MonstersServlet()
 	{
 		this.actions = new MonstersServletActions();
 		this.monster = new Monster();
+		this.options = new MonstersOptions();
 	}
 
 	public void setActions(MonstersServletActions actions) { this.actions = actions; }
 	public void setMonster(Monster monster) { this.monster = monster; }
+	public void setMonstersOptions(MonstersOptions options) { this.options = options; }
 
 	/**
 	 * api/monsters
@@ -103,7 +106,6 @@ public class MonstersServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 
-		MonstersOptions options = new MonstersOptions();
 		apiOut(gson.toJson(options), response);
 	}
 }
