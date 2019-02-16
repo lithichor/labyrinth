@@ -10,6 +10,7 @@ public class APIMonster extends LabyrinthAPIModel
 	private Integer attack;
 	private Integer defense;
 	
+	public APIMonster(){}
 	public APIMonster(Monster m)
 	{
 		this.id = m.getId();

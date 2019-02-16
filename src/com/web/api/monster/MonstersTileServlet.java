@@ -16,20 +16,23 @@ import com.web.api.user.User;
 public class MonstersTileServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = 2695498520215830537L;
-	MonstersServletActions actions;
-	Monster monster;
-	MonstersTileOptions options;
+	private MonstersServletActions actions;
+	private Monster monster;
+	private MonstersTileOptions options;
+	private APIMonster apiMonster;
 
 	public MonstersTileServlet()
 	{
 		this.actions = new MonstersServletActions();
 		this.monster = new Monster();
 		this.options = new MonstersTileOptions();
+		this.apiMonster = new APIMonster();
 	}
 	
 	public void setActions(MonstersServletActions actions) { this.actions = actions; }
 	public void setMonster(Monster monster) { this.monster = monster; }
 	public void setMonstersTileOptions(MonstersTileOptions options) { this.options = options; }
+	public void setAPIMonster(APIMonster apiMonster) { this.apiMonster = apiMonster; }
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
 	{
@@ -86,7 +89,14 @@ public class MonstersTileServlet extends LabyrinthHttpServlet
 		else
 		{
 			// there's only going to be one monster with the given ID
-			apiOut(gson.toJson(new APIMonster(monsters.get(0))), response);
+			Monster m = monsters.get(0);
+			apiMonster.setId(m.getId());
+			apiMonster.setAttack(m.getAttack());
+			apiMonster.setDefense(m.getDefense());
+			apiMonster.setHealth(m.getHealth());
+			apiMonster.setTileId(m.getTileId());
+			
+			apiOut(gson.toJson(apiMonster), response);
 		}
 	}
 	

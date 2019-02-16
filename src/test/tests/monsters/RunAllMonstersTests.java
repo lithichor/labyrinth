@@ -10,7 +10,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	MonstersTileServletGetTests.class,
 	MonsterModelTests.class,
 	MonstersServletOptionsTests.class,
-	MonstersTileServletOptionsTests.class
+	MonstersTileServletOptionsTests.class,
+	MonstersServletContextListenerTests.class
 	})
 public class RunAllMonstersTests
 {

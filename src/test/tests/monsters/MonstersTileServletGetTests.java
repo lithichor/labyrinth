@@ -1,5 +1,6 @@
 package test.tests.monsters;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ import com.models.constants.EndpointsWithIds;
 import com.models.wrappers.GsonWrapper;
 import com.parents.LabyrinthException;
 import com.web.api.maps.Map;
+import com.web.api.monster.APIMonster;
 import com.web.api.monster.Monster;
 import com.web.api.monster.MonstersServletActions;
 import com.web.api.monster.MonstersTileServlet;
@@ -26,7 +28,6 @@ public class MonstersTileServletGetTests extends LabyrinthHttpServletTest
 {
 	private MonstersTileServlet servlet;
 	private MonstersServletActions actions;
-	private GsonWrapper gson;
 	
 	private User user;
 	private Monster monster;
@@ -38,7 +39,6 @@ public class MonstersTileServletGetTests extends LabyrinthHttpServletTest
 	{
 		servlet = new MonstersTileServlet();
 		actions = mock(MonstersServletActions.class);
-		gson = mock(GsonWrapper.class);
 		
 		user = new User();
 		user.setId(1);
@@ -50,7 +50,7 @@ public class MonstersTileServletGetTests extends LabyrinthHttpServletTest
 		
 		servlet.setActions(actions);
 		servlet.setMonster(monster);
-		servlet.setGson(gson);
+		servlet.setGson(new GsonWrapper());
 		
 		when(monster.getId()).thenReturn(42);
 		when(response.getWriter()).thenReturn(printerTwo);
@@ -69,16 +69,22 @@ public class MonstersTileServletGetTests extends LabyrinthHttpServletTest
 		Monster m = new Monster();
 		ArrayList<Monster> monsters = new ArrayList<>();
 		monsters.add(m);
+		APIMonster apiMonster = new APIMonster();
+		servlet.setAPIMonster(apiMonster);
 		
 		when(actions.authenticateUser(request)).thenReturn(user);
 		when(actions.getIdFromUrl(request, EndpointsWithIds.MONSTERS_TILES)).thenReturn(tile.getId());
 		when(monster.loadMonstersByUserAndTile(user.getId(), tile.getId())).thenReturn(monsters);
-		
+		when(response.getWriter()).thenReturn(printer);
+
 		servlet.doGet(request, response);
 		
 		ArrayList<String> errors = servlet.getErrors();
-		
+		String messageStr = strWriter.getBuffer().toString();
+		String apiMonsterJson = gson.toJson(apiMonster);
+
 		assertTrue(errors.size() == 0);
+		assertEquals(messageStr.trim(), apiMonsterJson.trim());
 	}
 	
 	@Test
