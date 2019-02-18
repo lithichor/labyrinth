@@ -19,9 +19,16 @@ public class TurnsServlet extends LabyrinthHttpServlet
 
 	private Turn turn;
 	private TurnsServletActions actions;
+	private TurnsOptions options;
+	
+	public TurnsServlet()
+	{
+		options = new TurnsOptions();
+	}
 	
 	public void setTurn(Turn turn) { this.turn = turn; }
 	public void setActions(TurnsServletActions actions) { this.actions = actions; }
+	public void setOptions(TurnsOptions options) { this.options = options; }
 	
 	/**
 	 * Return the current state of the Player
@@ -134,7 +141,6 @@ public class TurnsServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		
-		TurnsOptions options = new TurnsOptions();
 		apiOut(gson.toJson(options), response);
 	}
 }

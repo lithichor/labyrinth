@@ -17,9 +17,16 @@ public class TurnsGameServlet extends LabyrinthHttpServlet
 	private static final long serialVersionUID = -5314489077659984779L;
 	private Turn turn;
 	private TurnsServletActions actions;
+	private TurnsGameOptions options;
+	
+	public TurnsGameServlet()
+	{
+		this.options = new TurnsGameOptions();
+	}
 	
 	public void setTurn(Turn turn) { this.turn = turn; }
 	public void setActions(TurnsServletActions actions) { this.actions = actions; }
+	public void setOptions(TurnsGameOptions options) { this.options = options; }
 
 	/**
 	 * Return the turn associated with a Game ID
@@ -60,7 +67,6 @@ public class TurnsGameServlet extends LabyrinthHttpServlet
 	{
 		errors.clear();
 		
-		TurnsGameOptions options = new TurnsGameOptions();
 		apiOut(gson.toJson(options), response);
 	}
 }
