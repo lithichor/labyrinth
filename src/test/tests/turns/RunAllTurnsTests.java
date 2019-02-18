@@ -10,7 +10,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	TurnsActionsTests.class,
 	TurnsServletPutTests.class,
 	TurnsServletGetTests.class,
-	TurnsModelTests.class
+	TurnsModelTests.class,
+	TurnsServletOptionsTests.class,
+	TurnsGameServletOptionsTests.class
 	})
 public class RunAllTurnsTests
 {
