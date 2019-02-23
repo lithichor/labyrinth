@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gson.JsonObject;
+import com.models.constants.EndpointsWithIds;
 import com.parents.LabyrinthException;
 import com.web.api.turn.Turn;
 import com.web.api.turn.TurnsServlet;
@@ -37,6 +38,43 @@ public class TurnsServletPutTests extends LabyrinthHttpServletTest
 		servlet = new TurnsServlet();
 		servlet.setTurn(turn);
 		servlet.setActions(actions);
+	}
+	
+	@Test
+	public void testTurnsDoPut() throws ServletException, IOException, LabyrinthException
+	{
+		int userId = 2;
+		int gameId = 2;
+		int turnId = 5;
+		int combatId = 55;
+		user.setId(userId);
+
+		Turn t = new Turn();
+		t.setId(turnId);
+		t.setUserId(userId);
+		t.setGameId(gameId);
+		t.setInCombat(false);
+		
+		Turn t2 = mock(Turn.class);
+		when(t2.getId()).thenReturn(turnId);
+		when(t2.getUserId()).thenReturn(userId);
+		when(t2.isInCombat()).thenReturn(true);
+		when(t2.getCombatId()).thenReturn(combatId);
+		
+		String dataStr = "{direction: w}";
+		JsonObject dataObj = gson.fromJson(dataStr, JsonObject.class);
+		
+		when(actions.getIdFromUrl(request, EndpointsWithIds.TURNS)).thenReturn(turnId);
+		when(actions.authenticateUser(request)).thenReturn(user);
+		when(turn.loadByUserAndTurn(userId, turnId)).thenReturn(t);
+		when(actions.getData(request)).thenReturn(dataObj);
+		when(actions.makeMove("w", t)).thenReturn(t2);
+
+		servlet.doPut(request, response);
+		
+		String returnStr = strWriter.getBuffer().toString();
+		
+		System.out.println(returnStr);
 	}
 	
 	@Test

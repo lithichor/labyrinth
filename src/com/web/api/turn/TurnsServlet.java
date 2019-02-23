@@ -23,6 +23,8 @@ public class TurnsServlet extends LabyrinthHttpServlet
 	
 	public TurnsServlet()
 	{
+		turn = new Turn();
+		actions = new TurnsServletActions();
 		options = new TurnsOptions();
 	}
 	
@@ -36,9 +38,7 @@ public class TurnsServlet extends LabyrinthHttpServlet
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-		turn = (turn == null) ? new Turn() : turn;
 		APITurn apiTurn = null;
-		actions = (actions == null) ? new TurnsServletActions() : actions;
 		Integer turnId = actions.getIdFromUrl(request, EndpointsWithIds.TURNS);
 		
 		try
@@ -76,9 +76,6 @@ public class TurnsServlet extends LabyrinthHttpServlet
 	public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-		
-		turn = (turn == null) ? new Turn() : turn;
-		actions = (actions == null) ? new TurnsServletActions() : actions;
 		
 		Integer turnId = actions.getIdFromUrl(request, EndpointsWithIds.TURNS);
 		JsonObject data = null;

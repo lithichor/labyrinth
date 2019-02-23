@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gson.JsonObject;
+import com.models.constants.EndpointsWithIds;
 import com.parents.LabyrinthException;
 import com.web.api.turn.Turn;
 import com.web.api.turn.TurnsServlet;
@@ -42,11 +43,35 @@ public class TurnsServletGetTests extends LabyrinthHttpServletTest
 	}
 	
 	@Test
+	public void testTurnsDoGet() throws ServletException, IOException, LabyrinthException
+	{
+		int userId = 4;
+		int turnId = 3;
+		Turn t = new Turn();
+		t.setId(turnId);
+		t.setUserId(userId);
+		
+		user.setId(userId);
+		when(actions.getIdFromUrl(request, EndpointsWithIds.TURNS)).thenReturn(turnId);
+		when(turn.loadByUserAndTurn(userId, turnId)).thenReturn(t);
+		
+		servlet.doGet(request, response);
+		
+		String returnStr = strWriter.getBuffer().toString();
+		JsonObject apiJson = gson.fromJson(returnStr, JsonObject.class);
+		
+		assertEquals(false, apiJson.get("inCombat").getAsBoolean());
+		assertEquals(userId, apiJson.get("userId").getAsInt());
+		assertEquals(turnId, apiJson.get("id").getAsInt());
+		System.out.println(returnStr);
+	}
+	
+	@Test
 	public void testLoadTurnThrowsException() throws ServletException, IOException, LabyrinthException
 	{
 		String errorMessage = "Exception";
 		
-		when(turn.loadByUserAndTurn(null, 0)).thenThrow(new LabyrinthException("Exception"));
+		when(turn.loadByUserAndTurn(null, 0)).thenThrow(new LabyrinthException(errorMessage));
 		
 		servlet.doGet(request, response);
 		
@@ -77,7 +102,7 @@ public class TurnsServletGetTests extends LabyrinthHttpServletTest
 		String errorMessage = "Exception";
 		
 		when(turn.loadByUserAndTurn(null, 0)).thenReturn(turn);
-		when(actions.authenticateUser(request)).thenThrow(new LabyrinthException("Exception"));
+		when(actions.authenticateUser(request)).thenThrow(new LabyrinthException(errorMessage));
 		
 		servlet.doGet(request, response);
 		

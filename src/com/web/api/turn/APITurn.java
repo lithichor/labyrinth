@@ -15,6 +15,7 @@ public class APITurn extends LabyrinthAPIModel
 	private boolean inCombat;
 	private Integer combatId;
 	
+	public APITurn(){}
 	public APITurn(Turn turn)
 	{
 		this.id = turn.getId();

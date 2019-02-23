@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gson.JsonObject;
+import com.models.constants.EndpointsWithIds;
 import com.parents.LabyrinthException;
 import com.web.api.turn.Turn;
 import com.web.api.turn.TurnsGameServlet;
@@ -36,7 +37,35 @@ public class TurnsGameServletGetTests extends LabyrinthHttpServletTest
 		
 		servlet = new TurnsGameServlet();
 		servlet.setTurn(turn);
+		servlet.setUser(user);
 		servlet.setActions(actions);
+	}
+	
+	@Test
+	public void testTurnsGameDoGet() throws ServletException, IOException, LabyrinthException
+	{
+		int userId = 2;
+		int gameId = 2;
+		int turnId = 5;
+		Turn t = new Turn();
+		t.setId(turnId);
+		t.setUserId(userId);
+		t.setGameId(gameId);
+		
+		when(actions.getIdFromUrl(request, EndpointsWithIds.TURNS_GAMES)).thenReturn(gameId);
+		when(actions.authenticateUser(request)).thenReturn(user);
+		when(user.getId()).thenReturn(userId);
+		when(turn.loadByUserAndGame(userId, gameId)).thenReturn(t);
+		
+		servlet.doGet(request, response);
+		
+		String messageStr = strWriter.getBuffer().toString();
+		JsonObject apiJson = gson.fromJson(messageStr, JsonObject.class);
+		
+		assertEquals(turnId, apiJson.get("id").getAsInt());
+		assertEquals(userId, apiJson.get("userId").getAsInt());
+		assertEquals(gameId, apiJson.get("gameId").getAsInt());
+		assertEquals(false, apiJson.get("inCombat").getAsBoolean());
 	}
 	
 	@Test
@@ -45,7 +74,7 @@ public class TurnsGameServletGetTests extends LabyrinthHttpServletTest
 		String errorMessage = "Excepted";
 		
 		when(actions.authenticateUser(request)).thenReturn(user);
-		when(turn.loadByUserAndGame(0, 0)).thenThrow(new LabyrinthException("Excepted"));
+		when(turn.loadByUserAndGame(0, 0)).thenThrow(new LabyrinthException(errorMessage));
 		
 		servlet.doGet(request, response);
 		String messageStr = strWriter.getBuffer().toString();
