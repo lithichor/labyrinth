@@ -16,15 +16,20 @@ public class TurnsGameServlet extends LabyrinthHttpServlet
 {
 	private static final long serialVersionUID = -5314489077659984779L;
 	private Turn turn;
+	private User user;
 	private TurnsServletActions actions;
 	private TurnsGameOptions options;
 	
 	public TurnsGameServlet()
 	{
+		this.turn = new Turn();
+		this.user = new User();
+		this.actions = new TurnsServletActions();
 		this.options = new TurnsGameOptions();
 	}
 	
 	public void setTurn(Turn turn) { this.turn = turn; }
+	public void setUser(User user) { this.user = user; }
 	public void setActions(TurnsServletActions actions) { this.actions = actions; }
 	public void setOptions(TurnsGameOptions options) { this.options = options; }
 
@@ -34,13 +39,11 @@ public class TurnsGameServlet extends LabyrinthHttpServlet
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		errors.clear();
-		turn = (turn == null) ? new Turn() : turn;
-		actions = (actions == null) ? new TurnsServletActions() : actions;
 		Integer gameId = actions.getIdFromUrl(request, EndpointsWithIds.TURNS_GAMES);
 		
 		try
 		{
-			User user = actions.authenticateUser(request);
+			user = actions.authenticateUser(request);
 			turn = turn.loadByUserAndGame(user.getId(), gameId);
 			
 			if(turn == null)
@@ -59,7 +62,25 @@ public class TurnsGameServlet extends LabyrinthHttpServlet
 		}
 		else
 		{
-			apiOut(gson.toJson(new APITurn(turn)), response);
+			APITurn apiTurn = new APITurn();
+			apiTurn.setId(turn.getId());
+			apiTurn.setCombatId(turn.getCombatId());
+			apiTurn.setCoords(turn.getCoords());
+			apiTurn.setGameId(turn.getGameId());
+			apiTurn.setInCombat(turn.isInCombat());
+			if(turn.getCombatId() == null || turn.getCombatId() <= 0)
+			{
+				apiTurn.setCombatId(turn.getCombatId());
+			}
+			else
+			{
+				apiTurn.setCombatId(null);
+			}
+			apiTurn.setIteration(turn.getIteration());
+			apiTurn.setMapId(turn.getMapId());
+			apiTurn.setUserId(turn.getUserId());
+			
+			apiOut(gson.toJson(apiTurn), response);
 		}
 	}
 
