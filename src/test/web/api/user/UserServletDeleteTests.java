@@ -29,8 +29,9 @@ public class UserServletDeleteTests extends LabyrinthHttpServletTest
 		user = mock(User.class);
 		actions = mock(UserServletActions.class);
 		
-		servlet = new UserServlet(user);
+		servlet = new UserServlet();
 		servlet.setActions(actions);
+		servlet.setUser(user);
 		
 		when(response.getWriter()).thenReturn(printer);
 	}
