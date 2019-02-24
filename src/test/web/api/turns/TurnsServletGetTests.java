@@ -25,6 +25,7 @@ public class TurnsServletGetTests extends LabyrinthHttpServletTest
 	private TurnsServletActions actions;
 	private Turn turn;
 	private User user;
+	private String errorMessage = "Exception";
 	
 	@Before
 	public void setup() throws IOException, LabyrinthException
@@ -65,12 +66,10 @@ public class TurnsServletGetTests extends LabyrinthHttpServletTest
 		assertEquals(turnId, apiJson.get("id").getAsInt());
 		System.out.println(returnStr);
 	}
-	
+
 	@Test
-	public void testLoadTurnThrowsException() throws ServletException, IOException, LabyrinthException
+	public void testTurnsGetLoadTurnThrowsException() throws ServletException, IOException, LabyrinthException
 	{
-		String errorMessage = "Exception";
-		
 		when(turn.loadByUserAndTurn(null, 0)).thenThrow(new LabyrinthException(errorMessage));
 		
 		servlet.doGet(request, response);
@@ -80,16 +79,14 @@ public class TurnsServletGetTests extends LabyrinthHttpServletTest
 
 		assertEquals(errorMessage, messageObj.get("message").getAsString());
 	}
-	
+
 	@Test
-	public void testLoadTurnReturnsNull() throws ServletException, IOException, LabyrinthException
+	public void testTurnsGetAuthenticateThrowsException() throws LabyrinthException, ServletException, IOException
 	{
-		String errorMessage = messages.getMessage("turn.no_turn_for_id");
-		
-		when(turn.loadByUserAndTurn(null, 0)).thenReturn(null);
-		
+		when(actions.authenticateUser(request)).thenThrow(new LabyrinthException(errorMessage));
+
 		servlet.doGet(request, response);
-		
+
 		String messageStr = strWriter.getBuffer().toString();
 		JsonObject messageObj = gson.fromJson(messageStr, JsonObject.class);
 
@@ -97,12 +94,25 @@ public class TurnsServletGetTests extends LabyrinthHttpServletTest
 	}
 	
 	@Test
-	public void testAuthenticateUserThrowsException() throws ServletException, IOException, LabyrinthException
+	public void testTurnsGetAuthenticateReturnsNull() throws ServletException, IOException, LabyrinthException
 	{
-		String errorMessage = "Exception";
+		String errorMessage = messages.getMessage("user.no_authorization");
+		when(actions.authenticateUser(request)).thenReturn(null);
 		
-		when(turn.loadByUserAndTurn(null, 0)).thenReturn(turn);
-		when(actions.authenticateUser(request)).thenThrow(new LabyrinthException(errorMessage));
+		servlet.doGet(request, response);
+
+		String messageStr = strWriter.getBuffer().toString();
+		JsonObject messageObj = gson.fromJson(messageStr, JsonObject.class);
+
+		assertEquals(errorMessage, messageObj.get("message").getAsString());
+	}
+
+	@Test
+	public void testTurnsGetLoadTurnReturnsNull() throws ServletException, IOException, LabyrinthException
+	{
+		String errorMessage = messages.getMessage("turn.no_turn_for_id");
+		
+		when(turn.loadByUserAndTurn(null, 0)).thenReturn(null);
 		
 		servlet.doGet(request, response);
 		
