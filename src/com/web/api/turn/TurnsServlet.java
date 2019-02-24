@@ -44,6 +44,14 @@ public class TurnsServlet extends LabyrinthHttpServlet
 		try
 		{
 			User user = actions.authenticateUser(request);
+			// return the errors if the user is not authenticated
+			if(user == null)
+			{
+				errors.add(messages.getMessage("user.no_authorization"));
+				apiOut(gson.toJson(new APIErrorMessage(errors)), response);
+				return;
+			}
+			
 			turn = turn.loadByUserAndTurn(user.getId(), turnId);
 			
 			if(turn == null)
@@ -59,7 +67,7 @@ public class TurnsServlet extends LabyrinthHttpServlet
 		{
 			errors.add(le.getMessage());
 		}
-		
+
 		if(errors.size() > 0)
 		{
 			apiOut(gson.toJson(new APIErrorMessage(errors)), response);
