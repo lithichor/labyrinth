@@ -13,7 +13,7 @@ public class UserServletContextListener extends LabyrinthServletContextListener
 	public void contextInitialized(ServletContextEvent event)
 	{
 		ServletContext context = event.getServletContext();
-		context.addServlet("userServlet", new UserServlet(new User())).addMapping("/api/user");
+		context.addServlet("userServlet", new UserServlet()).addMapping("/api/user");
 	}
 	
 	@Override

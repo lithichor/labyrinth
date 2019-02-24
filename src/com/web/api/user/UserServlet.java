@@ -21,18 +21,20 @@ public class UserServlet extends LabyrinthHttpServlet
 	private static final long serialVersionUID = 3194656746956466374L;
 	private User user;
 	private UserServletActions actions = null;
-	private Game setGame = new Game();
 	private UserValidationHelper validation;
+	private Game game;
 
-	public UserServlet(User user)
+	public UserServlet()
 	{
-		this.user = user;
+		this.user = new User();
+		this.game = new Game();
 
 		actions = new UserServletActions();
 	}
 
+	public void setUser(User user) { this.user = user; }
 	public void setActions(UserServletActions actions) { this.actions = actions; }
-	public void setGame(Game setGame) { this.setGame = setGame; }
+	public void setGame(Game game) { this.game = game; }
 	public void setValidation(UserValidationHelper validation) { this.validation = validation; }
 
 	/**
@@ -88,7 +90,7 @@ public class UserServlet extends LabyrinthHttpServlet
 			APIUser u = new APIUser(user);
 			try
 			{
-				ArrayList<Game> games = setGame.load(user.getId(), 0);
+				ArrayList<Game> games = game.load(user.getId(), 0);
 				for(Game game: games)
 				{
 					u.addGame(game.getId());
@@ -293,7 +295,7 @@ public class UserServlet extends LabyrinthHttpServlet
 					try
 					{
 						// get the games for this user
-						ArrayList<Game> gs = new Game().load(user.getId(), 0);
+						ArrayList<Game> gs = game.load(user.getId(), 0);
 						ArrayList<Integer> gids = new ArrayList<Integer>();
 						// create a list of the game ids
 						for(int x = 0; x < gs.size(); x++)

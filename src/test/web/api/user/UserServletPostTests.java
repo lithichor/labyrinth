@@ -42,7 +42,8 @@ public class UserServletPostTests extends LabyrinthHttpServletTest
 		actions = mock(UserServletActions.class);
 		validation = mock(UserValidationHelper.class);
 
-		servlet = new UserServlet(user);
+		servlet = new UserServlet();
+		servlet.setUser(user);
 		servlet.setActions(actions);
 
 		when(response.getWriter()).thenReturn(printer);
