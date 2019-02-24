@@ -64,17 +64,19 @@ public class TurnsGameServlet extends LabyrinthHttpServlet
 		{
 			APITurn apiTurn = new APITurn();
 			apiTurn.setId(turn.getId());
-			apiTurn.setCombatId(turn.getCombatId());
 			apiTurn.setCoords(turn.getCoords());
 			apiTurn.setGameId(turn.getGameId());
-			apiTurn.setInCombat(turn.isInCombat());
 			if(turn.getCombatId() == null || turn.getCombatId() <= 0)
 			{
-				apiTurn.setCombatId(turn.getCombatId());
+				// if there is no combat ID then we're not in combat
+				apiTurn.setCombatId(null);
+				apiTurn.setInCombat(false);
 			}
 			else
 			{
-				apiTurn.setCombatId(null);
+				// If there is an ID, we are in combat
+				apiTurn.setCombatId(turn.getCombatId());
+				apiTurn.setInCombat(true);
 			}
 			apiTurn.setIteration(turn.getIteration());
 			apiTurn.setMapId(turn.getMapId());
