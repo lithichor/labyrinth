@@ -41,6 +41,14 @@ public class TurnsServletPutTests extends LabyrinthHttpServletTest
 	}
 	
 	@Test
+	/**
+	 * Verify that when we call doPut we get back the Turn object we expect
+	 * Check the turn ID. userId, combatId, and isInCombat flag
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 * @throws LabyrinthException
+	 */
 	public void testTurnsDoPut() throws ServletException, IOException, LabyrinthException
 	{
 		int userId = 2;
@@ -63,7 +71,7 @@ public class TurnsServletPutTests extends LabyrinthHttpServletTest
 		
 		String dataStr = "{direction: w}";
 		JsonObject dataObj = gson.fromJson(dataStr, JsonObject.class);
-		
+
 		when(actions.getIdFromUrl(request, EndpointsWithIds.TURNS)).thenReturn(turnId);
 		when(actions.authenticateUser(request)).thenReturn(user);
 		when(turn.loadByUserAndTurn(userId, turnId)).thenReturn(t);
@@ -73,8 +81,48 @@ public class TurnsServletPutTests extends LabyrinthHttpServletTest
 		servlet.doPut(request, response);
 		
 		String returnStr = strWriter.getBuffer().toString();
+		JsonObject apiTurn = gson.fromJson(returnStr, JsonObject.class);
 		
-		System.out.println(returnStr);
+		assertEquals(turnId, apiTurn.get("id").getAsInt());
+		assertEquals(userId, apiTurn.get("userId").getAsInt());
+		assertTrue(apiTurn.get("inCombat").getAsBoolean());
+		assertEquals(combatId, apiTurn.get("combatId").getAsInt());
+	}
+	
+	@Test
+	/**
+	 * Verify that we get the correct error message when the data does not
+	 * have a direction
+	 * 
+	 * @throws ServletException
+	 * @throws IOException
+	 * @throws LabyrinthException
+	 */
+	public void testTurnsPutEmptyData() throws ServletException, IOException, LabyrinthException
+	{
+		String errorMessage = messages.getMessage("turn.invalid_data");
+		int userId = 9;
+		int turnId = 9;
+		user.setId(userId);
+
+		Turn t = new Turn();
+		t.setId(turnId);
+		t.setUserId(userId);
+
+		String dataStr = "{}";
+		JsonObject dataObj = gson.fromJson(dataStr, JsonObject.class);
+
+		when(actions.getIdFromUrl(request, EndpointsWithIds.TURNS)).thenReturn(turnId);
+		when(actions.authenticateUser(request)).thenReturn(user);
+		when(turn.loadByUserAndTurn(userId, turnId)).thenReturn(t);
+		when(actions.getData(request)).thenReturn(dataObj);
+
+		servlet.doPut(request, response);
+		
+		String returnStr = strWriter.getBuffer().toString();
+		JsonObject errorObj = gson.fromJson(returnStr, JsonObject.class);
+		
+		assertEquals(errorMessage, errorObj.get("message").getAsString());
 	}
 	
 	@Test
