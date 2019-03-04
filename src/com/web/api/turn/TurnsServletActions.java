@@ -22,44 +22,51 @@ public class TurnsServletActions extends LabyrinthServletActions
 	public void setHero(Hero hero) { this.hero = hero; }
 	public void setCombat(Combat combat) { this.combat = combat; }
 	public void setMonster(Monster monster) { this.monster = monster; }
+	
+	public TurnsServletActions()
+	{
+		this.map = new Map();
+		this.hero = new Hero();
+		this.combat = new Combat();
+		this.monster = new Monster();
+	}
 
 	public Turn makeMove(String direction, Turn turn) throws LabyrinthException
 	{
 		int x = turn.getCoords().x;
 		int y = turn.getCoords().y;
-		map = (map == null) ? new Map() : map;
-		Tile t = null;
+		Tile tile = null;
 
 		map = map.load(turn.getGameId(), turn.getMapId()).get(0);
-		t = map.getTileByCoords(turn.getCoords(), turn.getUserId());
+		tile = map.getTileByCoords(turn.getCoords(), turn.getUserId());
 
-		switch(direction)
+		switch(direction.toLowerCase())
 		{
 		// need to check for walls
 		case "east":
 		case "e":
-			if(t.getEast() == Boundary.OPENING)
+			if(tile.getEast() == Boundary.OPENING)
 			{
 				x++;
 			}
 			break;
 		case "west":
 		case "w":
-			if(t.getWest() == Boundary.OPENING)
+			if(tile.getWest() == Boundary.OPENING)
 			{
 				x--;
 			}
 			break;
 		case "north":
 		case "n":
-			if(t.getNorth() == Boundary.OPENING)
+			if(tile.getNorth() == Boundary.OPENING)
 			{
 				y--;
 			}
 			break;
 		case "south":
 		case "s":
-			if(t.getSouth() == Boundary.OPENING)
+			if(tile.getSouth() == Boundary.OPENING)
 			{
 				y++;
 			}
@@ -73,27 +80,21 @@ public class TurnsServletActions extends LabyrinthServletActions
 		{
 			turn.setInCombat(true);
 			
-			combat = (combat == null) ? new Combat() : combat;
 			combat.setUserId(turn.getUserId());
 			
 			// get the heroId
-			hero = (hero == null) ? new Hero() : hero;
 			int heroId = hero.getHeroId(turn.getGameId());
 			combat.setHeroId(heroId);
 			
 			combat.setTurnId(turn.getId());
 			
 			// create the monster
-			monster = (monster == null) ? new Monster() : monster;
 			monster.setTileId(nextTile.getId());
 			monster.save();
 
 			combat.setMonsterId(monster.getId());
 			combat.save();
-			if(turn.isInCombat())
-			{
-				turn.setCombatId(combat.getId());
-			}
+			turn.setCombatId(combat.getId());
 		}
 
 		turn.setCoords(new Point(x, y));
