@@ -1,16 +1,17 @@
-This repo is no longer under development. At the moment I'm writing unit tests for all the classes
-I didn't write them for in 2017 when I was developing the API. When that's done I'll start adding
-new functionality to it.
+This is a video game based solely on a REST API. It started as a project where I could explore
+some ideas I had about testing APIs.
 
-While I'm at it, I might as well admit that while I describe some steps to get the server up and
-running, I don't expect anyone to actually do that. This video game has turned into a way for me
-to exercise some of the concepts I've come up with to write more efficient tests. I expect it to
-eventually be a useful, functioning REST API server with an accompanying front end so people can
-actually play the game, but that's a long range goal. A very long range goal.
+Even though I describe what steps you'll need to take to get the server running (e.g., you
+should use a better object-data mapper than the one I use) I don't expect anyone to take the
+time to do so. This is really a way for me to hone my ideas and practice the techniques needed
+for good automated tests.
+
+If you are interested in testing techniques, visit my blog: lithichor.com. That's where I
+discuss theoretical best testing practices.
 
 # The Labyrinth
 
-An online single player roguelike game with a REST API interface.
+An online single player rogue-like game with a REST API interface.
 
 Before we start, a few caveats:
 
@@ -43,10 +44,10 @@ When you want to start working with an endpoint, the first thing you should do i
 method; that will give you some basic information about the endpoint such as which methods are supported,
 what the data should look like, and what related endpoints exist.
 
-Many endpoints require authentication when you call them. The Labyrinth uses Basic authentication; you need
+Most endpoints require authentication when you call them. The Labyrinth uses Basic authentication; you need
 to include the user's email and password in most of your requests:
 
 > curl -u eric@eric.corn:password localhost:8080/TheLabyrinth/api/user -X GET
 
-I've written an API client you can use to interface with the REST API, but feel free to write your own,
-especially if you aren't writing code in Java.
+I've written an API client you can use to interface with the REST API, but feel free to write your own.
+This is especially important if you aren't writing code in Java.
